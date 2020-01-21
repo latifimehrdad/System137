@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ff6528</color>
+    <color name="colorPrimaryDark">#ff6528</color>
+    <color name="colorAccent">#ff6528</color>
+
+    <color name="ML_Primary">#AFAFAF</color>
+    <color name="ML_PrimaryDark">#b32400</color>
+
+
+    <color name="ML_White">#ffffff</color>
+    <color name="ML_WhiteGray">#FAFAFA</color>
+    <color name="ML_WhiteGrayDark">#CACACA</color>
+    <color name="ML_ButtonClick">#910000</color>
+    <color name="ML_EditEmpty">#FDAEAE</color>
+    <color name="ML_EditEmptyBorder">#CCCCCC</color>
+
+    <color name="ML_Progress">#A3A3A3</color>
+
+</resources>

@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">System137</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="UserName">نام کاربری</string>
+    <string name="UserPass">رمز ورود</string>
+    <string name="Login">ورود</string>
+    <string name="ForgetPassword">رمز ورود خود را فراموش کرده اید؟</string>
+    <string name="SignUp">ثبت نام</string>
+    <string name="GuestUser">ورود بصورت مهمان</string>
+    <string name="Cancel">انصراف</string>
+    <string name="EmptyUserName">نام کاربری را وارد نمایید</string>
+    <string name="EmptyPassword">رمز ورود را وارد نمایید</string>
+    <string name="EmptyMobile">تلفن همراه را وارد نمایید</string>
+    <string name="EmptyNational">کد ملی را وارد نمایید</string>
+    <string name="EmptyFamily">نام خانوادگی را وارد نمایید</string>
+    <string name="EmptyName">نام را وارد نمایید</string>
+    <string name="Name">نام</string>
+    <string name="Family">نام خانوادگی</string>
+    <string name="National">کد ملی</string>
+    <string name="PhoneNumber">تلفن همراه</string>
+    <string name="Gender">جنسیت</string>
+    <string name="Woman">خانم</string>
+    <string name="Man">آقا</string>
+    <string name="HeyWhatsPhoneNumber">سلام، شماره تلفن همراه شما چند است؟</string>
+    <string name="EnterPhoneNumber">"جهت دریافت کد امنیتی \n شماره موبایل خود را در زیر وارد نمایید"</string>
+    <string name="VerifyCode">"لطفا 6 عدد کد فعال سازی  \n را وارد نمایید"</string>
+    <string name="ElapsedTimeGetSMS">زمان باقی مانده\n جهت دریافت پیامک</string>
+
+
+</resources>

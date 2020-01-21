@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="main"
+            type="com.ngra.system137.viewmodels.activity.VM_MainActivity" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:orientation="vertical"
+
+            />
+
+
+        <include layout="@layout/footer_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <fragment
+            android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/header"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_main" />
+
+
+
+
+        <ImageView
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:background="@drawable/menu"
+            android:src="@drawable/ic_menu"
+            android:padding="@dimen/_10sdp"
+            android:tint="@color/ML_White"
+            />
+
+
+
+
+
+
+    </RelativeLayout>
+
+</layout>
