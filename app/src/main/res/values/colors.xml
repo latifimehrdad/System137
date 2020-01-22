@@ -6,6 +6,7 @@
 
     <color name="ML_Primary">#AFAFAF</color>
     <color name="ML_PrimaryDark">#b32400</color>
+    <color name="ML_Black">#000000</color>
 
 
     <color name="ML_White">#ffffff</color>

@@ -36,7 +36,7 @@ public class SpalshFragment extends Fragment {
     private NavController navController;
 
     public SpalshFragment() {//_____________________________________________________________________ Start SpalshFragment
-        this.context = getContext();
+
     }//_____________________________________________________________________________________________ End SpalshFragment
 
 
@@ -45,6 +45,7 @@ public class SpalshFragment extends Fragment {
             LayoutInflater inflater,
             ViewGroup container,
             Bundle savedInstanceState) {//__________________________________________________________ Start onCreateView
+        this.context = getContext();
         vm_spalshFragment = new VM_SpalshFragment(context);
         FragmentSpalshBinding binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_spalsh,container, false
@@ -84,9 +85,15 @@ public class SpalshFragment extends Fragment {
                         .runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                if(observer != null)
+                                    observer.dispose();
+                                observer = null;
                                 switch (s) {
-                                    case "GoToBeforeLogin":
+                                    case "GoToLogin":
                                         navController.navigate(R.id.action_spalshFragment_to_LoginFragment);
+                                        break;
+                                    case "GoToHome":
+                                        navController.navigate(R.id.action_spalshFragment_to_homeFragment);
                                         break;
                                 }
                             }

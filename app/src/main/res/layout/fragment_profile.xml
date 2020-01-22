@@ -12,7 +12,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/ML_White"
         android:orientation="vertical">
 
         <LinearLayout
@@ -55,7 +54,6 @@
                         android:paddingRight="@dimen/_20sdp"
                         android:paddingTop="@dimen/_20sdp"
                         android:orientation="vertical"
-                        android:background="@drawable/gradiant_layout"
                         >
 
                         <LinearLayout
@@ -74,7 +72,7 @@
                                 android:hint="@string/UserName"
                                 android:inputType="textPersonName"
                                 android:minHeight="@dimen/_27sdp"
-                                android:textColor="@color/ML_Primary"
+                                android:textColor="@color/ML_Black"
                                 android:textSize="@dimen/_11sdp" />
 
                             <ImageView
@@ -103,7 +101,7 @@
                                 android:hint="@string/UserPass"
                                 android:inputType="textPassword"
                                 android:minHeight="@dimen/_27sdp"
-                                android:textColor="@color/ML_Primary"
+                                android:textColor="@color/ML_Black"
                                 android:textSize="@dimen/_11sdp" />
 
                             <ImageView
@@ -132,7 +130,7 @@
                                 android:hint="@string/Name"
                                 android:inputType="textPersonName"
                                 android:minHeight="@dimen/_27sdp"
-                                android:textColor="@color/ML_Primary"
+                                android:textColor="@color/ML_Black"
                                 android:textSize="@dimen/_11sdp" />
 
                             <ImageView
@@ -161,7 +159,7 @@
                                 android:hint="@string/Family"
                                 android:inputType="textPersonName"
                                 android:minHeight="@dimen/_27sdp"
-                                android:textColor="@color/ML_Primary"
+                                android:textColor="@color/ML_Black"
                                 android:textSize="@dimen/_11sdp" />
 
                             <ImageView
@@ -191,7 +189,7 @@
                                 android:inputType="phone"
                                 android:maxLength="10"
                                 android:minHeight="@dimen/_27sdp"
-                                android:textColor="@color/ML_Primary"
+                                android:textColor="@color/ML_Black"
                                 android:textSize="@dimen/_11sdp" />
 
                             <ImageView
@@ -221,7 +219,7 @@
                                 android:inputType="phone"
                                 android:maxLength="11"
                                 android:minHeight="@dimen/_27sdp"
-                                android:textColor="@color/ML_Primary"
+                                android:textColor="@color/ML_Black"
                                 android:textSize="@dimen/_11sdp" />
 
                             <ImageView
@@ -341,11 +339,6 @@
 
         </LinearLayout>
 
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.2" />
 
     </LinearLayout>
 

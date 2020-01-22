@@ -10,14 +10,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/ML_White"
         android:orientation="vertical">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.1" />
+            android:layout_weight="0.2" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,8 +33,7 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="3.5"
-                android:background="@drawable/gradiant_layout">
+                android:layout_weight="3.5">
 
 
                 <LinearLayout
@@ -53,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/HeyWhatsPhoneNumber"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/ML_PrimaryDark"
                         fontPath="font/iransans_web_medium.ttf"
                         android:textSize="@dimen/_9sdp" />
 
@@ -70,20 +68,39 @@
                         android:textSize="@dimen/_8sdp" />
 
 
-                    <EditText
-                        android:id="@+id/EditPhoneNumber"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="@dimen/_27sdp"
-                        android:background="@drawable/edit_back"
-                        android:inputType="phone"
                         android:gravity="center"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/_12sdp"
-                        android:hint="@string/PhoneNumber"
-                        android:maxLength="11"
                         android:layout_marginTop="@dimen/_15sdp"
-                        />
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/EditPhoneNumber"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:minHeight="@dimen/_27sdp"
+                            android:background="@drawable/edit_back"
+                            android:inputType="phone"
+                            android:gravity="center"
+                            android:textColor="@color/ML_Black"
+                            android:textSize="@dimen/_12sdp"
+                            android:hint="@string/PhoneNumber"
+                            android:maxLength="11"
+                            />
+
+                        <ImageView
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/icon_background"
+                            android:src="@drawable/ic_person"
+                            android:tint="@color/ML_White" />
+
+                    </LinearLayout>
+
+
+
 
 
                     <RelativeLayout
@@ -111,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:text="@string/Login"
+                            android:text="@string/GetVerifyCode"
                             android:textColor="@color/ML_White"
                             android:textSize="@dimen/_11sdp" />
 
@@ -140,12 +157,6 @@
 
 
         </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.8" />
 
     </LinearLayout>
 

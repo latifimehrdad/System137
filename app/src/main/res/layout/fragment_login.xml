@@ -50,6 +50,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:layout_centerVertical="true"
+                        android:gravity="center"
                         >
 
 
@@ -58,7 +59,6 @@
                             android:layout_height="@dimen/_50sdp"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentLeft="true"
-                            android:layout_marginLeft="@dimen/_55sdp"
                             android:background="@drawable/back_circle_accent_top_left_right"
                             android:gravity="center"
                             android:layout_marginBottom="@dimen/_5sdp"
@@ -203,7 +203,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_30sdp"
                             android:layout_marginTop="@dimen/_30sdp"
-                            android:background="@drawable/button_background_dark"
+                            android:background="@drawable/button_bg"
                             android:text="@string/SignUp"
                             android:textColor="@color/ML_White"
                             android:textSize="@dimen/_10sdp"
@@ -265,12 +265,6 @@
 
             </LinearLayout>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.8"
-                />
 
         </LinearLayout>
 

@@ -75,7 +75,7 @@ public class LoginFragment extends Fragment {
 
 
     public LoginFragment() {//________________________________________________________________ Start LoginFragment
-        context = getContext();
+
     }//_____________________________________________________________________________________________ End LoginFragment
 
 
@@ -84,6 +84,7 @@ public class LoginFragment extends Fragment {
             LayoutInflater inflater,
             ViewGroup container,
             Bundle savedInstanceState) {//__________________________________________________________ Start onCreateView
+        context = getContext();
         vm_LoginFragment = new VM_LoginFragment(context);
         FragmentLoginBinding binding = DataBindingUtil.inflate(
                 inflater,
@@ -137,7 +138,7 @@ public class LoginFragment extends Fragment {
         ButtonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //navController.navigate(R.id.action_LoginFragment_to_signUpFragment);
+                navController.navigate(R.id.action_LoginFragment_to_signUpFragment);
             }
         });
 
@@ -161,7 +162,7 @@ public class LoginFragment extends Fragment {
                                         if(observer != null)
                                             observer.dispose();
                                         observer = null;
-                                        //navController.navigate(R.id.action_LoginFragment_to_homeFragment);
+                                        navController.navigate(R.id.action_LoginFragment_to_homeFragment);
                                         break;
                                 }
                             }

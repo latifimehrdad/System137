@@ -9,14 +9,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/ML_White"
         android:orientation="vertical">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.1" />
+            android:layout_weight="0.2" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,8 +32,7 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="3.5"
-                android:background="@drawable/gradiant_layout">
+                android:layout_weight="3.5">
 
 
                 <LinearLayout
@@ -58,21 +56,132 @@
                         android:maxLines="2"
                         android:text="@string/VerifyCode"
                         android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/_8sdp" />
+                        android:textSize="@dimen/_10sdp" />
 
 
-                    <EditText
-                        android:id="@+id/EditPhoneNumber"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="@dimen/_27sdp"
-                        android:inputType="phone"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:gravity="center"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/_12sdp"
-                        android:maxLength="11"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        />
+                        >
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            >
+
+                            <EditText
+                                android:id="@+id/VerifyCode1"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:minHeight="@dimen/_35sdp"
+                                android:minWidth="@dimen/_25sdp"
+                                android:inputType="number"
+                                android:padding="@dimen/_2sdp"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/_14sdp"
+                                android:gravity="center"
+                                android:maxLines="1"
+                                android:maxLength="1"
+                                />
+
+                            <EditText
+                                android:id="@+id/VerifyCode2"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:minHeight="@dimen/_35sdp"
+                                android:minWidth="@dimen/_25sdp"
+                                android:inputType="number"
+                                android:padding="@dimen/_2sdp"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/_14sdp"
+                                android:gravity="center"
+                                android:layout_marginLeft="@dimen/_7sdp"
+                                android:maxLines="1"
+                                android:maxLength="1"
+                                />
+
+                            <EditText
+                                android:id="@+id/VerifyCode3"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:minHeight="@dimen/_35sdp"
+                                android:minWidth="@dimen/_25sdp"
+                                android:inputType="number"
+                                android:padding="@dimen/_2sdp"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/_14sdp"
+                                android:gravity="center"
+                                android:layout_marginLeft="@dimen/_7sdp"
+                                android:maxLines="1"
+                                android:maxLength="1"
+                                />
+
+                            <EditText
+                                android:id="@+id/VerifyCode4"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:minHeight="@dimen/_35sdp"
+                                android:minWidth="@dimen/_25sdp"
+                                android:inputType="number"
+                                android:padding="@dimen/_2sdp"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/_14sdp"
+                                android:gravity="center"
+                                android:layout_marginLeft="@dimen/_7sdp"
+                                android:maxLines="1"
+                                android:maxLength="1"
+                                />
+
+                            <EditText
+                                android:id="@+id/VerifyCode5"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:minHeight="@dimen/_35sdp"
+                                android:minWidth="@dimen/_25sdp"
+                                android:inputType="number"
+                                android:padding="@dimen/_2sdp"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/_14sdp"
+                                android:gravity="center"
+                                android:layout_marginLeft="@dimen/_7sdp"
+                                android:maxLines="1"
+                                android:maxLength="1"
+                                />
+
+                            <EditText
+                                android:id="@+id/VerifyCode6"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:minHeight="@dimen/_35sdp"
+                                android:minWidth="@dimen/_25sdp"
+                                android:inputType="number"
+                                android:padding="@dimen/_2sdp"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/_14sdp"
+                                android:gravity="center"
+                                android:layout_marginLeft="@dimen/_7sdp"
+                                android:maxLines="1"
+                                android:maxLength="1"
+                                />
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
 
 
 
@@ -137,11 +246,6 @@
 
         </LinearLayout>
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.8" />
 
     </LinearLayout>
 

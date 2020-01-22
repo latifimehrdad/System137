@@ -42,6 +42,7 @@ public class SignUpFragment extends Fragment {
     private DisposableObserver<String> observer;
     private NavController navController;
     private View view;
+    private String PhoneNumber;
 
 
     @BindView(R.id.EditPhoneNumber)
@@ -61,7 +62,7 @@ public class SignUpFragment extends Fragment {
 
 
     public SignUpFragment() {//_____________________________________________________________________ Start SignUpFragment
-        context = getContext();
+
     }//_____________________________________________________________________________________________ End SignUpFragment
 
 
@@ -70,6 +71,7 @@ public class SignUpFragment extends Fragment {
             LayoutInflater inflater,
             ViewGroup container,
             Bundle savedInstanceState) {//__________________________________________________________ Start onCreateView
+        context = getContext();
         vm_signUpFragment = new VM_SignUpFragment(context);
         FragmentSignupBinding binding = DataBindingUtil.inflate(
                 inflater,R.layout.fragment_signup,container,false
@@ -136,7 +138,11 @@ public class SignUpFragment extends Fragment {
                                         if(observer != null)
                                             observer.dispose();
                                         observer = null;
-                                        navController.navigate(R.id.action_LoginFragment_to_homeFragment);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("PhoneNumber", PhoneNumber);
+                                        navController.navigate(
+                                                R.id.action_signUpFragment_to_verifyCodeFragment,
+                                                bundle);
                                         break;
                                 }
                             }
@@ -176,6 +182,7 @@ public class SignUpFragment extends Fragment {
     private Boolean CheckEmpty() {//________________________________________________________________ Start CheckEmpty
 
         boolean mobile = true;
+        PhoneNumber = EditPhoneNumber.getText().toString();
 
         if (EditPhoneNumber.getText().length() != 11) {
             EditPhoneNumber.setBackgroundResource(R.drawable.edit_empty_background);
@@ -208,7 +215,7 @@ public class SignUpFragment extends Fragment {
 
     private void DismissLoading() {//_______________________________________________________________ Start DismissLoading
         RetrofitModule.isCancel = true;
-        BtnLoginText.setText(getResources().getString(R.string.Login));
+        BtnLoginText.setText(getResources().getString(R.string.GetVerifyCode));
         ButtonSignUp.setBackground(getResources().getDrawable(R.drawable.button_bg));
         ProgressGif.setVisibility(View.GONE);
         imgProgress.setVisibility(View.VISIBLE);

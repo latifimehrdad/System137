@@ -45,6 +45,7 @@ public class ProfileFragment extends Fragment {
     private DisposableObserver<String> observer;
     private int GenderCode;
     private NavController navController;
+    private String PhoneNumber;
 
 
     @BindView(R.id.EditUser)
@@ -88,7 +89,7 @@ public class ProfileFragment extends Fragment {
 
 
     public ProfileFragment() {//_____________________________________________________________________ Start ProfileFragment
-        context = getContext();
+
     }//_____________________________________________________________________________________________ End ProfileFragment
 
 
@@ -97,6 +98,7 @@ public class ProfileFragment extends Fragment {
             LayoutInflater inflater,
             ViewGroup container,
             Bundle savedInstanceState) {//__________________________________________________________ Start onCreateView
+        context = getContext();
         vm_profileFragment = new VM_ProfileFragment(context);
         FragmentProfileBinding binding = DataBindingUtil.inflate(
                 inflater,
@@ -114,6 +116,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {//_______________________________________________________________________ Start onStart
         super.onStart();
+        PhoneNumber = getArguments().getString("PhoneNumber");
         navController = Navigation.findNavController(view);
         DismissLoading();
         SetClick();
@@ -122,6 +125,8 @@ public class ProfileFragment extends Fragment {
             observer.dispose();
         observer = null;
         ObserverObservable();
+        EditPhoneNumber.setText(PhoneNumber);
+        EditPhoneNumber.setEnabled(false);
     }//_____________________________________________________________________________________________ End onStart
 
 
@@ -134,7 +139,7 @@ public class ProfileFragment extends Fragment {
                 if (RetrofitModule.isCancel) {
                     if (CheckEmpty()) {
                         ShowLoading();
-                        vm_profileFragment.SignUp(
+                        vm_profileFragment.EditProfile(
                                 EditUser.getText().toString(),
                                 EditPassword.getText().toString());
                     }
@@ -151,7 +156,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (radioMan.isChecked()) {
-                    layoutGender.setBackgroundColor(getResources().getColor(R.color.ML_White));
+                    layoutGender.setBackgroundColor(getResources().getColor(R.color.ML_WhiteGray));
                     GenderCode = 1;
                 }
             }
@@ -162,7 +167,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (radioMan.isChecked()) {
-                    layoutGender.setBackgroundColor(getResources().getColor(R.color.ML_White));
+                    layoutGender.setBackgroundColor(getResources().getColor(R.color.ML_WhiteGray));
                     GenderCode = 0;
                 }
             }
@@ -182,7 +187,7 @@ public class ProfileFragment extends Fragment {
                             public void run() {
                                 DismissLoading();
                                 switch (s) {
-                                    case "SignUpOk":
+                                    case "EditProfileOk":
                                         if (observer != null)
                                             observer.dispose();
                                         observer = null;

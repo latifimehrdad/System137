@@ -27,6 +27,17 @@
     <string name="EnterPhoneNumber">"جهت دریافت کد امنیتی \n شماره موبایل خود را در زیر وارد نمایید"</string>
     <string name="VerifyCode">"لطفا 6 عدد کد فعال سازی  \n را وارد نمایید"</string>
     <string name="ElapsedTimeGetSMS">زمان باقی مانده\n جهت دریافت پیامک</string>
+    <string name="GetVerifyCode">دریافت کد</string>
+    <string name="Ignore">بستن</string>
+    <string name="PleaseWait">شکیبا باشید ...</string>
+    <string name="onFailure">ارتباط با مرکز برقرار نشد</string>
+    <string name="ReTryGetSMS">دریافت مجدد\n پیامک</string>
+    <string name="NewRequest">درخواست \n جدید</string>
+    <string name="ResultRequest">پیگیری \n درخواست</string>
+    <string name="TotalRequests">کل درخواست ها</string>
+    <string name="FallowRequest">درحال پیگیری</string>
+    <string name="DoneRequest">پاسخ داده شده</string>
+    <string name="ReTryRequest">پیگیری مجدد</string>
 
 
 </resources>
