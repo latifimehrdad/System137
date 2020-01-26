@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -29,6 +30,8 @@ public class HomeFragment extends Fragment {
     private Context context;
     private VM_HomeFragment vm_homeFragment;
     private View view;
+    private NavController navController;
+    private boolean Login;
 
     @BindView(R.id.NewRequest)
     LinearLayout NewRequest;
@@ -37,17 +40,29 @@ public class HomeFragment extends Fragment {
     LinearLayout ResultRequest;
 
 
-    @BindView(R.id.layout1)
-    LinearLayout layout1;
+    @BindView(R.id.TotalRequest)
+    LinearLayout TotalRequest;
 
-    @BindView(R.id.layout2)
-    LinearLayout layout2;
+    @BindView(R.id.TotalRequestCount)
+    TextView TotalRequestCount;
 
-    @BindView(R.id.layout3)
-    LinearLayout layout3;
+    @BindView(R.id.InProgress)
+    LinearLayout InProgress;
 
-    @BindView(R.id.layout4)
-    LinearLayout layout4;
+    @BindView(R.id.InProgressCount)
+    TextView InProgressCount;
+
+    @BindView(R.id.Answered)
+    LinearLayout Answered;
+
+    @BindView(R.id.AnsweredCount)
+    TextView AnsweredCount;
+
+    @BindView(R.id.FollowUp)
+    LinearLayout FollowUp;
+
+    @BindView(R.id.FollowUpCount)
+    TextView FollowUpCount;
 
     public HomeFragment() {//_______________________________________________________________________ Start HomeFragment
 
@@ -63,7 +78,7 @@ public class HomeFragment extends Fragment {
         vm_homeFragment = new VM_HomeFragment(context);
         FragmentHomeBinding binding = DataBindingUtil.inflate(
                 inflater
-                ,R.layout.fragment_home,
+                , R.layout.fragment_home,
                 container,
                 false
         );
@@ -74,12 +89,47 @@ public class HomeFragment extends Fragment {
     }//_____________________________________________________________________________________________ End HomeFragment
 
 
-
     @Override
     public void onStart() {//_______________________________________________________________________ Start onStart
         super.onStart();
+        navController = Navigation.findNavController(view);
+        CheckLogin();
         SetClick();
     }//_____________________________________________________________________________________________ End onStart
+
+
+    private void CheckLogin() {//___________________________________________________________________ Start CheckLogin
+        Login = vm_homeFragment.CheckUserLogin();
+        if (Login) {
+            SetCountsToValues();
+        } else {
+            SetCountsToZero();
+        }
+    }//_____________________________________________________________________________________________ End CheckLogin
+
+
+    private void SetCountsToValues() {//____________________________________________________________ Start SetCountsToValues
+
+        TotalRequest.setBackgroundResource(R.drawable.home_back_circle_accent_tleft);
+        InProgress.setBackgroundResource(R.drawable.home_back_circle_primery_tright);
+        FollowUp.setBackgroundResource(R.drawable.home_back_circle_accent_bright);
+        Answered.setBackgroundResource(R.drawable.home_back_circle_primery_bleft);
+
+    }//_____________________________________________________________________________________________ End SetCountsToValues
+
+
+    private void SetCountsToZero() {//______________________________________________________________ Start SetCountsToZero
+
+        TotalRequestCount.setText("0");
+        InProgressCount.setText("0");
+        AnsweredCount.setText("0");
+        FollowUpCount.setText("0");
+        TotalRequest.setBackgroundResource(R.drawable.home_back_circle_gray_tleft);
+        InProgress.setBackgroundResource(R.drawable.home_back_circle_gray_tright);
+        FollowUp.setBackgroundResource(R.drawable.home_back_circle_gray_bright);
+        Answered.setBackgroundResource(R.drawable.home_back_circle_gray_bleft);
+
+    }//_____________________________________________________________________________________________ End SetCountsToZero
 
 
     private void SetClick() {//_____________________________________________________________________ Start SetClick
@@ -87,7 +137,7 @@ public class HomeFragment extends Fragment {
         NewRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                navController.navigate(R.id.action_homeFragment_to_newRequestFragment);
             }
         });
 
@@ -98,34 +148,33 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        layout1.setOnClickListener(new View.OnClickListener() {
+        TotalRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
 
-        layout2.setOnClickListener(new View.OnClickListener() {
+        InProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
 
-        layout3.setOnClickListener(new View.OnClickListener() {
+        Answered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
 
-        layout4.setOnClickListener(new View.OnClickListener() {
+        FollowUp.setOnClickListener(new View.OnClickListener() {
             @Override
-        public void onClick(View v) {
+            public void onClick(View v) {
 
-        }
-    });
-
+            }
+        });
 
 
     }//_____________________________________________________________________________________________ End SetClick

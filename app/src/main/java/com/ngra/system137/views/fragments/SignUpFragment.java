@@ -19,8 +19,8 @@ import android.widget.TextView;
 
 import com.cunoraz.gifview.library.GifView;
 import com.ngra.system137.R;
-import com.ngra.system137.daggers.RetrofitModule;
 import com.ngra.system137.databinding.FragmentSignupBinding;
+import com.ngra.system137.utility.StaticFunctions;
 import com.ngra.system137.viewmodels.fragments.VM_SignUpFragment;
 
 import butterknife.BindView;
@@ -105,14 +105,14 @@ public class SignUpFragment extends Fragment {
         ButtonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (RetrofitModule.isCancel) {
+                if (StaticFunctions.isCancel) {
                     if (CheckEmpty()) {
                         ShowLoading();
                         vm_signUpFragment.SendNumber(
                                 EditPhoneNumber.getText().toString());
                     }
                 } else {
-                    RetrofitModule.isCancel = true;
+                    StaticFunctions.isCancel = true;
                     DismissLoading();
                 }
             }
@@ -127,7 +127,7 @@ public class SignUpFragment extends Fragment {
 
         observer = new DisposableObserver<String>() {
             @Override
-            public void onNext(String s) {
+            public void onNext(final String s) {
                 getActivity()
                         .runOnUiThread(new Runnable() {
                             @Override
@@ -214,7 +214,7 @@ public class SignUpFragment extends Fragment {
 
 
     private void DismissLoading() {//_______________________________________________________________ Start DismissLoading
-        RetrofitModule.isCancel = true;
+        StaticFunctions.isCancel = true;
         BtnLoginText.setText(getResources().getString(R.string.GetVerifyCode));
         ButtonSignUp.setBackground(getResources().getDrawable(R.drawable.button_bg));
         ProgressGif.setVisibility(View.GONE);
@@ -224,7 +224,7 @@ public class SignUpFragment extends Fragment {
 
 
     private void ShowLoading() {//__________________________________________________________________ Start ShowLoading
-        RetrofitModule.isCancel = false;
+        StaticFunctions.isCancel = false;
         BtnLoginText.setText(getResources().getString(R.string.Cancel));
         ButtonSignUp.setBackground(getResources().getDrawable(R.drawable.button_red));
         ProgressGif.setVisibility(View.VISIBLE);

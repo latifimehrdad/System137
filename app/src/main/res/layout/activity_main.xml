@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:layout_below="@id/header"
             app:defaultNavHost="true"
-            android:layout_marginBottom="@dimen/_60sdp"
+            android:layout_marginBottom="@dimen/_70sdp"
             app:navGraph="@navigation/nav_main" />
 
 

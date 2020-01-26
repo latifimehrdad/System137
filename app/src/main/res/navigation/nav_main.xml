@@ -85,7 +85,19 @@
         android:id="@+id/homeFragment"
         android:name="com.ngra.system137.views.fragments.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+
+        <action
+            android:id="@+id/action_homeFragment_to_newRequestFragment"
+            app:destination="@id/newRequestFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            />
+
+    </fragment>
+
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.ngra.system137.views.fragments.SignUpFragment"
@@ -124,6 +136,28 @@
             />
 
     </fragment>
+    <fragment
+        android:id="@+id/newRequestFragment"
+        android:name="com.ngra.system137.views.fragments.NewRequestFragment"
+        android:label="fragment_new_request"
+        tools:layout="@layout/fragment_new_request" >
+
+        <action
+            android:id="@+id/action_newRequestFragment_to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.ngra.system137.views.fragments.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
 
 
 </navigation>

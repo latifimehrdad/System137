@@ -142,7 +142,7 @@ public class VerifyCodeFragment extends Fragment {
 
         observer = new DisposableObserver<String>() {
             @Override
-            public void onNext(String s) {
+            public void onNext(final String s) {
                 getActivity()
                         .runOnUiThread(new Runnable() {
                             @Override
@@ -313,7 +313,7 @@ public class VerifyCodeFragment extends Fragment {
     }//_____________________________________________________________________________________________ End SetTextChangeListener
 
 
-    private TextWatcher TextChange(EditText eNext) {//______________________________________________ Satart TextChange
+    private TextWatcher TextChange(final EditText eNext) {//______________________________________________ Satart TextChange
 
         return new TextWatcher() {
             @Override
@@ -339,7 +339,7 @@ public class VerifyCodeFragment extends Fragment {
     }//_____________________________________________________________________________________________ End TextChange
 
 
-    private View.OnKeyListener SetKeyBackSpace(EditText view) {//____________________________________ Start SetKeyBackSpace
+    private View.OnKeyListener SetKeyBackSpace(final EditText view) {//____________________________________ Start SetKeyBackSpace
         return new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {

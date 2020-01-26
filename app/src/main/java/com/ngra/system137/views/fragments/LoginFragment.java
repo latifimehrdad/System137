@@ -21,8 +21,8 @@ import android.widget.TextView;
 
 import com.cunoraz.gifview.library.GifView;
 import com.ngra.system137.R;
-import com.ngra.system137.daggers.RetrofitModule;
 import com.ngra.system137.databinding.FragmentLoginBinding;
+import com.ngra.system137.utility.StaticFunctions;
 import com.ngra.system137.viewmodels.fragments.VM_LoginFragment;
 
 import butterknife.BindView;
@@ -69,8 +69,8 @@ public class LoginFragment extends Fragment {
     @BindView(R.id.ButtonSignUp)
     Button ButtonSignUp;
 
-    @BindView(R.id.LayoutGuest)
-    LinearLayout LayoutGuest;
+    @BindView(R.id.layoutGuest)
+    LinearLayout layoutGuest;
 
 
 
@@ -116,11 +116,18 @@ public class LoginFragment extends Fragment {
 
     private void SetClick() {//_____________________________________________________________________ Start SetClick
 
+        layoutGuest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.action_LoginFragment_to_homeFragment);
+            }
+        });
+
         BtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (RetrofitModule.isCancel) {
+                if (StaticFunctions.isCancel) {
                     if (CheckEmpty()) {
                         ShowLoading();
                         vm_LoginFragment.GetLoginToken(
@@ -128,7 +135,7 @@ public class LoginFragment extends Fragment {
                                 EditPassword.getText().toString());
                     }
                 } else {
-                    RetrofitModule.isCancel = true;
+                    StaticFunctions.isCancel = true;
                     DismissLoading();
                 }
             }
@@ -151,7 +158,7 @@ public class LoginFragment extends Fragment {
 
         observer = new DisposableObserver<String>() {
             @Override
-            public void onNext(String s) {
+            public void onNext(final String s) {
                 getActivity()
                         .runOnUiThread(new Runnable() {
                             @Override
@@ -162,7 +169,8 @@ public class LoginFragment extends Fragment {
                                         if(observer != null)
                                             observer.dispose();
                                         observer = null;
-                                        navController.navigate(R.id.action_LoginFragment_to_homeFragment);
+                                        navController.navigate(
+                                                R.id.action_LoginFragment_to_homeFragment);
                                         break;
                                 }
                             }
@@ -236,7 +244,7 @@ public class LoginFragment extends Fragment {
 
 
     private void DismissLoading() {//_______________________________________________________________ Start DismissLoading
-        RetrofitModule.isCancel = true;
+        StaticFunctions.isCancel = true;
         BtnLoginText.setText(getResources().getString(R.string.Login));
         BtnLogin.setBackground(getResources().getDrawable(R.drawable.button_bg));
         ProgressGif.setVisibility(View.GONE);
@@ -246,7 +254,7 @@ public class LoginFragment extends Fragment {
 
 
     private void ShowLoading() {//__________________________________________________________________ Start ShowLoading
-        RetrofitModule.isCancel = false;
+        StaticFunctions.isCancel = false;
         BtnLoginText.setText(getResources().getString(R.string.Cancel));
         BtnLogin.setBackground(getResources().getDrawable(R.drawable.button_red));
         ProgressGif.setVisibility(View.VISIBLE);

@@ -12,11 +12,17 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import com.ngra.system137.R;
+import com.ngra.system137.dagger.retrofit.ModelToken;
+import com.ngra.system137.dagger.retrofit.RetrofitComponent;
 import com.ngra.system137.databinding.ActivityMainBinding;
 import com.ngra.system137.viewmodels.activity.VM_MainActivity;
+import com.ngra.system137.views.application.System137;
 
 import butterknife.ButterKnife;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         binding.setMain(vm_mainActivity);
         ButterKnife.bind(this);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+
     }//_____________________________________________________________________________________________ End onCreate
 
 

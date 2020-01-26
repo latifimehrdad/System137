@@ -55,6 +55,7 @@
 
 
                         <LinearLayout
+                            android:id="@+id/layoutGuest"
                             android:layout_width="@dimen/_100sdp"
                             android:layout_height="@dimen/_50sdp"
                             android:layout_alignParentBottom="true"
@@ -97,12 +98,12 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/edit_back"
+                                android:background="@drawable/edit_back_tleft_bleft"
                                 android:gravity="center"
                                 android:hint="@string/UserName"
                                 android:inputType="textPersonName"
                                 android:minHeight="@dimen/_27sdp"
-                                android:textColor="@color/ML_Primary"
+                                android:textColor="@color/ML_PrimaryDark"
                                 android:textSize="@dimen/_11sdp" />
 
                             <ImageView
@@ -126,12 +127,12 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/edit_back"
+                                android:background="@drawable/edit_back_tleft_bleft"
                                 android:gravity="center"
                                 android:hint="@string/UserPass"
                                 android:inputType="textPassword"
                                 android:minHeight="@dimen/_27sdp"
-                                android:textColor="@color/ML_Primary"
+                                android:textColor="@color/ML_PrimaryDark"
                                 android:textSize="@dimen/_11sdp" />
 
                             <ImageView
@@ -169,6 +170,7 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_centerVertical="true"
                                 android:text="@string/Login"
+                                fontPath="font/iransans_web_medium.ttf"
                                 android:textColor="@color/ML_White"
                                 android:textSize="@dimen/_11sdp" />
 
@@ -211,45 +213,6 @@
                             android:drawablePadding="@dimen/_3sdp"
                             android:drawableTint="@color/ML_White"
                             />
-
-                    </LinearLayout>
-
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/layouLogin"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_marginBottom="@dimen/_40sdp"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:visibility="gone"
-                        >
-
-                        <LinearLayout
-                            android:id="@+id/LayoutGuest"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            >
-
-                            <ImageView
-                                android:layout_width="@dimen/_50sdp"
-                                android:layout_height="@dimen/_50sdp"
-                                android:src="@drawable/ic_person_pin" />
-
-                            <TextView
-                                fontPath="font/iransans_web_medium.ttf"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="@string/GuestUser"
-                                android:textColor="@color/colorAccent"
-                                android:textSize="@dimen/_10sdp" />
-                        </LinearLayout>
-
 
                     </LinearLayout>
 

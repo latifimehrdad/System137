@@ -67,12 +67,12 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/edit_back"
+                                android:background="@drawable/edit_back_tleft_bleft"
                                 android:gravity="center"
                                 android:hint="@string/UserName"
                                 android:inputType="textPersonName"
                                 android:minHeight="@dimen/_27sdp"
-                                android:textColor="@color/ML_Black"
+                                android:textColor="@color/ML_PrimaryDark"
                                 android:textSize="@dimen/_11sdp" />
 
                             <ImageView
@@ -96,12 +96,12 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/edit_back"
+                                android:background="@drawable/edit_back_tleft_bleft"
                                 android:gravity="center"
                                 android:hint="@string/UserPass"
                                 android:inputType="textPassword"
                                 android:minHeight="@dimen/_27sdp"
-                                android:textColor="@color/ML_Black"
+                                android:textColor="@color/ML_PrimaryDark"
                                 android:textSize="@dimen/_11sdp" />
 
                             <ImageView
@@ -125,12 +125,12 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/edit_back"
+                                android:background="@drawable/edit_back_tleft_bleft"
                                 android:gravity="center"
                                 android:hint="@string/Name"
                                 android:inputType="textPersonName"
                                 android:minHeight="@dimen/_27sdp"
-                                android:textColor="@color/ML_Black"
+                                android:textColor="@color/ML_PrimaryDark"
                                 android:textSize="@dimen/_11sdp" />
 
                             <ImageView
@@ -154,12 +154,12 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/edit_back"
+                                android:background="@drawable/edit_back_tleft_bleft"
                                 android:gravity="center"
                                 android:hint="@string/Family"
                                 android:inputType="textPersonName"
                                 android:minHeight="@dimen/_27sdp"
-                                android:textColor="@color/ML_Black"
+                                android:textColor="@color/ML_PrimaryDark"
                                 android:textSize="@dimen/_11sdp" />
 
                             <ImageView
@@ -183,13 +183,13 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/edit_back"
+                                android:background="@drawable/edit_back_tleft_bleft"
                                 android:gravity="center"
                                 android:hint="@string/National"
                                 android:inputType="phone"
                                 android:maxLength="10"
                                 android:minHeight="@dimen/_27sdp"
-                                android:textColor="@color/ML_Black"
+                                android:textColor="@color/ML_PrimaryDark"
                                 android:textSize="@dimen/_11sdp" />
 
                             <ImageView
@@ -213,13 +213,13 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/edit_back"
+                                android:background="@drawable/edit_back_tleft_bleft"
                                 android:gravity="center"
                                 android:hint="@string/PhoneNumber"
                                 android:inputType="phone"
                                 android:maxLength="11"
                                 android:minHeight="@dimen/_27sdp"
-                                android:textColor="@color/ML_Black"
+                                android:textColor="@color/ML_PrimaryDark"
                                 android:textSize="@dimen/_11sdp" />
 
                             <ImageView

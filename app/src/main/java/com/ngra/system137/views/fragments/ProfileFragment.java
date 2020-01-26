@@ -21,8 +21,8 @@ import android.widget.TextView;
 
 import com.cunoraz.gifview.library.GifView;
 import com.ngra.system137.R;
-import com.ngra.system137.daggers.RetrofitModule;
 import com.ngra.system137.databinding.FragmentProfileBinding;
+import com.ngra.system137.utility.StaticFunctions;
 import com.ngra.system137.viewmodels.fragments.VM_ProfileFragment;
 
 import butterknife.BindView;
@@ -136,7 +136,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (RetrofitModule.isCancel) {
+                if (StaticFunctions.isCancel) {
                     if (CheckEmpty()) {
                         ShowLoading();
                         vm_profileFragment.EditProfile(
@@ -144,7 +144,7 @@ public class ProfileFragment extends Fragment {
                                 EditPassword.getText().toString());
                     }
                 } else {
-                    RetrofitModule.isCancel = true;
+                    StaticFunctions.isCancel = true;
                     DismissLoading();
                 }
             }
@@ -180,7 +180,7 @@ public class ProfileFragment extends Fragment {
 
         observer = new DisposableObserver<String>() {
             @Override
-            public void onNext(String s) {
+            public void onNext(final String s) {
                 getActivity()
                         .runOnUiThread(new Runnable() {
                             @Override
@@ -191,7 +191,8 @@ public class ProfileFragment extends Fragment {
                                         if (observer != null)
                                             observer.dispose();
                                         observer = null;
-                                        navController.navigate(R.id.action_profileFragment_to_homeFragment);
+                                        navController.navigate(
+                                                R.id.action_profileFragment_to_homeFragment);
                                         break;
                                 }
                             }
@@ -315,7 +316,7 @@ public class ProfileFragment extends Fragment {
 
 
     private void DismissLoading() {//_______________________________________________________________ Start DismissLoading
-        RetrofitModule.isCancel = true;
+        StaticFunctions.isCancel = true;
         BtnLoginText.setText(getResources().getString(R.string.Login));
         BtnLogin.setBackground(getResources().getDrawable(R.drawable.button_bg));
         ProgressGif.setVisibility(View.GONE);
@@ -325,7 +326,7 @@ public class ProfileFragment extends Fragment {
 
 
     private void ShowLoading() {//__________________________________________________________________ Start ShowLoading
-        RetrofitModule.isCancel = false;
+        StaticFunctions.isCancel = false;
         BtnLoginText.setText(getResources().getString(R.string.Cancel));
         BtnLogin.setBackground(getResources().getDrawable(R.drawable.button_red));
         ProgressGif.setVisibility(View.VISIBLE);

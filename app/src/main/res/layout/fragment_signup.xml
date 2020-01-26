@@ -81,10 +81,10 @@
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:minHeight="@dimen/_27sdp"
-                            android:background="@drawable/edit_back"
+                            android:background="@drawable/edit_back_tleft_bleft"
                             android:inputType="phone"
                             android:gravity="center"
-                            android:textColor="@color/ML_Black"
+                            android:textColor="@color/ML_PrimaryDark"
                             android:textSize="@dimen/_12sdp"
                             android:hint="@string/PhoneNumber"
                             android:maxLength="11"
@@ -129,6 +129,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
                             android:text="@string/GetVerifyCode"
+                            fontPath="font/iransans_web_medium.ttf"
                             android:textColor="@color/ML_White"
                             android:textSize="@dimen/_11sdp" />
 

@@ -80,7 +80,7 @@ public class SpalshFragment extends Fragment {
 
         observer = new DisposableObserver<String>() {
             @Override
-            public void onNext(String s) {
+            public void onNext(final String s) {
                 getActivity()
                         .runOnUiThread(new Runnable() {
                             @Override
@@ -93,7 +93,8 @@ public class SpalshFragment extends Fragment {
                                         navController.navigate(R.id.action_spalshFragment_to_LoginFragment);
                                         break;
                                     case "GoToHome":
-                                        navController.navigate(R.id.action_spalshFragment_to_homeFragment);
+                                        navController.navigate(
+                                                R.id.action_spalshFragment_to_homeFragment);
                                         break;
                                 }
                             }

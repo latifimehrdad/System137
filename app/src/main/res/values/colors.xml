@@ -4,10 +4,10 @@
     <color name="colorPrimaryDark">#ff6528</color>
     <color name="colorAccent">#ff6528</color>
 
-    <color name="ML_Primary">#AFAFAF</color>
+    <color name="ML_Primary">#919191</color>
     <color name="ML_PrimaryDark">#b32400</color>
     <color name="ML_Black">#000000</color>
-
+    <color name="ML_Primarylight">#FFC8B8</color>
 
     <color name="ML_White">#ffffff</color>
     <color name="ML_WhiteGray">#FAFAFA</color>

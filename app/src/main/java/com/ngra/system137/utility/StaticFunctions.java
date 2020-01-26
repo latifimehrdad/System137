@@ -11,10 +11,11 @@ import com.ngra.system137.R;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import retrofit2.Response;
 
 
 public class StaticFunctions {
+
+    public static boolean isCancel;
 
     public static String GetAuthorization(Context context) {//______________________________________ Start GetAuthorization
         String Authorization = "Bearer ";
@@ -28,7 +29,7 @@ public class StaticFunctions {
     }//_____________________________________________________________________________________________ End GetAuthorization
 
 
-    public static TextWatcher TextChangeForChangeBack(EditText editText) {//______________________________ Satart TextChangeForChangeBack
+    public static TextWatcher TextChangeForChangeBack(final EditText editText) {//______________________________ Satart TextChangeForChangeBack
 
         return new TextWatcher() {
             @Override
@@ -38,7 +39,7 @@ public class StaticFunctions {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                editText.setBackgroundResource(R.drawable.edit_back);
+                editText.setBackgroundResource(R.drawable.edit_back_tleft_bleft);
             }
 
             @Override
@@ -99,23 +100,6 @@ public class StaticFunctions {
 //        }
 //
 //    }//_____________________________________________________________________________________________ End CheckResponse
-
-
-    public static String GetErrorMessage(Response response) {//_____________________________________ Start GetErrorٍMessage
-        try {
-            JSONObject jObjError = new JSONObject(response.errorBody().string());
-            JSONArray jsonArray = jObjError.getJSONArray("messages");
-            String message = "";
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject temp = new JSONObject(jsonArray.get(i).toString());
-                message = message + temp.getString("message");
-                message = message + "\n";
-            }
-            return message;
-        } catch (Exception ex) {
-            return "Failure";
-        }
-    }//_____________________________________________________________________________________________ End GetErrorٍMessage
 
 
 //    public static String GetMessage(Response<ModelResponcePrimery> response) {//____________________ Start GetMessage
