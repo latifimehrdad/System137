@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">System137</string>
+    <string name="FolderName">System137</string>
+    <string name="ZipFolder">SystemZip</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBqrZETxkzvK6hXKpN_LBQwD83ODMQlnLo</string>
 
     <!-- TODO: Remove or change this placeholder text -->

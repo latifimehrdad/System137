@@ -40,6 +40,7 @@ import com.ngra.system137.R;
 import com.ngra.system137.backgroung.BackgroundServiceLocation;
 import com.ngra.system137.databinding.FragmentNewRequestBinding;
 import com.ngra.system137.models.ModelGetAddress;
+import com.ngra.system137.models.ModelNewRequest;
 import com.ngra.system137.models.ModelSpinnerItem;
 import com.ngra.system137.utility.StaticFunctions;
 import com.ngra.system137.viewmodels.fragments.VM_MapFragment;
@@ -80,6 +81,7 @@ public class NewRequestFragment extends Fragment {
     private NavController navController;
     private List<String> Files;
     private FilesAdabter filesAdabter;
+    private ModelNewRequest newRequest;
 
     @BindView(R.id.layoutGuest)
     LinearLayout layoutGuest;
@@ -155,6 +157,7 @@ public class NewRequestFragment extends Fragment {
     public void onStart() {//_______________________________________________________________________ Start onStart
         super.onStart();
         navController = Navigation.findNavController(view);
+        newRequest = new ModelNewRequest();
         if (observer != null)
             observer.dispose();
         observer = null;
@@ -388,10 +391,12 @@ public class NewRequestFragment extends Fragment {
         ButtonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (CheckEmpty()) {
-                    ShowLoading();
-                    vm_newRequest.SendRequest();
-                }
+//                if (CheckEmpty()) {
+//                    ShowLoading();
+                newRequest.setFiles(Files);
+                ShowLoading();
+                    vm_newRequest.SendNewRequest(newRequest);
+//                }
             }
         });
 
