@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
@@ -17,6 +18,7 @@ import com.ngra.system137.models.ModelNewRequest;
 import com.ngra.system137.models.ModelSpinnerItem;
 import com.ngra.system137.utility.StaticFunctions;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -99,9 +101,17 @@ public class VM_NewRequest {
 
         fileOrDirectory.mkdirs();
         String Path = fileOrDirectory.getPath() + "/";
-
         String filename = file.substring(file.lastIndexOf("/") + 1);
-        return copyFile(file, filename, Path);
+        Path = Path + filename;
+        File src = new File(file);
+        File path = new File(Path);
+        try {
+            return copyFile(src, path);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        //return copyFile(file, filename, Path);
 
 //        File zipFile = new File(Environment.getExternalStorageDirectory(),
 //                context.getResources().getString(R.string.ZipFolder));
@@ -161,44 +171,19 @@ public class VM_NewRequest {
     }//_____________________________________________________________________________________________ End SendRequestNon
 
 
-    private boolean copyFile(String inputPath, String inputFile, String outputPath) {//_____________ Start copyFile
+    public boolean copyFile(File src, File dst) throws IOException {//______________________________ Start copyFile
+        FileInputStream var2 = new FileInputStream(src);
+        FileOutputStream var3 = new FileOutputStream(dst);
+        byte[] var4 = new byte[1024];
 
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-
-            //create output directory if it doesn't exist
-            File dir = new File(outputPath);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-
-            in = new FileInputStream(inputPath);
-            out = new FileOutputStream(outputPath + inputFile);
-
-            byte[] buffer = new byte[1024];
-            int read;
-            while ((read = in.read(buffer)) != -1) {
-                if (StaticFunctions.isCancel) {
-                    break;
-                }
-                out.write(buffer, 0, read);
-            }
-            in.close();
-            in = null;
-
-            // write the output file (You have now copied the file)
-            out.flush();
-            out.close();
-            out = null;
-            return true;
-
-        } catch (FileNotFoundException fnfe1) {
-            return false;
-        } catch (Exception e) {
-            return false;
+        int var5;
+        while ((var5 = var2.read(var4)) > 0) {
+            var3.write(var4, 0, var5);
         }
+
+        var2.close();
+        var3.close();
+        return true;
     }//_____________________________________________________________________________________________ End copyFile
 
 
@@ -269,10 +254,9 @@ public class VM_NewRequest {
                     file = Path + filename;
                     File f = new File(file);
                     if (f.exists())
-                        ResizeImage(file);
+                        ResizeImages(file);
                     else
                         return true;
-
                 } else
                     return true;
 
@@ -284,6 +268,19 @@ public class VM_NewRequest {
                 if (CheckFileSize(file, 80 * 1024))
                     return true;
 
+                if (CopyFiles(file)) {
+                    File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
+                            context.getResources().getString(R.string.FolderName));
+                    String Path = fileOrDirectory.getPath() + "/";
+                    String filename = file.substring(file.lastIndexOf("/") + 1);
+                    file = Path + filename;
+                    File f = new File(file);
+                    if (f.exists())
+                        ResizeVideo(file);
+                    else
+                        return true;
+                } else
+                    return true;
                 break;
         }
 
@@ -307,7 +304,8 @@ public class VM_NewRequest {
 
                 if (count >= maxCount) {
                     ret = true;
-                    Observables.onNext("MaxFileChoose");
+                    Observables.onNext("MaxFileChoose"+type);
+                    break;
                 }
             }
 
@@ -334,19 +332,49 @@ public class VM_NewRequest {
     }//_____________________________________________________________________________________________ End SizeFile
 
 
-    private void ResizeImage(String file) {//_______________________________________________________ Start ResizeImage
+    private void ResizeImages(String file) {//______________________________________________________ Start ResizeImages
+        try {
+            File imgFileOrig = new File(file);
+            Bitmap b = BitmapFactory.decodeFile(imgFileOrig.getAbsolutePath());
+            int origWidth = b.getWidth();
+            int origHeight = b.getHeight();
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bitmap = BitmapFactory.decodeFile(file, options);
-        Bitmap img = scaleDown(bitmap, 512, false);
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), img, "Title", null);
-        Uri tempUri = Uri.parse(path);
-        String FilePath = GetPathFromUri(tempUri);
-        int file_size = SizeFile(file);
-        Files.add(new ModelChooseFiles(FilePath, 2, file_size));
+            final int destWidth = 1024;
 
-    }//_____________________________________________________________________________________________ End ResizeImage
+            if (origWidth > destWidth) {
+                int destHeight = origHeight / (origWidth / destWidth);
+                ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+                Bitmap b2 = Bitmap.createScaledBitmap(b, destWidth, destHeight, false);
+                b2.compress(Bitmap.CompressFormat.JPEG, 85, outStream);
+                File f = new File(file);
+                f.createNewFile();
+                FileOutputStream fo = new FileOutputStream(f);
+                fo.write(outStream.toByteArray());
+                fo.close();
+                if (destWidth > destHeight) {
+                    Bitmap bmp = BitmapFactory.decodeFile(file);
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(90);
+                    bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+                    FileOutputStream fOut;
+                    fOut = new FileOutputStream(file);
+                    bmp.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
+                    fOut.flush();
+                    fOut.close();
+                }
+
+            }
+            int file_size = SizeFile(file);
+            Files.add(new ModelChooseFiles(file, 2, file_size));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }//_____________________________________________________________________________________________ End ResizeImages
+
+
+    private void ResizeVideo(String file) {//_______________________________________________________ Start ResizeVideo
+
+    }//_____________________________________________________________________________________________ End ResizeVideo
 
 
     public String GetPathFromUri(Uri uri) {//_______________________________________________________ Start GetPathFromUri
@@ -355,19 +383,6 @@ public class VM_NewRequest {
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         return cursor.getString(idx);
     }//_____________________________________________________________________________________________ End GetPathFromUri
-
-    private Bitmap scaleDown(Bitmap realImage, float maxImageSize,
-                             boolean filter) {//____________________________________________________ Start scaleDown
-        float ratio = Math.min(
-                (float) maxImageSize / realImage.getWidth(),
-                (float) maxImageSize / realImage.getHeight());
-        int width = Math.round((float) ratio * realImage.getWidth());
-        int height = Math.round((float) ratio * realImage.getHeight());
-
-        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
-                height, filter);
-        return newBitmap;
-    }//_____________________________________________________________________________________________ End scaleDown
 
 
     public void SetAddress() {//___________________________________________________________________ Start SetAddress

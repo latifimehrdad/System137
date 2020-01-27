@@ -93,7 +93,8 @@ public class NewRequestFragment extends Fragment {
     private NavController navController;
     private FilesAdabter filesAdabter;
     private ModelNewRequest newRequest;
-    final int REQUEST_PICK_Gallery = 7126;
+    private int REQUEST_PICK_Gallery = 7126;
+    private int REQUEST_PICK_Video = 7127;
 
     @BindView(R.id.layoutGuest)
     LinearLayout layoutGuest;
@@ -244,18 +245,44 @@ public class NewRequestFragment extends Fragment {
                                 filesAdabter.notifyDataSetChanged();
                                 break;
                             case "RepetitiousFile":
-                                CustomToastShow(context, context.getResources().getString(R.string.RepetitiousFile));
+                                ShowMessage(
+                                        context.getResources().getString(R.string.RepetitiousFile),
+                                        getResources().getColor(R.color.ML_White),
+                                        context.getResources().getDrawable(R.drawable.ic_warning_red)
+                                );
                                 break;
                             case "AddFile":
                                 filesAdabter.notifyDataSetChanged();
                                 layoutDialog.setVisibility(View.GONE);
                                 layoutRequest.setVisibility(View.VISIBLE);
                                 break;
-                            case "MaxFileChoose":
-                                CustomToastShow(context, context.getResources().getString(R.string.MaxFileChoose));
+                            case "MaxFileChoose1":
+                                ShowMessage(
+                                        context.getResources().getString(R.string.MaxFileChoose1),
+                                        getResources().getColor(R.color.ML_White),
+                                        context.getResources().getDrawable(R.drawable.ic_warning_red)
+                                );
+                                break;
+                            case "MaxFileChoose2":
+                                ShowMessage(
+                                        context.getResources().getString(R.string.MaxFileChoose2),
+                                        getResources().getColor(R.color.ML_White),
+                                        context.getResources().getDrawable(R.drawable.ic_warning_red)
+                                );
+                                break;
+                            case "MaxFileChoose3":
+                                ShowMessage(
+                                        context.getResources().getString(R.string.MaxFileChoose3),
+                                        getResources().getColor(R.color.ML_White),
+                                        context.getResources().getDrawable(R.drawable.ic_warning_red)
+                                );
                                 break;
                             case "OverSize":
-                                CustomToastShow(context, context.getResources().getString(R.string.OverSize));
+                                ShowMessage(
+                                        context.getResources().getString(R.string.OverSize),
+                                        getResources().getColor(R.color.ML_White),
+                                        context.getResources().getDrawable(R.drawable.ic_warning_red)
+                                );
                                 break;
                         }
                     }
@@ -319,6 +346,16 @@ public class NewRequestFragment extends Fragment {
 
 
     private void SetClick() {//_____________________________________________________________________ Start SetClick
+
+
+        layoutChooseVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("video/*");
+                startActivityForResult(Intent.createChooser(intent, "انتخاب ویدیو"), REQUEST_PICK_Video);
+            }
+        });
 
 
         layoutChooseImage.setOnClickListener(new View.OnClickListener() {
@@ -592,6 +629,10 @@ public class NewRequestFragment extends Fragment {
             Uri uri = data.getData();
             String file = vm_newRequest.GetPathFromUri(uri);
             vm_newRequest.AddFile(file,2);
+        } else if (resultCode == RESULT_OK && requestCode == REQUEST_PICK_Video) {
+            Uri uri = data.getData();
+            String file = vm_newRequest.GetPathFromUri(uri);
+            vm_newRequest.AddFile(file,3);
         }
     }//_____________________________________________________________________________________________ End onActivityResult
 
