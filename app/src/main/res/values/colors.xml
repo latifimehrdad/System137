@@ -15,7 +15,8 @@
     <color name="ML_ButtonClick">#910000</color>
     <color name="ML_EditEmpty">#FDAEAE</color>
     <color name="ML_EditEmptyBorder">#CCCCCC</color>
-
     <color name="ML_Progress">#A3A3A3</color>
+
+    <color name="ML_DialogTransparent">#CC000000</color>
 
 </resources>

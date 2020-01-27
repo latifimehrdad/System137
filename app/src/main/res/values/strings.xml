@@ -48,11 +48,16 @@
     <string name="Description">توضیحات</string>
     <string name="Address">آدرس</string>
     <string name="ChooseAddressMap">انتخاب آدرس روی نقشه</string>
-    <string name="AttachFile">پیوست فایل</string>
+    <string name="AddAttachFile">اضافه کردن فایل</string>
     <string name="SendRequest">ارسال درخواست</string>
     <string name="Choose">انتخاب</string>
     <string name="ChooseFile">انتخاب فایل</string>
+    <string name="ChooseImage">انتخاب تصویر</string>
+    <string name="ChooseVideo">انتخاب ویدیو</string>
     <string name="FilesChoose">فایلهای انتخاب شده</string>
-
+    <string name="OverSize">حجم فایل بیشتر از 1 مگابایت است</string>
+    <string name="MaxFileChoose">تداد فایلها به بیشترین تعداد رسیده</string>
+    <string name="RepetitiousFile">فایل انتخابی تکراری است</string>
+    <string name="RecordVoice">ضبط صدا</string>
 
 </resources>

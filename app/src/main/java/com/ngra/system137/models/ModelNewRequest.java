@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ModelNewRequest {
 
-    private List<String> Files;
+    private List<ModelChooseFiles> Files;
 
     private String Name;
 
@@ -27,11 +27,11 @@ public class ModelNewRequest {
     }
 
 
-    public List<String> getFiles() {
+    public List<ModelChooseFiles> getFiles() {
         return Files;
     }
 
-    public void setFiles(List<String> files) {
+    public void setFiles(List<ModelChooseFiles> files) {
         Files = files;
     }
 

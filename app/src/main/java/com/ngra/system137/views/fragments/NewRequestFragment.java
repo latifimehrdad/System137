@@ -4,14 +4,20 @@ package com.ngra.system137.views.fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -21,10 +27,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,6 +47,7 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.ngra.system137.R;
 import com.ngra.system137.backgroung.BackgroundServiceLocation;
 import com.ngra.system137.databinding.FragmentNewRequestBinding;
+import com.ngra.system137.models.ModelChooseFiles;
 import com.ngra.system137.models.ModelGetAddress;
 import com.ngra.system137.models.ModelNewRequest;
 import com.ngra.system137.models.ModelSpinnerItem;
@@ -52,6 +61,7 @@ import com.ngra.system137.views.dialogs.searchspinner.MLSpinnerDialog;
 import com.ngra.system137.views.dialogs.searchspinner.OnSpinnerItemClick;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +71,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.app.Activity.RESULT_OK;
+import static com.ngra.system137.utility.StaticFunctions.CustomToastShow;
 import static com.ngra.system137.utility.StaticFunctions.TextChangeForChangeBack;
 
 /**
@@ -79,9 +91,9 @@ public class NewRequestFragment extends Fragment {
     private int TypeId = -1;
     private boolean Login;
     private NavController navController;
-    private List<String> Files;
     private FilesAdabter filesAdabter;
     private ModelNewRequest newRequest;
+    final int REQUEST_PICK_Gallery = 7126;
 
     @BindView(R.id.layoutGuest)
     LinearLayout layoutGuest;
@@ -124,11 +136,29 @@ public class NewRequestFragment extends Fragment {
     @BindView(R.id.layoutChooseAddress)
     LinearLayout layoutChooseAddress;
 
-    @BindView(R.id.layoutChooseFile)
-    LinearLayout layoutChooseFile;
+    @BindView(R.id.layoutAttach)
+    LinearLayout layoutAttach;
 
     @BindView(R.id.RecyclerFiles)
     RecyclerView RecyclerFiles;
+
+    @BindView(R.id.layoutDialog)
+    LinearLayout layoutDialog;
+
+    @BindView(R.id.layoutChooseDoc)
+    LinearLayout layoutChooseDoc;
+
+    @BindView(R.id.layoutChooseImage)
+    LinearLayout layoutChooseImage;
+
+    @BindView(R.id.layoutChooseVideo)
+    LinearLayout layoutChooseVideo;
+
+    @BindView(R.id.ButtonClose)
+    Button ButtonClose;
+
+    @BindView(R.id.layoutRequest)
+    LinearLayout layoutRequest;
 
 
     public NewRequestFragment() {//_________________________________________________________________ Start NewRequestFragment
@@ -168,81 +198,15 @@ public class NewRequestFragment extends Fragment {
         CheckLogin();
         SetTextWatcher();
         SetAddress();
-        Files = new ArrayList<>();
-        Files.clear();
+        layoutDialog.setVisibility(View.GONE);
+        layoutRequest.setVisibility(View.VISIBLE);
+        SetAdabter();
 
     }//_____________________________________________________________________________________________ End onStart
 
 
     private void SetAddress() {//___________________________________________________________________ Start SetAddress
-        ModelGetAddress GetAddress = VM_MapFragment.address;
-        if (GetAddress != null && GetAddress.getAddress() != null) {
-            StringBuilder address = new StringBuilder();
-
-            String country = GetAddress.getAddress().getCountry();
-            if (country != null &&
-                    !country.equalsIgnoreCase("null") &&
-                    !country.equalsIgnoreCase("")) {
-                address.append(country);
-                address.append(" ");
-            }
-
-            String state = GetAddress.getAddress().getState();
-            if (state != null &&
-                    !state.equalsIgnoreCase("null") &&
-                    !state.equalsIgnoreCase("")) {
-                address.append(state);
-                address.append(" ");
-            }
-
-            String county = GetAddress.getAddress().getCounty();
-            if (county != null &&
-                    !county.equalsIgnoreCase("null") &&
-                    !county.equalsIgnoreCase("")) {
-                address.append(county);
-                address.append(" ");
-            }
-
-            String city = GetAddress.getAddress().getCity();
-            if (city != null &&
-                    !city.equalsIgnoreCase("null") &&
-                    !city.equalsIgnoreCase("")) {
-                address.append("شهر");
-                address.append(" ");
-                address.append(city);
-                address.append(" ");
-            }
-
-            String neighbourhood = GetAddress.getAddress().getNeighbourhood();
-            if (neighbourhood != null &&
-                    !neighbourhood.equalsIgnoreCase("null") &&
-                    !neighbourhood.equalsIgnoreCase("")) {
-                address.append(neighbourhood);
-                address.append(" ");
-            }
-
-            String suburb = GetAddress.getAddress().getSuburb();
-            if (suburb != null &&
-                    !suburb.equalsIgnoreCase("null") &&
-                    !suburb.equalsIgnoreCase("") &&
-                    !suburb.equalsIgnoreCase(neighbourhood)) {
-                address.append(suburb);
-                address.append(" ");
-            }
-
-            String road = GetAddress.getAddress().getRoad();
-            if (road != null &&
-                    !road.equalsIgnoreCase("null") &&
-                    !road.equalsIgnoreCase("")) {
-                address.append("خیابان");
-                address.append(" ");
-                address.append(road);
-                address.append(" ");
-            }
-
-            EditAddress.setText(address.toString());
-        } else
-            EditAddress.setText("");
+        vm_newRequest.SetAddress();
     }//_____________________________________________________________________________________________ End SetAddress
 
 
@@ -272,6 +236,26 @@ public class NewRequestFragment extends Fragment {
                                 break;
                             case "SendOk":
                                 getActivity().onBackPressed();
+                                break;
+                            case "GetAddress":
+                                EditAddress.setText(vm_newRequest.getTextAddress());
+                                break;
+                            case "RemoveFile":
+                                filesAdabter.notifyDataSetChanged();
+                                break;
+                            case "RepetitiousFile":
+                                CustomToastShow(context, context.getResources().getString(R.string.RepetitiousFile));
+                                break;
+                            case "AddFile":
+                                filesAdabter.notifyDataSetChanged();
+                                layoutDialog.setVisibility(View.GONE);
+                                layoutRequest.setVisibility(View.VISIBLE);
+                                break;
+                            case "MaxFileChoose":
+                                CustomToastShow(context, context.getResources().getString(R.string.MaxFileChoose));
+                                break;
+                            case "OverSize":
+                                CustomToastShow(context, context.getResources().getString(R.string.OverSize));
                                 break;
                         }
                     }
@@ -336,12 +320,30 @@ public class NewRequestFragment extends Fragment {
 
     private void SetClick() {//_____________________________________________________________________ Start SetClick
 
-        layoutChooseFile.setOnClickListener(new View.OnClickListener() {
+
+        layoutChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent, "انتخاب عکس"), REQUEST_PICK_Gallery);
+            }
+        });
 
+
+        ButtonClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutDialog.setVisibility(View.GONE);
+                layoutRequest.setVisibility(View.VISIBLE);
+            }
+        });
+
+        layoutChooseDoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 DialogProperties properties = new DialogProperties();
-                properties.selection_mode = DialogConfigs.MULTI_MODE;
+                properties.selection_mode = DialogConfigs.SINGLE_MODE;
                 properties.selection_type = DialogConfigs.FILE_SELECT;
                 properties.root = new File(DialogConfigs.DEFAULT_DIR);
                 properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
@@ -354,16 +356,25 @@ public class NewRequestFragment extends Fragment {
                 dialog.setDialogSelectionListener(new DialogSelectionListener() {
                     @Override
                     public void onSelectedFilePaths(String[] files) {
-
-                        for (String file : files) {
-                            Files.add(file);
-                        }
-                        SetAdabter();
-
+                        vm_newRequest.AddFile(files[0],1);
                     }
                 });
 
                 dialog.show();
+            }
+        });
+
+        layoutAttach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(layoutDialog.getVisibility() == View.VISIBLE) {
+                    layoutDialog.setVisibility(View.GONE);
+                    layoutRequest.setVisibility(View.VISIBLE);
+                }
+                else {
+                    layoutDialog.setVisibility(View.VISIBLE);
+                    layoutRequest.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
@@ -393,9 +404,9 @@ public class NewRequestFragment extends Fragment {
             public void onClick(View v) {
 //                if (CheckEmpty()) {
 //                    ShowLoading();
-                newRequest.setFiles(Files);
+//                newRequest.setFiles(Files);
                 ShowLoading();
-                    vm_newRequest.SendNewRequest(newRequest);
+                vm_newRequest.SendNewRequest(newRequest);
 //                }
             }
         });
@@ -403,9 +414,11 @@ public class NewRequestFragment extends Fragment {
     }//_____________________________________________________________________________________________ End SetClick
 
 
+
+
     private void SetAdabter() {//___________________________________________________________________ Start SetAdabter
 
-        filesAdabter = new FilesAdabter(Files, NewRequestFragment.this);
+        filesAdabter = new FilesAdabter(vm_newRequest.getFiles(), vm_newRequest);
         RecyclerFiles.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
         RecyclerFiles.setAdapter(filesAdabter);
 
@@ -564,16 +577,6 @@ public class NewRequestFragment extends Fragment {
     }//_____________________________________________________________________________________________ End CheckEmpty
 
 
-
-    public void DeleteFiles(int position) {//_______________________________________________________ Start DeleteFiles
-
-        Files.remove(position);
-        filesAdabter.notifyDataSetChanged();
-
-    }//_____________________________________________________________________________________________ End DeleteFiles
-
-
-
     @Override
     public void onDestroy() {//_____________________________________________________________________ Start onDestroy
         super.onDestroy();
@@ -582,4 +585,14 @@ public class NewRequestFragment extends Fragment {
             observer.dispose();
         observer = null;
     }//_____________________________________________________________________________________________ End onDestroy
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {//_____________________________________________________________________________________________ Start onActivityResult
+        if (resultCode == RESULT_OK && requestCode == REQUEST_PICK_Gallery) {
+            Uri uri = data.getData();
+            String file = vm_newRequest.GetPathFromUri(uri);
+            vm_newRequest.AddFile(file,2);
+        }
+    }//_____________________________________________________________________________________________ End onActivityResult
+
 }

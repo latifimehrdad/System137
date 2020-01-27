@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ngra.system137.R;
 import com.ngra.system137.databinding.AdabterItemFilesBinding;
+import com.ngra.system137.models.ModelChooseFiles;
+import com.ngra.system137.viewmodels.fragments.VM_NewRequest;
 import com.ngra.system137.views.fragments.NewRequestFragment;
 
 import java.util.List;
@@ -23,13 +25,13 @@ import butterknife.ButterKnife;
 
 public class FilesAdabter extends RecyclerView.Adapter<FilesAdabter.CustomHolder> {
 
-    private List<String> Files;
-    private NewRequestFragment newRequestFragment;
+    private List<ModelChooseFiles> Files;
+    private VM_NewRequest vm_newRequest;
     private LayoutInflater layoutInflater;
 
-    public FilesAdabter(List<String> files, NewRequestFragment newRequestFragment) {//__________________ Start FilesAdabter
+    public FilesAdabter(List<ModelChooseFiles> files, VM_NewRequest vm_newRequest) {//__________________ Start FilesAdabter
         Files = files;
-        this.newRequestFragment = newRequestFragment;
+        this.vm_newRequest = vm_newRequest;
     }//_____________________________________________________________________________________________ Start CustomHolder
 
 
@@ -50,9 +52,8 @@ public class FilesAdabter extends RecyclerView.Adapter<FilesAdabter.CustomHolder
 
     @Override
     public void onBindViewHolder(@NonNull CustomHolder holder, int position) {//____________________ Start onBindViewHolder
-        String path = Files.get(position);
-        String filename=path.substring(path.lastIndexOf("/")+1);
-        holder.bind(filename,position);
+        ModelChooseFiles chooseFiles = Files.get(position);
+        holder.bind(chooseFiles,position);
     }//_____________________________________________________________________________________________ Start onBindViewHolder
 
 
@@ -76,7 +77,7 @@ public class FilesAdabter extends RecyclerView.Adapter<FilesAdabter.CustomHolder
         }//_________________________________________________________________________________________ End CustomHolder
 
 
-        public void bind(String file, int position) {//_____________________________________________ Start bind
+        public void bind(ModelChooseFiles file, int position) {//_____________________________________________ Start bind
             filesBinding.setFile(file);
             FileDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -89,7 +90,7 @@ public class FilesAdabter extends RecyclerView.Adapter<FilesAdabter.CustomHolder
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            newRequestFragment.DeleteFiles(position);
+                            vm_newRequest.DeleteFiles(position);
                         }
                     },200);
 

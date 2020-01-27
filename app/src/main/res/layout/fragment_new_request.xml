@@ -22,11 +22,13 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:paddingBottom="@dimen/_10sdp"
             android:layout_weight="4.5">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -38,7 +40,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="4"
+                    android:layout_weight="5"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -51,7 +53,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            >
 
 
                             <LinearLayout
@@ -287,7 +290,7 @@
 
 
                             <LinearLayout
-                                android:id="@+id/layoutChooseFile"
+                                android:id="@+id/layoutAttach"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_10sdp"
@@ -310,7 +313,7 @@
                                     android:background="@drawable/back_spinner"
                                     android:gravity="center"
                                     android:minHeight="@dimen/_27sdp"
-                                    android:text="@string/AttachFile"
+                                    android:text="@string/AddAttachFile"
                                     android:textColor="@color/ML_PrimaryDark"
                                     android:textSize="@dimen/_10sdp" />
 
@@ -396,17 +399,11 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/LayoutMap"
+                        <include layout="@layout/layout_choose_files"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_alignTop="@id/layoutRequest"
-                            android:layout_alignBottom="@id/layoutRequest"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-
-
-                        </LinearLayout>
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            />
 
 
                     </RelativeLayout>

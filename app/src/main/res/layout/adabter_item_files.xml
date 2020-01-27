@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="file"
-            type="String" />
+            type="com.ngra.system137.models.ModelChooseFiles" />
     </data>
 
     <LinearLayout
@@ -25,6 +26,18 @@
                 android:src="@drawable/ic_delete_forever"
                 />
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="right|center_vertical"
+                android:textColor="@color/ML_ButtonClick"
+                android:textSize="@dimen/_8sdp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:maxLines="1"
+                app:FileSize="@{file.size}"
+                />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -33,7 +46,7 @@
                 android:textSize="@dimen/_8sdp"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:maxLines="1"
-                android:text="@{file}"
+                app:FileName="@{file.fileName}"
                 />
 
 

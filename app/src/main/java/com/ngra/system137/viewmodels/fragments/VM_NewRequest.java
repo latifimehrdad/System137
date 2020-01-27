@@ -2,10 +2,17 @@ package com.ngra.system137.viewmodels.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 
 import com.ngra.system137.R;
+import com.ngra.system137.models.ModelChooseFiles;
+import com.ngra.system137.models.ModelGetAddress;
 import com.ngra.system137.models.ModelNewRequest;
 import com.ngra.system137.models.ModelSpinnerItem;
 import com.ngra.system137.utility.StaticFunctions;
@@ -18,10 +25,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import io.reactivex.subjects.PublishSubject;
+
+import static com.ngra.system137.utility.StaticFunctions.CustomToastShow;
 
 public class VM_NewRequest {
 
@@ -29,10 +39,15 @@ public class VM_NewRequest {
     private PublishSubject<String> Observables = null;
     private ArrayList<ModelSpinnerItem> types;
     private ModelNewRequest newRequest;
+    private List<ModelChooseFiles> Files;
+    private String TextAddress;
 
     public VM_NewRequest(Context context) {//_______________________________________________________ Start VM_NewRequest
         this.context = context;
         Observables = PublishSubject.create();
+        Files = new ArrayList<>();
+        Files.clear();
+        DeleteFileAndFolder();
     }//_____________________________________________________________________________________________ End VM_NewRequest
 
 
@@ -46,12 +61,12 @@ public class VM_NewRequest {
 
     public void SendNewRequest(ModelNewRequest modelNewRequest) {//_________________________________ Start SendRequest
 
-        this.newRequest = modelNewRequest;
-        DeleteFileAndFolder();
-        if (newRequest.getFiles().size() > 0)
-            CopyFiles();
-        else
-            SendRequestNon();
+//        this.newRequest = modelNewRequest;
+//        DeleteFileAndFolder();
+//        if (newRequest.getFiles().size() > 0)
+//            CopyFiles();
+//        else
+//            SendRequestNon();
     }//_____________________________________________________________________________________________ End SendRequest
 
 
@@ -77,25 +92,20 @@ public class VM_NewRequest {
     }//_____________________________________________________________________________________________ End deleteRecursive
 
 
-    private void CopyFiles() {//____________________________________________________________________ Start CopyFiles
+    private boolean CopyFiles(String file) {//______________________________________________________ Start CopyFiles
 
         File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
                 context.getResources().getString(R.string.FolderName));
 
         fileOrDirectory.mkdirs();
         String Path = fileOrDirectory.getPath() + "/";
-        for (String file : newRequest.getFiles()) {
-            if (StaticFunctions.isCancel) {
-                break;
-            }
-            String filename = file.substring(file.lastIndexOf("/") + 1);
-            copyFile(file, filename, Path);
-        }
 
-        File zipFile = new File(Environment.getExternalStorageDirectory(),
-                context.getResources().getString(R.string.ZipFolder));
+        String filename = file.substring(file.lastIndexOf("/") + 1);
+        return copyFile(file, filename, Path);
 
-        zipFolder(Path, zipFile.getPath());
+//        File zipFile = new File(Environment.getExternalStorageDirectory(),
+//                context.getResources().getString(R.string.ZipFolder));
+//        zipFolder(Path, zipFile.getPath());
 
 
     }//_____________________________________________________________________________________________ End CopyFiles
@@ -151,7 +161,7 @@ public class VM_NewRequest {
     }//_____________________________________________________________________________________________ End SendRequestNon
 
 
-    private void copyFile(String inputPath, String inputFile, String outputPath) {//________________ Start copyFile
+    private boolean copyFile(String inputPath, String inputFile, String outputPath) {//_____________ Start copyFile
 
         InputStream in = null;
         OutputStream out = null;
@@ -182,10 +192,12 @@ public class VM_NewRequest {
             out.flush();
             out.close();
             out = null;
+            return true;
 
         } catch (FileNotFoundException fnfe1) {
-
+            return false;
         } catch (Exception e) {
+            return false;
         }
     }//_____________________________________________________________________________________________ End copyFile
 
@@ -215,4 +227,237 @@ public class VM_NewRequest {
 
     }//_____________________________________________________________________________________________ End CheckUserLogin
 
+
+    public void AddFile(String file, int type) {//__________________________________________________ Start AddFile
+        if (!CheckFile(file, type))
+            Observables.onNext("AddFile");
+    }//_____________________________________________________________________________________________ End AddFile
+
+
+    private boolean CheckFile(String file, int type) {//___________________________________________ Start CheckFile
+
+        if (Files.size() == 6)
+            return true;
+
+        switch (type) {
+            case 1://_____ file
+                if (CheckRepetitiousFile(file, type, 2))
+                    return true;
+
+                if (CheckFileSize(file, 1024))
+                    return true;
+
+                int file_size = SizeFile(file);
+                if (CopyFiles(file))
+                    Files.add(new ModelChooseFiles(file, 1, file_size));
+                else
+                    return true;
+
+                break;
+            case 2://_____ image
+                if (CheckRepetitiousFile(file, type, 3))
+                    return true;
+
+                if (CheckFileSize(file, 3 * 1024))
+                    return true;
+
+                if (CopyFiles(file)) {
+                    File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
+                            context.getResources().getString(R.string.FolderName));
+                    String Path = fileOrDirectory.getPath() + "/";
+                    String filename = file.substring(file.lastIndexOf("/") + 1);
+                    file = Path + filename;
+                    File f = new File(file);
+                    if (f.exists())
+                        ResizeImage(file);
+                    else
+                        return true;
+
+                } else
+                    return true;
+
+                break;
+            case 3://_____ video
+                if (CheckRepetitiousFile(file, type, 1))
+                    return true;
+
+                if (CheckFileSize(file, 80 * 1024))
+                    return true;
+
+                break;
+        }
+
+
+        return false;
+    }//_____________________________________________________________________________________________ End CheckFile
+
+
+    private boolean CheckRepetitiousFile(String file, int type, int maxCount) {//___________________ Start CheckRepetitiousFile
+
+        boolean ret = false;
+        int count = 0;
+
+        for (ModelChooseFiles f : Files)
+            if (file.equalsIgnoreCase(f.getFileName())) {
+                Observables.onNext("RepetitiousFile");
+                ret = true;
+            } else {
+                if (type == f.getType())
+                    count = count + 1;
+
+                if (count >= maxCount) {
+                    ret = true;
+                    Observables.onNext("MaxFileChoose");
+                }
+            }
+
+        return ret;
+
+    }//_____________________________________________________________________________________________ End CheckRepetitiousFile
+
+
+    private boolean CheckFileSize(String file, int maxSize) {//_____________________________________ Start CheckFileSize
+        File f = new File(file);
+        int file_size = SizeFile(file);
+        if (file_size > maxSize) {
+            Observables.onNext("OverSize");
+            return true;
+        } else
+            return false;
+    }//_____________________________________________________________________________________________ End CheckFileSize
+
+
+    private int SizeFile(String file) {//___________________________________________________________ Start SizeFile
+        File f = new File(file);
+        int file_size = Integer.parseInt(String.valueOf(f.length() / 1024));
+        return file_size;
+    }//_____________________________________________________________________________________________ End SizeFile
+
+
+    private void ResizeImage(String file) {//_______________________________________________________ Start ResizeImage
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        Bitmap bitmap = BitmapFactory.decodeFile(file, options);
+        Bitmap img = scaleDown(bitmap, 512, false);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), img, "Title", null);
+        Uri tempUri = Uri.parse(path);
+        String FilePath = GetPathFromUri(tempUri);
+        int file_size = SizeFile(file);
+        Files.add(new ModelChooseFiles(FilePath, 2, file_size));
+
+    }//_____________________________________________________________________________________________ End ResizeImage
+
+
+    public String GetPathFromUri(Uri uri) {//_______________________________________________________ Start GetPathFromUri
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
+    }//_____________________________________________________________________________________________ End GetPathFromUri
+
+    private Bitmap scaleDown(Bitmap realImage, float maxImageSize,
+                             boolean filter) {//____________________________________________________ Start scaleDown
+        float ratio = Math.min(
+                (float) maxImageSize / realImage.getWidth(),
+                (float) maxImageSize / realImage.getHeight());
+        int width = Math.round((float) ratio * realImage.getWidth());
+        int height = Math.round((float) ratio * realImage.getHeight());
+
+        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
+                height, filter);
+        return newBitmap;
+    }//_____________________________________________________________________________________________ End scaleDown
+
+
+    public void SetAddress() {//___________________________________________________________________ Start SetAddress
+        ModelGetAddress GetAddress = VM_MapFragment.address;
+        if (GetAddress != null && GetAddress.getAddress() != null) {
+            StringBuilder address = new StringBuilder();
+
+            String country = GetAddress.getAddress().getCountry();
+            if (country != null &&
+                    !country.equalsIgnoreCase("null") &&
+                    !country.equalsIgnoreCase("")) {
+                address.append(country);
+                address.append(" ");
+            }
+
+            String state = GetAddress.getAddress().getState();
+            if (state != null &&
+                    !state.equalsIgnoreCase("null") &&
+                    !state.equalsIgnoreCase("")) {
+                address.append(state);
+                address.append(" ");
+            }
+
+            String county = GetAddress.getAddress().getCounty();
+            if (county != null &&
+                    !county.equalsIgnoreCase("null") &&
+                    !county.equalsIgnoreCase("")) {
+                address.append(county);
+                address.append(" ");
+            }
+
+            String city = GetAddress.getAddress().getCity();
+            if (city != null &&
+                    !city.equalsIgnoreCase("null") &&
+                    !city.equalsIgnoreCase("")) {
+                address.append("شهر");
+                address.append(" ");
+                address.append(city);
+                address.append(" ");
+            }
+
+            String neighbourhood = GetAddress.getAddress().getNeighbourhood();
+            if (neighbourhood != null &&
+                    !neighbourhood.equalsIgnoreCase("null") &&
+                    !neighbourhood.equalsIgnoreCase("")) {
+                address.append(neighbourhood);
+                address.append(" ");
+            }
+
+            String suburb = GetAddress.getAddress().getSuburb();
+            if (suburb != null &&
+                    !suburb.equalsIgnoreCase("null") &&
+                    !suburb.equalsIgnoreCase("") &&
+                    !suburb.equalsIgnoreCase(neighbourhood)) {
+                address.append(suburb);
+                address.append(" ");
+            }
+
+            String road = GetAddress.getAddress().getRoad();
+            if (road != null &&
+                    !road.equalsIgnoreCase("null") &&
+                    !road.equalsIgnoreCase("")) {
+                address.append("خیابان");
+                address.append(" ");
+                address.append(road);
+                address.append(" ");
+            }
+
+            TextAddress = address.toString();
+        } else
+            TextAddress = "";
+
+        Observables.onNext("GetAddress");
+    }//_____________________________________________________________________________________________ End SetAddress
+
+
+    public void DeleteFiles(int position) {//_______________________________________________________ Start DeleteFiles
+
+        Files.remove(position);
+        Observables.onNext("RemoveFile");
+
+    }//_____________________________________________________________________________________________ End DeleteFiles
+
+
+    public List<ModelChooseFiles> getFiles() {//____________________________________________________ Start getFiles
+        return Files;
+    }//_____________________________________________________________________________________________ End getFiles
+
+
+    public String getTextAddress() {//______________________________________________________________ Start getTextAddress
+        return TextAddress;
+    }//_____________________________________________________________________________________________ End getTextAddress
 }

@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ngra.system137.R;
 
@@ -16,6 +19,20 @@ import org.json.JSONObject;
 public class StaticFunctions {
 
     public static boolean isCancel;
+
+    public static void CustomToastShow(Context context, String message) {
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
+        View view = toast.getView();
+        view.setBackgroundColor(context.getResources().getColor(R.color.ML_ButtonClick));
+        TextView text = (TextView) view.findViewById(android.R.id.message);
+        text.setPadding(10, 2, 10, 2);
+        text.setTextColor(context.getResources().getColor(R.color.ML_White));
+        text.setTextSize(2, 17.0f);
+        text.setGravity(17);
+        toast.setGravity(17, 0, 0);
+        toast.show();
+    }
+
 
     public static String GetAuthorization(Context context) {//______________________________________ Start GetAuthorization
         String Authorization = "Bearer ";
