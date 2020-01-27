@@ -11,6 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -71,5 +72,10 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.24'
 
     implementation 'com.github.angads25:filepicker:1.1.1'
+
+    implementation 'com.android.support:multidex:1.0.3'
+
+    compile files('libs/isoparser-1.0.6.jar')
+    compile files('libs/aspectjrt-1.7.3.jar')
 
 }

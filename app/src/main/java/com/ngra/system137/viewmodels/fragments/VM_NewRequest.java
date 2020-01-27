@@ -1,5 +1,6 @@
 package com.ngra.system137.viewmodels.fragments;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -7,9 +8,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.ngra.system137.R;
 import com.ngra.system137.models.ModelChooseFiles;
@@ -17,6 +21,7 @@ import com.ngra.system137.models.ModelGetAddress;
 import com.ngra.system137.models.ModelNewRequest;
 import com.ngra.system137.models.ModelSpinnerItem;
 import com.ngra.system137.utility.StaticFunctions;
+import com.ngra.system137.utility.VideoCompress.VideoCompress;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -265,7 +270,7 @@ public class VM_NewRequest {
                 if (CheckRepetitiousFile(file, type, 1))
                     return true;
 
-                if (CheckFileSize(file, 80 * 1024))
+                if (CheckFileSize(file, 200 * 1024))
                     return true;
 
                 if (CopyFiles(file)) {
@@ -276,7 +281,7 @@ public class VM_NewRequest {
                     file = Path + filename;
                     File f = new File(file);
                     if (f.exists())
-                        ResizeVideo(file);
+                        ResizeVideo(file, Path);
                     else
                         return true;
                 } else
@@ -372,18 +377,143 @@ public class VM_NewRequest {
     }//_____________________________________________________________________________________________ End ResizeImages
 
 
-    private void ResizeVideo(String file) {//_______________________________________________________ Start ResizeVideo
+    private void ResizeVideo(String file, String path) {//_______________________________________________________ Start ResizeVideo
 
+        path = path + "test.mp4";
+        VideoCompress.VideoCompressTask task = VideoCompress.compressVideoLow(
+                file, path, new VideoCompress.CompressListener() {
+            @Override
+            public void onStart() {
+                //Start Compress
+            }
+
+            @Override
+            public void onSuccess() {
+                //Finish successfully
+                Observables.onNext("VonSuccess");
+            }
+
+            @Override
+            public void onFail() {
+                //Failed
+            }
+
+            @Override
+            public void onProgress(float percent) {
+                //Progress
+                Log.i("meri", "percent : " + percent);
+            }
+        });
     }//_____________________________________________________________________________________________ End ResizeVideo
 
 
-    public String GetPathFromUri(Uri uri) {//_______________________________________________________ Start GetPathFromUri
-        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
-    }//_____________________________________________________________________________________________ End GetPathFromUri
+//    public String GetPathFromUri(Uri uri) {//_______________________________________________________ Start GetPathFromUri
+//        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+//        cursor.moveToFirst();
+//        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+//        return cursor.getString(idx);
+//    }//_____________________________________________________________________________________________ End GetPathFromUri
 
+
+
+    public String GetPathFromUri(Uri uri) {
+        // DocumentProvider
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                // ExternalStorageProvider
+                if (isExternalStorageDocument(uri)) {
+                    final String docId = DocumentsContract.getDocumentId(uri);
+                    final String[] split = docId.split(":");
+                    final String type = split[0];
+
+                    if ("primary".equalsIgnoreCase(type)) {
+                        return Environment.getExternalStorageDirectory() + "/" + split[1];
+                    }
+
+                    // TODO handle non-primary volumes
+                }
+                // DownloadsProvider
+                else if (isDownloadsDocument(uri)) {
+
+                    final String id = DocumentsContract.getDocumentId(uri);
+                    final Uri contentUri = ContentUris.withAppendedId(
+                            Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+
+                    return getDataColumn(context, contentUri, null, null);
+                }
+                // MediaProvider
+                else if (isMediaDocument(uri)) {
+                    final String docId = DocumentsContract.getDocumentId(uri);
+                    final String[] split = docId.split(":");
+                    final String type = split[0];
+
+                    Uri contentUri = null;
+                    if ("image".equals(type)) {
+                        contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                    } else if ("video".equals(type)) {
+                        contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                    } else if ("audio".equals(type)) {
+                        contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                    }
+
+                    final String selection = "_id=?";
+                    final String[] selectionArgs = new String[] {
+                            split[1]
+                    };
+
+                    return getDataColumn(context, contentUri, selection, selectionArgs);
+                }
+            // MediaStore (and general)
+            else if ("content".equalsIgnoreCase(uri.getScheme())) {
+                return getDataColumn(context, uri, null, null);
+            }
+            // File
+            else if ("file".equalsIgnoreCase(uri.getScheme())) {
+                return uri.getPath();
+            }
+        } else {
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(idx);
+        }
+
+        return null;
+    }
+
+    private String getDataColumn(Context context, Uri uri, String selection,
+                                       String[] selectionArgs) {
+
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {
+                column
+        };
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+                    null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(column_index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+
+    private boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    private boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    private boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
 
     public void SetAddress() {//___________________________________________________________________ Start SetAddress
         ModelGetAddress GetAddress = VM_MapFragment.address;

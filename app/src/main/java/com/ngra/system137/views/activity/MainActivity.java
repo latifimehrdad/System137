@@ -1,14 +1,21 @@
 package com.ngra.system137.views.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.widget.Toast;
 
 import com.ngra.system137.R;
@@ -38,9 +45,92 @@ public class MainActivity extends AppCompatActivity {
         binding.setMain(vm_mainActivity);
         ButterKnife.bind(this);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-
+        checkLocationPermission();
 
     }//_____________________________________________________________________________________________ End onCreate
+
+
+
+    public void checkLocationPermission() {//_____________________________________________________________________________________________ Start checkLocationPermission
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                new AlertDialog.Builder(this)
+                        .setTitle("دسترسی به موقعیت")
+                        .setMessage("برای نمایش مکان شما به موقعیت دسترسی بدهید")
+                        .setPositiveButton("تایید", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(MainActivity.this,
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        1);
+                            }
+                        })
+                        .create()
+                        .show();
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        1);
+            }
+        }
+    }//_____________________________________________________________________________________________ End checkLocationPermission
+
+
+
+    public void checkWRITE_EXTERNAL_STORAGE() {//___________________________________________________ Start checkWRITE_EXTERNAL_STORAGE
+        int permissionCheck = ContextCompat.checkSelfPermission(
+                this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+        }
+    }//_____________________________________________________________________________________________ End checkWRITE_EXTERNAL_STORAGE
+
+
+
+
+    public void checREAD_EXTERNAL_STORAGE() {//_____________________________________________________ Start checREAD_EXTERNAL_STORAGE
+        int permissionCheck = ContextCompat.checkSelfPermission(
+                this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 3);
+        }
+    }//_____________________________________________________________________________________________ End checREAD_EXTERNAL_STORAGE
+
+
+
+
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            String permissions[],
+            int[] grantResults) {//_________________________________________________________________ Start onRequestPermissionsResult
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    checkWRITE_EXTERNAL_STORAGE();
+
+                }
+                return;
+            }
+            case 2: {
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    checREAD_EXTERNAL_STORAGE();
+                }
+            }
+
+        }
+    }//_____________________________________________________________________________________________ End onRequestPermissionsResult
+
 
 
     public void attachBaseContext(Context newBase) {//______________________________________________ Start attachBaseContext

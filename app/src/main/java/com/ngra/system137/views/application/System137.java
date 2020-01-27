@@ -3,6 +3,8 @@ package com.ngra.system137.views.application;
 import android.app.Application;
 import android.content.Context;
 
+import androidx.multidex.MultiDexApplication;
+
 import com.ngra.system137.R;
 import com.ngra.system137.dagger.retrofit.DaggerRetrofitComponent;
 import com.ngra.system137.dagger.retrofit.RetrofitComponent;
@@ -12,7 +14,7 @@ import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 
-public class System137 extends Application {
+public class System137 extends MultiDexApplication {
 
     private Context context;
     private RetrofitComponent retrofitComponent;

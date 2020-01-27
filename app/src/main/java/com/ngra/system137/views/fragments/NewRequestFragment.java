@@ -284,6 +284,13 @@ public class NewRequestFragment extends Fragment {
                                         context.getResources().getDrawable(R.drawable.ic_warning_red)
                                 );
                                 break;
+                            case "VonSuccess":
+                                ShowMessage(
+                                        "VonSuccess",
+                                        getResources().getColor(R.color.ML_White),
+                                        context.getResources().getDrawable(R.drawable.ic_warning_red)
+                                );
+                                break;
                         }
                     }
                 });
