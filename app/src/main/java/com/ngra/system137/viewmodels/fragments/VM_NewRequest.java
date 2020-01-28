@@ -13,24 +13,19 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import com.ngra.system137.R;
 import com.ngra.system137.models.ModelChooseFiles;
 import com.ngra.system137.models.ModelGetAddress;
 import com.ngra.system137.models.ModelNewRequest;
 import com.ngra.system137.models.ModelSpinnerItem;
-import com.ngra.system137.utility.StaticFunctions;
 import com.ngra.system137.utility.VideoCompress.VideoCompress;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -38,23 +33,23 @@ import java.util.zip.ZipOutputStream;
 
 import io.reactivex.subjects.PublishSubject;
 
-import static com.ngra.system137.utility.StaticFunctions.CustomToastShow;
-
 public class VM_NewRequest {
 
     private Context context;
     private PublishSubject<String> Observables = null;
     private ArrayList<ModelSpinnerItem> types;
     private ModelNewRequest newRequest;
-    private List<ModelChooseFiles> Files;
+    private static List<ModelChooseFiles> Files;
     private String TextAddress;
+    private int VideoProgress;
 
     public VM_NewRequest(Context context) {//_______________________________________________________ Start VM_NewRequest
         this.context = context;
         Observables = PublishSubject.create();
-        Files = new ArrayList<>();
-        Files.clear();
-        DeleteFileAndFolder();
+        if (Files == null)
+            Files = new ArrayList<>();
+        if (Files.size() == 0)
+            DeleteFileAndFolder();
     }//_____________________________________________________________________________________________ End VM_NewRequest
 
 
@@ -67,7 +62,7 @@ public class VM_NewRequest {
 
 
     public void SendNewRequest(ModelNewRequest modelNewRequest) {//_________________________________ Start SendRequest
-
+        SendRequestFiles();
 //        this.newRequest = modelNewRequest;
 //        DeleteFileAndFolder();
 //        if (newRequest.getFiles().size() > 0)
@@ -157,6 +152,7 @@ public class VM_NewRequest {
             @Override
             public void run() {
                 DeleteFileAndFolder();
+                Files.clear();
                 Observables.onNext("SendOk");
             }
         }, 5000);
@@ -170,6 +166,7 @@ public class VM_NewRequest {
             @Override
             public void run() {
                 DeleteFileAndFolder();
+                Files.clear();
                 Observables.onNext("SendOk");
             }
         }, 5000);
@@ -226,21 +223,30 @@ public class VM_NewRequest {
 
     private boolean CheckFile(String file, int type) {//___________________________________________ Start CheckFile
 
-        if (Files.size() == 6)
+        if (Files.size() == 6) {
+            Observables.onNext("MaxFileCount");
             return true;
+        }
+
 
         switch (type) {
             case 1://_____ file
                 if (CheckRepetitiousFile(file, type, 2))
                     return true;
 
-                if (CheckFileSize(file, 1024))
+                if (CheckFileSize(file, 1024, type))
                     return true;
 
                 int file_size = SizeFile(file);
-                if (CopyFiles(file))
-                    Files.add(new ModelChooseFiles(file, 1, file_size));
-                else
+                if (CopyFiles(file)) {
+                    File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
+                            context.getResources().getString(R.string.FolderName));
+
+                    String Path = fileOrDirectory.getPath() + "/";
+                    String filename = file.substring(file.lastIndexOf("/") + 1);
+                    file = Path + filename;
+                    Files.add(new ModelChooseFiles(file, type, file_size));
+                } else
                     return true;
 
                 break;
@@ -248,12 +254,15 @@ public class VM_NewRequest {
                 if (CheckRepetitiousFile(file, type, 3))
                     return true;
 
-                if (CheckFileSize(file, 3 * 1024))
+                if (CheckFileSize(file, 3 * 1024, type))
                     return true;
 
                 if (CopyFiles(file)) {
+
                     File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
                             context.getResources().getString(R.string.FolderName));
+
+                    fileOrDirectory.mkdirs();
                     String Path = fileOrDirectory.getPath() + "/";
                     String filename = file.substring(file.lastIndexOf("/") + 1);
                     file = Path + filename;
@@ -270,22 +279,32 @@ public class VM_NewRequest {
                 if (CheckRepetitiousFile(file, type, 1))
                     return true;
 
-                if (CheckFileSize(file, 200 * 1024))
+                if (CheckFileSize(file, 200 * 1024, type))
                     return true;
 
-                if (CopyFiles(file)) {
-                    File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
-                            context.getResources().getString(R.string.FolderName));
-                    String Path = fileOrDirectory.getPath() + "/";
-                    String filename = file.substring(file.lastIndexOf("/") + 1);
-                    file = Path + filename;
-                    File f = new File(file);
-                    if (f.exists())
-                        ResizeVideo(file, Path);
-                    else
-                        return true;
-                } else
+                File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
+                        context.getResources().getString(R.string.FolderName));
+                if (!fileOrDirectory.exists())
+                    fileOrDirectory.mkdir();
+                String Path = fileOrDirectory.getPath() + "/";
+                String filename = file.substring(file.lastIndexOf("/") + 1);
+                Path = Path + filename;
+                File f = new File(file);
+                if (f.exists())
+                    ResizeVideo(file, Path);
+                return true;
+
+            case 4:
+
+                if (CheckRepetitiousFile(file, type, 1))
                     return true;
+
+                if (CheckFileSize(file, 3 * 1024, type))
+                    return true;
+
+                int size = SizeFile(file);
+                Files.add(new ModelChooseFiles(file, type, size));
+
                 break;
         }
 
@@ -295,7 +314,6 @@ public class VM_NewRequest {
 
 
     private boolean CheckRepetitiousFile(String file, int type, int maxCount) {//___________________ Start CheckRepetitiousFile
-
         boolean ret = false;
         int count = 0;
 
@@ -309,28 +327,29 @@ public class VM_NewRequest {
 
                 if (count >= maxCount) {
                     ret = true;
-                    Observables.onNext("MaxFileChoose"+type);
+                    Observables.onNext("MaxFileChoose" + type);
                     break;
                 }
             }
+        ;
 
         return ret;
 
     }//_____________________________________________________________________________________________ End CheckRepetitiousFile
 
 
-    private boolean CheckFileSize(String file, int maxSize) {//_____________________________________ Start CheckFileSize
+    private boolean CheckFileSize(String file, int maxSize, int type) {//___________________________ Start CheckFileSize
         File f = new File(file);
         int file_size = SizeFile(file);
         if (file_size > maxSize) {
-            Observables.onNext("OverSize");
+            Observables.onNext("OverSize" + type);
             return true;
         } else
             return false;
     }//_____________________________________________________________________________________________ End CheckFileSize
 
 
-    private int SizeFile(String file) {//___________________________________________________________ Start SizeFile
+    public int SizeFile(String file) {//___________________________________________________________ Start SizeFile
         File f = new File(file);
         int file_size = Integer.parseInt(String.valueOf(f.length() / 1024));
         return file_size;
@@ -378,96 +397,77 @@ public class VM_NewRequest {
 
 
     private void ResizeVideo(String file, String path) {//_______________________________________________________ Start ResizeVideo
-
-        path = path + "test.mp4";
         VideoCompress.VideoCompressTask task = VideoCompress.compressVideoLow(
                 file, path, new VideoCompress.CompressListener() {
-            @Override
-            public void onStart() {
-                //Start Compress
-            }
+                    @Override
+                    public void onStart() {
+                        //Start Compress
+                    }
 
-            @Override
-            public void onSuccess() {
-                //Finish successfully
-                Observables.onNext("VonSuccess");
-            }
+                    @Override
+                    public void onSuccess() {
+                        int file_size = SizeFile(path);
+                        Files.add(new ModelChooseFiles(path, 3, file_size));
+                        Observables.onNext("AddFile");
+                    }
 
-            @Override
-            public void onFail() {
-                //Failed
-            }
+                    @Override
+                    public void onFail() {
+                        //Failed
+                    }
 
-            @Override
-            public void onProgress(float percent) {
-                //Progress
-                Log.i("meri", "percent : " + percent);
-            }
-        });
+                    @Override
+                    public void onProgress(float percent) {
+                        //Progress
+                        VideoProgress = (int) percent;
+                        Observables.onNext("onProgress");
+
+                    }
+                });
     }//_____________________________________________________________________________________________ End ResizeVideo
 
 
-//    public String GetPathFromUri(Uri uri) {//_______________________________________________________ Start GetPathFromUri
-//        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
-//        cursor.moveToFirst();
-//        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-//        return cursor.getString(idx);
-//    }//_____________________________________________________________________________________________ End GetPathFromUri
-
-
-
-    public String GetPathFromUri(Uri uri) {
-        // DocumentProvider
+    public String GetPathFromUri(Uri uri) {//_______________________________________________________ Start GetPathFromUri
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                // ExternalStorageProvider
-                if (isExternalStorageDocument(uri)) {
-                    final String docId = DocumentsContract.getDocumentId(uri);
-                    final String[] split = docId.split(":");
-                    final String type = split[0];
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
 
-                    if ("primary".equalsIgnoreCase(type)) {
-                        return Environment.getExternalStorageDirectory() + "/" + split[1];
-                    }
-
-                    // TODO handle non-primary volumes
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
-                // DownloadsProvider
-                else if (isDownloadsDocument(uri)) {
 
-                    final String id = DocumentsContract.getDocumentId(uri);
-                    final Uri contentUri = ContentUris.withAppendedId(
-                            Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+            } else if (isDownloadsDocument(uri)) {
 
-                    return getDataColumn(context, contentUri, null, null);
+                final String id = DocumentsContract.getDocumentId(uri);
+                final Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+
+                return getDataColumn(context, contentUri, null, null);
+            } else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                Uri contentUri = null;
+                if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 }
-                // MediaProvider
-                else if (isMediaDocument(uri)) {
-                    final String docId = DocumentsContract.getDocumentId(uri);
-                    final String[] split = docId.split(":");
-                    final String type = split[0];
 
-                    Uri contentUri = null;
-                    if ("image".equals(type)) {
-                        contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                    } else if ("video".equals(type)) {
-                        contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                    } else if ("audio".equals(type)) {
-                        contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                    }
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[]{
+                        split[1]
+                };
 
-                    final String selection = "_id=?";
-                    final String[] selectionArgs = new String[] {
-                            split[1]
-                    };
-
-                    return getDataColumn(context, contentUri, selection, selectionArgs);
-                }
-            // MediaStore (and general)
-            else if ("content".equalsIgnoreCase(uri.getScheme())) {
+                return getDataColumn(context, contentUri, selection, selectionArgs);
+            } else if ("content".equalsIgnoreCase(uri.getScheme())) {
                 return getDataColumn(context, uri, null, null);
-            }
-            // File
-            else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            } else if ("file".equalsIgnoreCase(uri.getScheme())) {
                 return uri.getPath();
             }
         } else {
@@ -478,10 +478,14 @@ public class VM_NewRequest {
         }
 
         return null;
-    }
+    }//_____________________________________________________________________________________________ End GetPathFromUri
 
-    private String getDataColumn(Context context, Uri uri, String selection,
-                                       String[] selectionArgs) {
+
+    private String getDataColumn(
+            Context context,
+            Uri uri,
+            String selection,
+            String[] selectionArgs) {//_____________________________________________________________ Start getDataColumn
 
         Cursor cursor = null;
         final String column = "_data";
@@ -501,7 +505,8 @@ public class VM_NewRequest {
                 cursor.close();
         }
         return null;
-    }
+    }//_____________________________________________________________________________________________ End getDataColumn
+
 
     private boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
@@ -516,6 +521,7 @@ public class VM_NewRequest {
     }
 
     public void SetAddress() {//___________________________________________________________________ Start SetAddress
+
         ModelGetAddress GetAddress = VM_MapFragment.address;
         if (GetAddress != null && GetAddress.getAddress() != null) {
             StringBuilder address = new StringBuilder();
@@ -582,15 +588,20 @@ public class VM_NewRequest {
             }
 
             TextAddress = address.toString();
-        } else
+        } else {
             TextAddress = "";
+        }
 
         Observables.onNext("GetAddress");
+
     }//_____________________________________________________________________________________________ End SetAddress
 
 
     public void DeleteFiles(int position) {//_______________________________________________________ Start DeleteFiles
 
+        File f = new File(Files.get(position).getFileName());
+        if (f.exists())
+            f.delete();
         Files.remove(position);
         Observables.onNext("RemoveFile");
 
@@ -598,6 +609,25 @@ public class VM_NewRequest {
 
 
     public List<ModelChooseFiles> getFiles() {//____________________________________________________ Start getFiles
+        int posission = 0;
+        File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
+                context.getResources().getString(R.string.FolderName));
+        if (!fileOrDirectory.exists())
+            Files.clear();
+        else {
+
+            int j = Files.size();
+            for (int i = 0; i < j; i++) {
+                File f = new File(Files.get(posission).getFileName());
+                if (!f.exists())
+                    Files.remove(posission);
+                else
+                    posission++;
+            }
+            if (Files.size() == 0)
+                DeleteFileAndFolder();
+        }
+
         return Files;
     }//_____________________________________________________________________________________________ End getFiles
 
@@ -605,4 +635,11 @@ public class VM_NewRequest {
     public String getTextAddress() {//______________________________________________________________ Start getTextAddress
         return TextAddress;
     }//_____________________________________________________________________________________________ End getTextAddress
+
+
+    public int getVideoProgress() {//_______________________________________________________________ Start getVideoProgress
+        return VideoProgress;
+    }//_____________________________________________________________________________________________ End getVideoProgress
+
+
 }

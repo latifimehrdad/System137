@@ -3,6 +3,7 @@ package com.ngra.system137.views.activity;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
@@ -13,6 +14,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -24,6 +26,11 @@ import com.ngra.system137.dagger.retrofit.RetrofitComponent;
 import com.ngra.system137.databinding.ActivityMainBinding;
 import com.ngra.system137.viewmodels.activity.VM_MainActivity;
 import com.ngra.system137.views.application.System137;
+import com.ngra.system137.views.dialogs.DialogMessage;
+import com.ngra.system137.views.fragments.NewRequestFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
@@ -45,9 +52,8 @@ public class MainActivity extends AppCompatActivity {
         binding.setMain(vm_mainActivity);
         ButterKnife.bind(this);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        checkLocationPermission();
-
     }//_____________________________________________________________________________________________ End onCreate
+
 
 
 
@@ -81,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
     }//_____________________________________________________________________________________________ End checkLocationPermission
 
 
-
     public void checkWRITE_EXTERNAL_STORAGE() {//___________________________________________________ Start checkWRITE_EXTERNAL_STORAGE
         int permissionCheck = ContextCompat.checkSelfPermission(
                 this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -92,19 +97,21 @@ public class MainActivity extends AppCompatActivity {
     }//_____________________________________________________________________________________________ End checkWRITE_EXTERNAL_STORAGE
 
 
-
-
     public void checREAD_EXTERNAL_STORAGE() {//_____________________________________________________ Start checREAD_EXTERNAL_STORAGE
         int permissionCheck = ContextCompat.checkSelfPermission(
-                this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                this, Manifest.permission.READ_EXTERNAL_STORAGE);
 
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 3);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
         }
     }//_____________________________________________________________________________________________ End checREAD_EXTERNAL_STORAGE
 
 
-
+    private void CheckMicPermission() {//_____________________________________________________ Start checREAD_EXTERNAL_STORAGE
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 4);
+        }
+    }//_____________________________________________________________________________________________ End checREAD_EXTERNAL_STORAGE
 
 
     @Override
@@ -112,25 +119,8 @@ public class MainActivity extends AppCompatActivity {
             int requestCode,
             String permissions[],
             int[] grantResults) {//_________________________________________________________________ Start onRequestPermissionsResult
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    checkWRITE_EXTERNAL_STORAGE();
-
-                }
-                return;
-            }
-            case 2: {
-                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    checREAD_EXTERNAL_STORAGE();
-                }
-            }
-
-        }
     }//_____________________________________________________________________________________________ End onRequestPermissionsResult
-
 
 
     public void attachBaseContext(Context newBase) {//______________________________________________ Start attachBaseContext
@@ -138,9 +128,13 @@ public class MainActivity extends AppCompatActivity {
     }//_____________________________________________________________________________________________ End attachBaseContext
 
 
-
     @Override
     public void onBackPressed() {//_________________________________________________________________ Start onBackPressed
+
+        if (NewRequestFragment.InProcess) {
+            Toast.makeText(this, getResources().getString(R.string.InProcess), Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         NavDestination navDestination = navController.getCurrentDestination();
         String fragment = navDestination.getLabel().toString();
@@ -168,5 +162,6 @@ public class MainActivity extends AppCompatActivity {
         }, 2000);
 
     }//_____________________________________________________________________________________________ End onBackPressed
+
 
 }

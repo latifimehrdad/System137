@@ -1,9 +1,13 @@
 package com.ngra.system137.views.fragments;
 
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -18,6 +22,9 @@ import android.widget.TextView;
 import com.ngra.system137.R;
 import com.ngra.system137.databinding.FragmentHomeBinding;
 import com.ngra.system137.viewmodels.fragments.VM_HomeFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,6 +102,7 @@ public class HomeFragment extends Fragment {
         navController = Navigation.findNavController(view);
         CheckLogin();
         SetClick();
+
     }//_____________________________________________________________________________________________ End onStart
 
 
@@ -178,6 +186,9 @@ public class HomeFragment extends Fragment {
 
 
     }//_____________________________________________________________________________________________ End SetClick
+
+
+
 
 
 }

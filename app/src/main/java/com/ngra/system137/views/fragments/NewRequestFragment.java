@@ -6,10 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -17,17 +16,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +33,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -45,10 +43,8 @@ import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.ngra.system137.R;
-import com.ngra.system137.backgroung.BackgroundServiceLocation;
 import com.ngra.system137.databinding.FragmentNewRequestBinding;
 import com.ngra.system137.models.ModelChooseFiles;
-import com.ngra.system137.models.ModelGetAddress;
 import com.ngra.system137.models.ModelNewRequest;
 import com.ngra.system137.models.ModelSpinnerItem;
 import com.ngra.system137.utility.StaticFunctions;
@@ -63,7 +59,6 @@ import com.ngra.system137.views.dialogs.searchspinner.OnSpinnerItemClick;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,7 +67,6 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
-import static com.ngra.system137.utility.StaticFunctions.CustomToastShow;
 import static com.ngra.system137.utility.StaticFunctions.TextChangeForChangeBack;
 
 /**
@@ -95,6 +89,13 @@ public class NewRequestFragment extends Fragment {
     private ModelNewRequest newRequest;
     private int REQUEST_PICK_Gallery = 7126;
     private int REQUEST_PICK_Video = 7127;
+    public static boolean InProcess;
+    private byte RecordeVoice;
+    private Handler handlerRecorde;
+    private Runnable runnableRecord;
+    private MediaRecorder myAudioRecorder;
+    private String PathRecorcVoice;
+    private MediaPlayer mediaPlayer;
 
     @BindView(R.id.layoutGuest)
     LinearLayout layoutGuest;
@@ -161,6 +162,33 @@ public class NewRequestFragment extends Fragment {
     @BindView(R.id.layoutRequest)
     LinearLayout layoutRequest;
 
+    @BindView(R.id.layoutProgressVideo)
+    LinearLayout layoutProgressVideo;
+
+    @BindView(R.id.txtVideoProgress)
+    TextView txtVideoProgress;
+
+    @BindView(R.id.layoutRecordVoice)
+    LinearLayout layoutRecordVoice;
+
+    @BindView(R.id.layoutRecord)
+    LinearLayout layoutRecord;
+
+
+    @BindView(R.id.imgRecordVoice)
+    ImageView imgRecordVoice;
+
+    @BindView(R.id.progressRecordVoice)
+    ProgressBar progressRecordVoice;
+
+    @BindView(R.id.imgPlayVoice)
+    ImageView imgPlayVoice;
+
+    @BindView(R.id.imgRecordAdd)
+    ImageView imgRecordAdd;
+
+    @BindView(R.id.imgRecordDelete)
+    ImageView imgRecordDelete;
 
     public NewRequestFragment() {//_________________________________________________________________ Start NewRequestFragment
 
@@ -180,6 +208,11 @@ public class NewRequestFragment extends Fragment {
         binding.setNewrequest(vm_newRequest);
         view = binding.getRoot();
         ButterKnife.bind(this, view);
+        layoutDialog.setVisibility(View.GONE);
+        layoutRequest.setVisibility(View.VISIBLE);
+        layoutProgressVideo.setVisibility(View.GONE);
+        layoutRecord.setVisibility(View.GONE);
+        InProcess = false;
         return view;
     }//_____________________________________________________________________________________________ End onCreateView
 
@@ -198,10 +231,7 @@ public class NewRequestFragment extends Fragment {
         DismissLoading();
         CheckLogin();
         SetTextWatcher();
-        SetAddress();
-        layoutDialog.setVisibility(View.GONE);
-        layoutRequest.setVisibility(View.VISIBLE);
-        SetAdabter();
+        SetAdabterFiles();
 
     }//_____________________________________________________________________________________________ End onStart
 
@@ -252,9 +282,11 @@ public class NewRequestFragment extends Fragment {
                                 );
                                 break;
                             case "AddFile":
+                                InProcess = false;
                                 filesAdabter.notifyDataSetChanged();
                                 layoutDialog.setVisibility(View.GONE);
                                 layoutRequest.setVisibility(View.VISIBLE);
+                                layoutProgressVideo.setVisibility(View.GONE);
                                 break;
                             case "MaxFileChoose1":
                                 ShowMessage(
@@ -271,22 +303,45 @@ public class NewRequestFragment extends Fragment {
                                 );
                                 break;
                             case "MaxFileChoose3":
+                                InProcess = false;
+                                layoutProgressVideo.setVisibility(View.GONE);
                                 ShowMessage(
                                         context.getResources().getString(R.string.MaxFileChoose3),
                                         getResources().getColor(R.color.ML_White),
                                         context.getResources().getDrawable(R.drawable.ic_warning_red)
                                 );
                                 break;
-                            case "OverSize":
+                            case "OverSize1":
                                 ShowMessage(
-                                        context.getResources().getString(R.string.OverSize),
+                                        context.getResources().getString(R.string.OverSize1),
                                         getResources().getColor(R.color.ML_White),
                                         context.getResources().getDrawable(R.drawable.ic_warning_red)
                                 );
                                 break;
-                            case "VonSuccess":
+                            case "OverSize2":
                                 ShowMessage(
-                                        "VonSuccess",
+                                        context.getResources().getString(R.string.OverSize2),
+                                        getResources().getColor(R.color.ML_White),
+                                        context.getResources().getDrawable(R.drawable.ic_warning_red)
+                                );
+                                break;
+                            case "OverSize3":
+                                InProcess = false;
+                                layoutProgressVideo.setVisibility(View.GONE);
+                                ShowMessage(
+                                        context.getResources().getString(R.string.OverSize3),
+                                        getResources().getColor(R.color.ML_White),
+                                        context.getResources().getDrawable(R.drawable.ic_warning_red)
+                                );
+                                break;
+                            case "onProgress":
+                                txtVideoProgress.setText(vm_newRequest.getVideoProgress() + " %");
+                                break;
+                            case "MaxFileCount":
+                                InProcess = false;
+                                layoutProgressVideo.setVisibility(View.GONE);
+                                ShowMessage(
+                                        context.getResources().getString(R.string.MaxFileCount),
                                         getResources().getColor(R.color.ML_White),
                                         context.getResources().getDrawable(R.drawable.ic_warning_red)
                                 );
@@ -313,6 +368,15 @@ public class NewRequestFragment extends Fragment {
                 .observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                SetAddress();
+            }
+        }, 500);
+
 
     }//_____________________________________________________________________________________________ End ObserverObservables
 
@@ -355,9 +419,111 @@ public class NewRequestFragment extends Fragment {
     private void SetClick() {//_____________________________________________________________________ Start SetClick
 
 
+        layoutRecordVoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (InProcess) {
+                    ShowMessage(
+                            context.getResources().getString(R.string.InProcess),
+                            getResources().getColor(R.color.ML_White),
+                            context.getResources().getDrawable(R.drawable.ic_warning_red)
+                    );
+                    return;
+                }
+                if (RecordeVoice == 1)
+                    return;
+
+                SetColorForStartRecordVoice();
+                layoutRecord.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        imgRecordAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (RecordeVoice == 2 &&
+                        PathRecorcVoice != null &&
+                        !PathRecorcVoice.equalsIgnoreCase("null")) {
+                    vm_newRequest.AddFile(PathRecorcVoice, 4);
+                }
+
+            }
+        });
+
+
+        imgRecordDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (RecordeVoice == 2 &&
+                        PathRecorcVoice != null &&
+                        !PathRecorcVoice.equalsIgnoreCase("null")) {
+                    File f = new File(PathRecorcVoice);
+                    if (f.exists())
+                        f.delete();
+                }
+
+            }
+        });
+
+
+        imgPlayVoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (RecordeVoice != 2)
+                    return;
+
+                if (mediaPlayer == null)
+                    mediaPlayer = new MediaPlayer();
+                try {
+                    if(mediaPlayer.isPlaying()) {
+                        mediaPlayer.stop();
+                        mediaPlayer = null;
+                        mediaPlayer = new MediaPlayer();
+                    }
+                    mediaPlayer.setDataSource(PathRecorcVoice);
+                    mediaPlayer.prepare();
+                    mediaPlayer.start();
+                } catch (Exception e) {
+                    // make something
+                }
+            }
+        });
+
+        imgRecordVoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (RecordeVoice != 1)
+                    StartRecordVoice();
+                else
+                    StopRecordVoice();
+            }
+        });
+
+        layoutProgressVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutRecord.setVisibility(View.GONE);
+                ShowMessage(
+                        context.getResources().getString(R.string.InProcess),
+                        getResources().getColor(R.color.ML_White),
+                        context.getResources().getDrawable(R.drawable.ic_warning_red)
+                );
+            }
+        });
+
         layoutChooseVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (InProcess) {
+                    ShowMessage(
+                            context.getResources().getString(R.string.InProcess),
+                            getResources().getColor(R.color.ML_White),
+                            context.getResources().getDrawable(R.drawable.ic_warning_red)
+                    );
+                    return;
+                }
+                layoutRecord.setVisibility(View.GONE);
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("video/*");
                 startActivityForResult(Intent.createChooser(intent, "انتخاب ویدیو"), REQUEST_PICK_Video);
@@ -368,6 +534,15 @@ public class NewRequestFragment extends Fragment {
         layoutChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (InProcess) {
+                    ShowMessage(
+                            context.getResources().getString(R.string.InProcess),
+                            getResources().getColor(R.color.ML_White),
+                            context.getResources().getDrawable(R.drawable.ic_warning_red)
+                    );
+                    return;
+                }
+                layoutRecord.setVisibility(View.GONE);
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 startActivityForResult(Intent.createChooser(intent, "انتخاب عکس"), REQUEST_PICK_Gallery);
@@ -378,6 +553,15 @@ public class NewRequestFragment extends Fragment {
         ButtonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (InProcess) {
+                    ShowMessage(
+                            context.getResources().getString(R.string.InProcess),
+                            getResources().getColor(R.color.ML_White),
+                            context.getResources().getDrawable(R.drawable.ic_warning_red)
+                    );
+                    return;
+                }
+                layoutRecord.setVisibility(View.GONE);
                 layoutDialog.setVisibility(View.GONE);
                 layoutRequest.setVisibility(View.VISIBLE);
             }
@@ -386,6 +570,15 @@ public class NewRequestFragment extends Fragment {
         layoutChooseDoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (InProcess) {
+                    ShowMessage(
+                            context.getResources().getString(R.string.InProcess),
+                            getResources().getColor(R.color.ML_White),
+                            context.getResources().getDrawable(R.drawable.ic_warning_red)
+                    );
+                    return;
+                }
+                layoutRecord.setVisibility(View.GONE);
                 DialogProperties properties = new DialogProperties();
                 properties.selection_mode = DialogConfigs.SINGLE_MODE;
                 properties.selection_type = DialogConfigs.FILE_SELECT;
@@ -400,7 +593,7 @@ public class NewRequestFragment extends Fragment {
                 dialog.setDialogSelectionListener(new DialogSelectionListener() {
                     @Override
                     public void onSelectedFilePaths(String[] files) {
-                        vm_newRequest.AddFile(files[0],1);
+                        vm_newRequest.AddFile(files[0], 1);
                     }
                 });
 
@@ -411,11 +604,10 @@ public class NewRequestFragment extends Fragment {
         layoutAttach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(layoutDialog.getVisibility() == View.VISIBLE) {
+                if (layoutDialog.getVisibility() == View.VISIBLE) {
                     layoutDialog.setVisibility(View.GONE);
                     layoutRequest.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     layoutDialog.setVisibility(View.VISIBLE);
                     layoutRequest.setVisibility(View.INVISIBLE);
                 }
@@ -446,27 +638,141 @@ public class NewRequestFragment extends Fragment {
         ButtonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (CheckEmpty()) {
-//                    ShowLoading();
-//                newRequest.setFiles(Files);
-                ShowLoading();
-                vm_newRequest.SendNewRequest(newRequest);
-//                }
+                if (CheckEmpty()) {
+                    ShowLoading();
+                    ShowLoading();
+                    vm_newRequest.SendNewRequest(newRequest);
+                }
             }
         });
 
     }//_____________________________________________________________________________________________ End SetClick
 
 
+    private void SetColorForStartRecordVoice() {//__________________________________________________ Start SetColorForStartRecordVoice
+        imgRecordVoice.setImageResource(R.drawable.ic_record_voice);
+
+        imgRecordVoice
+                .setColorFilter(
+                        ContextCompat.getColor(context, R.color.colorAccent),
+                        android.graphics.PorterDuff.Mode.SRC_IN);
+
+        imgPlayVoice.setColorFilter(
+                ContextCompat.getColor(context, R.color.ML_Primary),
+                android.graphics.PorterDuff.Mode.SRC_IN);
+
+        imgRecordAdd.setColorFilter(
+                ContextCompat.getColor(context, R.color.ML_Primary),
+                android.graphics.PorterDuff.Mode.SRC_IN);
+
+        imgRecordDelete.setColorFilter(
+                ContextCompat.getColor(context, R.color.ML_Primary),
+                android.graphics.PorterDuff.Mode.SRC_IN);
+
+        progressRecordVoice.setMax(60);
+        progressRecordVoice.setProgress(0);
+        RecordeVoice = 0;
+    }//_____________________________________________________________________________________________ End SetColorForStartRecordVoice
+
+    private void StartRecordVoice() {//_____________________________________________________________ Start StartRecordVoice
+
+        File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
+                context.getResources().getString(R.string.FolderName));
+        if (!fileOrDirectory.exists())
+            fileOrDirectory.mkdir();
+
+        PathRecorcVoice = fileOrDirectory.getPath() + "/record_voice.mp3";
+        File f = new File(PathRecorcVoice);
+        if (f.exists())
+            f.delete();
+        myAudioRecorder = new MediaRecorder();
+        myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        myAudioRecorder.setOutputFile(PathRecorcVoice);
+
+        try {
+            myAudioRecorder.prepare();
+            myAudioRecorder.start();
+        } catch (IllegalStateException ise) {
+            SetColorForStartRecordVoice();
+        } catch (IOException ioe) {
+            SetColorForStartRecordVoice();
+        }
+
+        SetColorForStartRecordVoice();
+        InProcess = true;
+        RecordeVoice = 1;
+        imgRecordVoice.setImageResource(R.drawable.ic_stop);
+        imgRecordVoice
+                .setColorFilter(
+                        ContextCompat.getColor(context, R.color.ML_PrimaryDark),
+                        android.graphics.PorterDuff.Mode.SRC_IN);
+
+        handlerRecorde = new Handler();
+        runnableRecord = new Runnable() {
+            @Override
+            public void run() {
+                progressRecordVoice.setProgress(progressRecordVoice.getProgress() + 1);
+                if (progressRecordVoice.getProgress() < 61)
+                    handlerRecorde.postDelayed(this, 1000);
+                else
+                    StopRecordVoice();
+            }
+        };
+
+        handlerRecorde.postDelayed(runnableRecord, 1);
+
+    }//_____________________________________________________________________________________________ End StartRecordVoice
 
 
-    private void SetAdabter() {//___________________________________________________________________ Start SetAdabter
+    private void SetColorForStopRecordVoice() {//___________________________________________________ Start SetColorForStopRecordVoice
+        imgRecordVoice.setImageResource(R.drawable.ic_record_voice);
+
+        imgRecordVoice
+                .setColorFilter(
+                        ContextCompat.getColor(context, R.color.colorAccent),
+                        android.graphics.PorterDuff.Mode.SRC_IN);
+
+        imgPlayVoice.setColorFilter(
+                ContextCompat.getColor(context, R.color.colorAccent),
+                android.graphics.PorterDuff.Mode.SRC_IN);
+
+        imgRecordAdd.setColorFilter(
+                ContextCompat.getColor(context, R.color.colorAccent),
+                android.graphics.PorterDuff.Mode.SRC_IN);
+
+        imgRecordDelete.setColorFilter(
+                ContextCompat.getColor(context, R.color.colorAccent),
+                android.graphics.PorterDuff.Mode.SRC_IN);
+
+        progressRecordVoice.setMax(60);
+        progressRecordVoice.setProgress(0);
+        RecordeVoice = 2;
+    }//_____________________________________________________________________________________________ End SetColorForStopRecordVoice
+
+
+    private void StopRecordVoice() {//______________________________________________________________ Start StopRecordVoice
+
+        myAudioRecorder.stop();
+        myAudioRecorder.release();
+        myAudioRecorder = null;
+        InProcess = false;
+        handlerRecorde.removeCallbacks(runnableRecord);
+        handlerRecorde = null;
+        runnableRecord = null;
+        SetColorForStopRecordVoice();
+
+    }//_____________________________________________________________________________________________ End StopRecordVoice
+
+
+    private void SetAdabterFiles() {//______________________________________________________________ Start SetAdabterFiles
 
         filesAdabter = new FilesAdabter(vm_newRequest.getFiles(), vm_newRequest);
         RecyclerFiles.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
         RecyclerFiles.setAdapter(filesAdabter);
 
-    }//_____________________________________________________________________________________________ End SetAdabter
+    }//_____________________________________________________________________________________________ End SetAdabterFiles
 
 
     public void checkLocationPermission() {//_______________________________________________________ Start checkLocationPermission
@@ -631,15 +937,18 @@ public class NewRequestFragment extends Fragment {
     }//_____________________________________________________________________________________________ End onDestroy
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {//_____________________________________________________________________________________________ Start onActivityResult
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {//__________________ Start onActivityResult
+        Log.i("meri", "ChooseFile");
         if (resultCode == RESULT_OK && requestCode == REQUEST_PICK_Gallery) {
             Uri uri = data.getData();
             String file = vm_newRequest.GetPathFromUri(uri);
-            vm_newRequest.AddFile(file,2);
+            vm_newRequest.AddFile(file, 2);
         } else if (resultCode == RESULT_OK && requestCode == REQUEST_PICK_Video) {
+            InProcess = true;
+            layoutProgressVideo.setVisibility(View.VISIBLE);
             Uri uri = data.getData();
             String file = vm_newRequest.GetPathFromUri(uri);
-            vm_newRequest.AddFile(file,3);
+            vm_newRequest.AddFile(file, 3);
         }
     }//_____________________________________________________________________________________________ End onActivityResult
 

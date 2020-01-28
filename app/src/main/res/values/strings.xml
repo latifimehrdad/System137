@@ -55,11 +55,15 @@
     <string name="ChooseImage">انتخاب تصویر</string>
     <string name="ChooseVideo">انتخاب ویدیو</string>
     <string name="FilesChoose">فایلهای انتخاب شده</string>
-    <string name="OverSize">حجم فایل بیشتر از 1 مگابایت است</string>
+    <string name="OverSize1">حجم فایل بیشتر از 1 مگابایت است</string>
+    <string name="OverSize2">حجم عکس بیشتر از 3 مگابایت است</string>
+    <string name="OverSize3">حجم ویدیو بیشتر از 200 مگابایت است</string>
     <string name="MaxFileChoose1">شما مجاز به انتخاب 2 فایل میباشید</string>
     <string name="MaxFileChoose2">شما مجاز به انتخاب 3 تصویر میباشید</string>
     <string name="MaxFileChoose3">شما مجاز به انتخاب 1 فیلم میباشید</string>
     <string name="RepetitiousFile">فایل انتخابی تکراری است</string>
     <string name="RecordVoice">ضبط صدا</string>
+    <string name="InProcess">در حال پردازش فایل، کمی دیگر تلاش کنید</string>
+    <string name="MaxFileCount">بیشترین تعداد مجاز انتخاب فایل 6 عدد میباشد</string>
 
 </resources>

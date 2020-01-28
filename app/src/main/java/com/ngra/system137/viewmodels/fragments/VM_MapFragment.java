@@ -26,14 +26,13 @@ public class VM_MapFragment {
     }//_____________________________________________________________________________________________ End VM_MapFragment
 
 
-
     public void GetAddress(double lat, double lon) {//____________________________________________________________________ Start GetAddress
 
         RetrofitComponent retrofitComponent = System137
                 .getApplication(context)
                 .getRetrofitComponent();
 
-        String url = "/reverse?format=json&lat=" + lat + "&lon="+lon+"&zoom=22&addressdetails=5";
+        String url = "/reverse?format=json&lat=" + lat + "&lon=" + lon + "&zoom=22&addressdetails=5";
 
         retrofitComponent
                 .getRetrofitApiInterface()
@@ -41,12 +40,19 @@ public class VM_MapFragment {
                 .enqueue(new Callback<ModelGetAddress>() {
                     @Override
                     public void onResponse(Call<ModelGetAddress> call, Response<ModelGetAddress> response) {
-                        address = response.body();
-                        if(address.getAddress() == null){
+                        if (response.body() == null) {
+                            address = new ModelGetAddress();
                             address.setLat(String.valueOf(lat));
                             address.setLon(String.valueOf(lon));
+                            Observables.onNext("GetAddress");
+                        } else {
+                            address = response.body();
+                            if (address.getAddress() == null) {
+                                address.setLat(String.valueOf(lat));
+                                address.setLon(String.valueOf(lon));
+                            }
+                            Observables.onNext("GetAddress");
                         }
-                        Observables.onNext("GetAddress");
                     }
 
                     @Override

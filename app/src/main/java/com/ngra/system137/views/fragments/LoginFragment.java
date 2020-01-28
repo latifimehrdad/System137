@@ -1,9 +1,13 @@
 package com.ngra.system137.views.fragments;
 
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -24,6 +28,9 @@ import com.ngra.system137.R;
 import com.ngra.system137.databinding.FragmentLoginBinding;
 import com.ngra.system137.utility.StaticFunctions;
 import com.ngra.system137.viewmodels.fragments.VM_LoginFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -110,6 +117,7 @@ public class LoginFragment extends Fragment {
             observer.dispose();
         observer = null;
         ObserverObservable();
+        CheckPermissions();
     }//_____________________________________________________________________________________________ End onStart
 
 
@@ -260,6 +268,36 @@ public class LoginFragment extends Fragment {
         ProgressGif.setVisibility(View.VISIBLE);
         imgProgress.setVisibility(View.INVISIBLE);
     }//_____________________________________________________________________________________________ End ShowLoading
+
+
+    private void CheckPermissions() {//_____________________________________________________________ Start CheckPermissions
+
+        int permissionWriteStorage = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
+        int permissionReadStorage = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int permissionRecordAudio = ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        // Read/Write Permission
+        if (permissionWriteStorage != PackageManager.PERMISSION_GRANTED)
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permissionLocation != PackageManager.PERMISSION_GRANTED)
+            listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (permissionReadStorage != PackageManager.PERMISSION_GRANTED)
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if (permissionRecordAudio != PackageManager.PERMISSION_GRANTED)
+            listPermissionsNeeded.add(Manifest.permission.RECORD_AUDIO);
+
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),
+                    0);
+        }
+
+    }//_____________________________________________________________________________________________ End CheckPermissions
+
 
 
 }
