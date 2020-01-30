@@ -3,7 +3,6 @@ package com.ngra.system137.views.activity;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
@@ -14,35 +13,63 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PowerManager;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.ngra.system137.R;
-import com.ngra.system137.dagger.retrofit.ModelToken;
-import com.ngra.system137.dagger.retrofit.RetrofitComponent;
 import com.ngra.system137.databinding.ActivityMainBinding;
 import com.ngra.system137.viewmodels.activity.VM_MainActivity;
-import com.ngra.system137.views.application.System137;
-import com.ngra.system137.views.dialogs.DialogMessage;
 import com.ngra.system137.views.fragments.NewRequestFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
     private VM_MainActivity vm_mainActivity;
     private NavController navController;
     private boolean doubleBackToExitPressedOnce = false;
+    private int count = 1;
+
+    @BindView(R.id.mainMenu)
+    ImageView mainMenu;
+
+    @BindView(R.id.layoutMenu)
+    RelativeLayout layoutMenu;
+
+    @BindView(R.id.layoutMenuBack)
+    LinearLayout layoutMenuBack;
+
+    @BindView(R.id.layoutMenuLogin)
+    RelativeLayout layoutMenuLogin;
+
+    @BindView(R.id.layoutMenuSiguUp)
+    RelativeLayout layoutMenuSiguUp;
+
+    @BindView(R.id.layoutMenuFallow)
+    RelativeLayout layoutMenuFallow;
+
+
+    @BindView(R.id.layoutMenuSurvey)
+    RelativeLayout layoutMenuSurvey;
+
+
+    @BindView(R.id.layoutMenuAbout)
+    RelativeLayout layoutMenuAbout;
+
+    @BindView(R.id.layoutMenuHelp)
+    RelativeLayout layoutMenuHelp;
+
+    @BindView(R.id.layoutMenuExit)
+    RelativeLayout layoutMenuExit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {//__________________________________________ Start onCreate
@@ -52,66 +79,141 @@ public class MainActivity extends AppCompatActivity {
         binding.setMain(vm_mainActivity);
         ButterKnife.bind(this);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        layoutMenu.setVisibility(View.GONE);
+        SetClick();
     }//_____________________________________________________________________________________________ End onCreate
 
 
+    private void SetClick() {//_____________________________________________________________________ Start SetClick
 
-
-    public void checkLocationPermission() {//_____________________________________________________________________________________________ Start checkLocationPermission
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                new AlertDialog.Builder(this)
-                        .setTitle("دسترسی به موقعیت")
-                        .setMessage("برای نمایش مکان شما به موقعیت دسترسی بدهید")
-                        .setPositiveButton("تایید", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(MainActivity.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        1);
-                            }
-                        })
-                        .create()
-                        .show();
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        1);
+        layoutMenuBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CloseMenu();
             }
+        });
+
+        mainMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (layoutMenu.getVisibility() == View.VISIBLE)
+                    CloseMenu();
+                else
+                    ShowMenu();
+            }
+        });
+
+    }//_____________________________________________________________________________________________ End SetClick
+
+
+    private void ShowMenu() {//_____________________________________________________________________ Start ShowMenu
+        NavDestination navDestination = navController.getCurrentDestination();
+        String fragment = navDestination.getLabel().toString();
+        if (fragment.equalsIgnoreCase("fragment_spalsh")) {
+            return;
         }
-    }//_____________________________________________________________________________________________ End checkLocationPermission
 
-
-    public void checkWRITE_EXTERNAL_STORAGE() {//___________________________________________________ Start checkWRITE_EXTERNAL_STORAGE
-        int permissionCheck = ContextCompat.checkSelfPermission(
-                this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+        if (NewRequestFragment.InProcess) {
+            Toast.makeText(this, getResources().getString(R.string.InProcess), Toast.LENGTH_SHORT).show();
+            return;
         }
-    }//_____________________________________________________________________________________________ End checkWRITE_EXTERNAL_STORAGE
+
+        count = 1;
+        Animation slide_in_top = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
+        layoutMenuBack.setAnimation(slide_in_top);
+        layoutMenuBack.setVisibility(View.VISIBLE);
+        layoutMenu.setVisibility(View.VISIBLE);
+        Animation bounce = AnimationUtils.loadAnimation(MainActivity.this, R.anim.bounce);
+        mainMenu.setAnimation(bounce);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                switch (count) {
+                    case 1:
+                        Animation slide_in_right1 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
+                        layoutMenuLogin.setAnimation(slide_in_right1);
+                        layoutMenuLogin.setVisibility(View.VISIBLE);
+                        count++;
+                        handler.postDelayed(this, 140);
+                        break;
+                    case 2:
+                        Animation slide_in_right2 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
+                        layoutMenuSiguUp.setAnimation(slide_in_right2);
+                        layoutMenuSiguUp.setVisibility(View.VISIBLE);
+                        count++;
+                        handler.postDelayed(this, 150);
+                        break;
+
+                    case 3:
+                        Animation slide_in_right3 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
+                        layoutMenuFallow.setAnimation(slide_in_right3);
+                        layoutMenuFallow.setVisibility(View.VISIBLE);
+                        count++;
+                        handler.postDelayed(this, 160);
+                        break;
+                    case 4:
+                        Animation slide_in_right4 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
+                        layoutMenuSurvey.setAnimation(slide_in_right4);
+                        layoutMenuSurvey.setVisibility(View.VISIBLE);
+                        count++;
+                        handler.postDelayed(this, 170);
+                        break;
+                    case 5:
+                        Animation slide_in_right5 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
+                        layoutMenuAbout.setAnimation(slide_in_right5);
+                        layoutMenuAbout.setVisibility(View.VISIBLE);
+                        count++;
+                        handler.postDelayed(this, 180);
+                        break;
+                    case 6:
+                        Animation slide_in_right6 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
+                        layoutMenuHelp.setAnimation(slide_in_right6);
+                        layoutMenuHelp.setVisibility(View.VISIBLE);
+                        count++;
+                        handler.postDelayed(this, 190);
+                        break;
+                    case 7:
+                        Animation slide_in_right7 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
+                        layoutMenuExit.setAnimation(slide_in_right7);
+                        layoutMenuExit.setVisibility(View.VISIBLE);
+                        break;
+                }
 
 
-    public void checREAD_EXTERNAL_STORAGE() {//_____________________________________________________ Start checREAD_EXTERNAL_STORAGE
-        int permissionCheck = ContextCompat.checkSelfPermission(
-                this, Manifest.permission.READ_EXTERNAL_STORAGE);
-
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
-        }
-    }//_____________________________________________________________________________________________ End checREAD_EXTERNAL_STORAGE
+            }
+        }, 250);
 
 
-    private void CheckMicPermission() {//_____________________________________________________ Start checREAD_EXTERNAL_STORAGE
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 4);
-        }
-    }//_____________________________________________________________________________________________ End checREAD_EXTERNAL_STORAGE
+    }//_____________________________________________________________________________________________ End ShowMenu
+
+
+    private void CloseMenu() {//____________________________________________________________________ Start CloseMenu
+
+        Animation slide_out_top = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_out_top);
+        layoutMenuBack.setAnimation(slide_out_top);
+        layoutMenuBack.setVisibility(View.INVISIBLE);
+        Handler handler2 = new Handler();
+        handler2.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mainMenu.setAnimation(null);
+                layoutMenu.setVisibility(View.GONE);
+                layoutMenuLogin.setVisibility(View.GONE);
+                layoutMenuSiguUp.setVisibility(View.GONE);
+                layoutMenuFallow.setVisibility(View.GONE);
+                layoutMenuSurvey.setVisibility(View.GONE);
+                layoutMenuAbout.setVisibility(View.GONE);
+                layoutMenuHelp.setVisibility(View.GONE);
+                layoutMenuExit.setVisibility(View.GONE);
+
+            }
+        }, 450);
+
+    }//_____________________________________________________________________________________________ End CloseMenu
 
 
     @Override
@@ -135,6 +237,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, getResources().getString(R.string.InProcess), Toast.LENGTH_SHORT).show();
             return;
         }
+
+
+        if (layoutMenu.getVisibility() == View.VISIBLE) {
+            CloseMenu();
+            return;
+        }
+
 
         NavDestination navDestination = navController.getCurrentDestination();
         String fragment = navDestination.getLabel().toString();

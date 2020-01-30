@@ -98,8 +98,8 @@ public class VM_NewRequest {
 
         File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
                 context.getResources().getString(R.string.FolderName));
-
-        fileOrDirectory.mkdirs();
+        if (!fileOrDirectory.exists())
+            fileOrDirectory.mkdirs();
         String Path = fileOrDirectory.getPath() + "/";
         String filename = file.substring(file.lastIndexOf("/") + 1);
         Path = Path + filename;
@@ -241,7 +241,8 @@ public class VM_NewRequest {
                 if (CopyFiles(file)) {
                     File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
                             context.getResources().getString(R.string.FolderName));
-
+                    if (!fileOrDirectory.exists())
+                        fileOrDirectory.mkdirs();
                     String Path = fileOrDirectory.getPath() + "/";
                     String filename = file.substring(file.lastIndexOf("/") + 1);
                     file = Path + filename;
@@ -261,8 +262,8 @@ public class VM_NewRequest {
 
                     File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
                             context.getResources().getString(R.string.FolderName));
-
-                    fileOrDirectory.mkdirs();
+                    if (!fileOrDirectory.exists())
+                        fileOrDirectory.mkdirs();
                     String Path = fileOrDirectory.getPath() + "/";
                     String filename = file.substring(file.lastIndexOf("/") + 1);
                     file = Path + filename;
@@ -285,7 +286,7 @@ public class VM_NewRequest {
                 File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
                         context.getResources().getString(R.string.FolderName));
                 if (!fileOrDirectory.exists())
-                    fileOrDirectory.mkdir();
+                    fileOrDirectory.mkdirs();
                 String Path = fileOrDirectory.getPath() + "/";
                 String filename = file.substring(file.lastIndexOf("/") + 1);
                 Path = Path + filename;
@@ -624,8 +625,8 @@ public class VM_NewRequest {
                 else
                     posission++;
             }
-            if (Files.size() == 0)
-                DeleteFileAndFolder();
+//            if (Files.size() == 0)
+//                DeleteFileAndFolder();
         }
 
         return Files;

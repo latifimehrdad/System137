@@ -139,6 +139,7 @@
                     android:gravity="center"
                     android:background="@drawable/home_back_border_black_tleft_right"
                     >
+
                     <com.cunoraz.gifview.library.GifView
                         android:id="@+id/ProgressGifVideo"
                         android:layout_width="@dimen/_20sdp"
@@ -211,6 +212,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:orientation="vertical"
         android:gravity="center"
+        android:background="@drawable/back_recycler"
         >
 
         <LinearLayout

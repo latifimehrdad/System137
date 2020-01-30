@@ -38,9 +38,12 @@
             app:navGraph="@navigation/nav_main" />
 
 
-
+        <include layout="@layout/menu_layout"
+            android:id="@+id/layoutMenu"
+            />
 
         <ImageView
+            android:id="@+id/mainMenu"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
             android:layout_alignParentRight="true"
@@ -51,10 +54,6 @@
             android:padding="@dimen/_10sdp"
             android:tint="@color/ML_White"
             />
-
-
-
-
 
 
     </RelativeLayout>

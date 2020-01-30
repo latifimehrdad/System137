@@ -36,10 +36,12 @@
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:maxLines="1"
                 app:FileSize="@{file.size}"
+                android:visibility="gone"
                 />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:gravity="right|center_vertical"
                 android:textColor="@color/ML_ButtonClick"
@@ -47,6 +49,15 @@
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:maxLines="1"
                 app:FileName="@{file.fileName}"
+                />
+
+
+            <ImageView
+                android:id="@+id/FileType"
+                android:layout_width="@dimen/_27sdp"
+                android:layout_height="@dimen/_27sdp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                app:FileType="@{file.type}"
                 />
 
 

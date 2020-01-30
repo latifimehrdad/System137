@@ -65,5 +65,9 @@
     <string name="RecordVoice">ضبط صدا</string>
     <string name="InProcess">در حال پردازش فایل، کمی دیگر تلاش کنید</string>
     <string name="MaxFileCount">بیشترین تعداد مجاز انتخاب فایل 6 عدد میباشد</string>
+    <string name="Survey">نظر سنجی</string>
+    <string name="About">درباره شهرداری</string>
+    <string name="Help">راهنمای برنامه</string>
+    <string name="Exit">خروج</string>
 
 </resources>
