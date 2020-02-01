@@ -4,6 +4,6 @@
 
     <solid android:color="@color/ML_DialogTransparent"/>
 
-    <corners android:bottomRightRadius="@dimen/_180sdp" android:topLeftRadius="@dimen/_90sdp"/>
+
 
 </shape>

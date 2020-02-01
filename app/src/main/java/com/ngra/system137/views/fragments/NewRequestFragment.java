@@ -565,9 +565,9 @@ public class NewRequestFragment extends Fragment {
                 try {
                     if (mediaPlayer.isPlaying()) {
                         mediaPlayer.stop();
-                        mediaPlayer = null;
-                        mediaPlayer = new MediaPlayer();
                     }
+                    mediaPlayer = null;
+                    mediaPlayer = new MediaPlayer();
                     mediaPlayer.setDataSource(PathRecorcVoice);
                     mediaPlayer.prepare();
                     mediaPlayer.start();
