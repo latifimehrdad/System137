@@ -1,13 +1,9 @@
 package com.ngra.system137.views.fragments;
 
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -23,11 +19,10 @@ import com.ngra.system137.R;
 import com.ngra.system137.databinding.FragmentHomeBinding;
 import com.ngra.system137.viewmodels.fragments.VM_HomeFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.ngra.system137.views.activity.MainActivity.Login;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,13 +33,13 @@ public class HomeFragment extends Fragment {
     private VM_HomeFragment vm_homeFragment;
     private View view;
     private NavController navController;
-    private boolean Login;
+
 
     @BindView(R.id.NewRequest)
     LinearLayout NewRequest;
 
-    @BindView(R.id.ResultRequest)
-    LinearLayout ResultRequest;
+    @BindView(R.id.FallowRequest)
+    LinearLayout FallowRequest;
 
 
     @BindView(R.id.TotalRequest)
@@ -107,7 +102,6 @@ public class HomeFragment extends Fragment {
 
 
     private void CheckLogin() {//___________________________________________________________________ Start CheckLogin
-        Login = vm_homeFragment.CheckUserLogin();
         if (Login) {
             SetCountsToValues();
         } else {
@@ -149,10 +143,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        ResultRequest.setOnClickListener(new View.OnClickListener() {
+        FallowRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                navController.navigate(R.id.action_homeFragment_to_fallowRequestFragment);
             }
         });
 

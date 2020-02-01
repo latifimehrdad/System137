@@ -1,10 +1,12 @@
 package com.ngra.system137.viewmodels.fragments;
 
-        import android.content.Context;
-        import android.content.SharedPreferences;
-        import android.os.Handler;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Handler;
 
-        import io.reactivex.subjects.PublishSubject;
+import com.ngra.system137.views.activity.MainActivity;
+
+import io.reactivex.subjects.PublishSubject;
 
 public class VM_LoginFragment {
 
@@ -25,7 +27,7 @@ public class VM_LoginFragment {
             public void run() {
                 SaveToken();
             }
-        },2000);
+        }, 2000);
 
     }//_____________________________________________________________________________________________ End GetLoginToken
 
@@ -36,6 +38,7 @@ public class VM_LoginFragment {
                 context.getSharedPreferences("system137token", 0).edit();
         token.putBoolean("login", true);
         token.apply();
+        MainActivity.Login = true;
         Observables.onNext("LoginOk");
 
     }//_____________________________________________________________________________________________ End SaveToken

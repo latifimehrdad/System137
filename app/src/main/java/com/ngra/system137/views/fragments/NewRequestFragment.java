@@ -29,6 +29,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,12 +46,12 @@ import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.ngra.system137.R;
 import com.ngra.system137.databinding.FragmentNewRequestBinding;
-import com.ngra.system137.models.ModelChooseFiles;
 import com.ngra.system137.models.ModelNewRequest;
 import com.ngra.system137.models.ModelSpinnerItem;
 import com.ngra.system137.utility.StaticFunctions;
 import com.ngra.system137.viewmodels.fragments.VM_MapFragment;
 import com.ngra.system137.viewmodels.fragments.VM_NewRequest;
+import com.ngra.system137.views.activity.MainActivity;
 import com.ngra.system137.views.adabters.FilesAdabter;
 import com.ngra.system137.views.dialogs.DialogMessage;
 import com.ngra.system137.views.dialogs.DialogProgress;
@@ -125,6 +127,8 @@ public class NewRequestFragment extends Fragment {
     @BindView(R.id.ProgressGif)
     GifView ProgressGif;
 
+    @BindView(R.id.EditSubject)
+    EditText EditSubject;
 
     @BindView(R.id.EditName)
     EditText EditName;
@@ -190,6 +194,23 @@ public class NewRequestFragment extends Fragment {
     @BindView(R.id.imgRecordDelete)
     ImageView imgRecordDelete;
 
+
+    @BindView(R.id.layoutShowFiles)
+    LinearLayout layoutShowFiles;
+
+    @BindView(R.id.TextCountFile)
+    TextView TextCountFile;
+
+
+    @BindView(R.id.imgCountFile)
+    ImageView imgCountFile;
+
+    @BindView(R.id.layoutRecordProgress)
+    LinearLayout layoutRecordProgress;
+
+    @BindView(R.id.layoutRecordAction)
+    LinearLayout layoutRecordAction;
+
     public NewRequestFragment() {//_________________________________________________________________ Start NewRequestFragment
 
     }//_____________________________________________________________________________________________ End NewRequestFragment
@@ -231,7 +252,7 @@ public class NewRequestFragment extends Fragment {
         DismissLoading();
         CheckLogin();
         SetTextWatcher();
-        SetAdabterFiles();
+        HideFiles();
 
     }//_____________________________________________________________________________________________ End onStart
 
@@ -272,7 +293,7 @@ public class NewRequestFragment extends Fragment {
                                 EditAddress.setText(vm_newRequest.getTextAddress());
                                 break;
                             case "RemoveFile":
-                                filesAdabter.notifyDataSetChanged();
+                                HideFiles();
                                 break;
                             case "RepetitiousFile":
                                 ShowMessage(
@@ -283,10 +304,10 @@ public class NewRequestFragment extends Fragment {
                                 break;
                             case "AddFile":
                                 InProcess = false;
-                                filesAdabter.notifyDataSetChanged();
                                 layoutDialog.setVisibility(View.GONE);
                                 layoutRequest.setVisibility(View.VISIBLE);
                                 layoutProgressVideo.setVisibility(View.GONE);
+                                HideFiles();
                                 break;
                             case "MaxFileChoose1":
                                 ShowMessage(
@@ -307,6 +328,13 @@ public class NewRequestFragment extends Fragment {
                                 layoutProgressVideo.setVisibility(View.GONE);
                                 ShowMessage(
                                         context.getResources().getString(R.string.MaxFileChoose3),
+                                        getResources().getColor(R.color.ML_White),
+                                        context.getResources().getDrawable(R.drawable.ic_warning_red)
+                                );
+                                break;
+                            case "MaxFileChoose4":
+                                ShowMessage(
+                                        context.getResources().getString(R.string.MaxFileChoose4),
                                         getResources().getColor(R.color.ML_White),
                                         context.getResources().getDrawable(R.drawable.ic_warning_red)
                                 );
@@ -381,12 +409,46 @@ public class NewRequestFragment extends Fragment {
     }//_____________________________________________________________________________________________ End ObserverObservables
 
 
+    private void ShowFiles() {//____________________________________________________________________ Start ShowFiles
+
+        if (RecyclerFiles.getAdapter() == null) {
+            SetAdabterFiles();
+            imgCountFile.setImageResource(R.drawable.ic_keyboard_arrow_up);
+            TextCountFile.setText(
+                    context.getResources().getString(R.string.FilesChoose) +
+                            " " +
+                            vm_newRequest.FileCount() +
+                            " ، " +
+                            context.getResources().getString(R.string.Hidden)
+            );
+        } else
+            filesAdabter.notifyDataSetChanged();
+
+    }//_____________________________________________________________________________________________ End ShowFiles
+
+
+    private void HideFiles() {//____________________________________________________________________ Start HideFiles
+
+        RecyclerFiles.setAdapter(null);
+        imgCountFile.setImageResource(R.drawable.ic_keyboard_arrow_down);
+        TextCountFile.setText(
+                context.getResources().getString(R.string.FilesChoose) +
+                        " " +
+                        vm_newRequest.FileCount() +
+                        " ، " +
+                        context.getResources().getString(R.string.Show)
+        );
+
+    }//_____________________________________________________________________________________________ End HideFiles
+
+
     private void SetTextWatcher() {//_______________________________________________________________ Start SetTextWatcher
         EditDescription.addTextChangedListener(TextChangeForChangeBack(EditDescription));
         EditAddress.addTextChangedListener(TextChangeForChangeBack(EditAddress));
         EditPhoneNumber.addTextChangedListener(TextChangeForChangeBack(EditPhoneNumber));
         EditFamily.addTextChangedListener(TextChangeForChangeBack(EditFamily));
         EditName.addTextChangedListener(TextChangeForChangeBack(EditName));
+        EditSubject.addTextChangedListener(TextChangeForChangeBack(EditSubject));
     }//_____________________________________________________________________________________________ End SetTextWatcher
 
 
@@ -418,6 +480,15 @@ public class NewRequestFragment extends Fragment {
 
     private void SetClick() {//_____________________________________________________________________ Start SetClick
 
+        layoutShowFiles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (RecyclerFiles.getAdapter() == null)
+                    ShowFiles();
+                else
+                    HideFiles();
+            }
+        });
 
         layoutRecordVoice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -433,8 +504,20 @@ public class NewRequestFragment extends Fragment {
                 if (RecordeVoice == 1)
                     return;
 
-                SetColorForStartRecordVoice();
-                layoutRecord.setVisibility(View.VISIBLE);
+
+                File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
+                        context.getResources().getString(R.string.FolderName));
+                PathRecorcVoice = fileOrDirectory.getPath() + "/record_voice.mp3";
+
+                if(!vm_newRequest.CheckRepetitiousFile(PathRecorcVoice,4,1)) {
+                    SetColorForStartRecordVoice();
+                    layoutRecord.setVisibility(View.VISIBLE);
+                    layoutRecordProgress.setVisibility(View.GONE);
+                    layoutRecordAction.setVisibility(View.GONE);
+                    imgPlayVoice.setVisibility(View.GONE);
+                    imgRecordDelete.setVisibility(View.GONE);
+                }
+
             }
         });
 
@@ -458,9 +541,13 @@ public class NewRequestFragment extends Fragment {
                 if (RecordeVoice == 2 &&
                         PathRecorcVoice != null &&
                         !PathRecorcVoice.equalsIgnoreCase("null")) {
+                    if(mediaPlayer != null && mediaPlayer.isPlaying())
+                        mediaPlayer.stop();
                     File f = new File(PathRecorcVoice);
                     if (f.exists())
                         f.delete();
+
+                    SetColorForStartRecordVoice();
                 }
 
             }
@@ -476,7 +563,7 @@ public class NewRequestFragment extends Fragment {
                 if (mediaPlayer == null)
                     mediaPlayer = new MediaPlayer();
                 try {
-                    if(mediaPlayer.isPlaying()) {
+                    if (mediaPlayer.isPlaying()) {
                         mediaPlayer.stop();
                         mediaPlayer = null;
                         mediaPlayer = new MediaPlayer();
@@ -610,6 +697,7 @@ public class NewRequestFragment extends Fragment {
                 } else {
                     layoutDialog.setVisibility(View.VISIBLE);
                     layoutRequest.setVisibility(View.INVISIBLE);
+                    layoutRecord.setVisibility(View.GONE);
                 }
             }
         });
@@ -650,8 +738,10 @@ public class NewRequestFragment extends Fragment {
 
 
     private void SetColorForStartRecordVoice() {//__________________________________________________ Start SetColorForStartRecordVoice
-        imgRecordVoice.setImageResource(R.drawable.ic_record_voice);
 
+        Animation bounce = AnimationUtils.loadAnimation(context, R.anim.bounce);
+        imgRecordVoice.setAnimation(bounce);
+        imgRecordVoice.setImageResource(R.drawable.ic_record);
         imgRecordVoice
                 .setColorFilter(
                         ContextCompat.getColor(context, R.color.colorAccent),
@@ -668,6 +758,10 @@ public class NewRequestFragment extends Fragment {
         imgRecordDelete.setColorFilter(
                 ContextCompat.getColor(context, R.color.ML_Primary),
                 android.graphics.PorterDuff.Mode.SRC_IN);
+
+        layoutRecordAction.setVisibility(View.GONE);
+        imgPlayVoice.setVisibility(View.GONE);
+        imgRecordDelete.setVisibility(View.GONE);
 
         progressRecordVoice.setMax(60);
         progressRecordVoice.setProgress(0);
@@ -676,59 +770,81 @@ public class NewRequestFragment extends Fragment {
 
     private void StartRecordVoice() {//_____________________________________________________________ Start StartRecordVoice
 
+        layoutRecordProgress.setVisibility(View.VISIBLE);
+
         File fileOrDirectory = new File(Environment.getExternalStorageDirectory(),
                 context.getResources().getString(R.string.FolderName));
         if (!fileOrDirectory.exists())
             fileOrDirectory.mkdir();
 
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying())
+                mediaPlayer.stop();
+            mediaPlayer = null;
+            mediaPlayer = new MediaPlayer();
+        }
+
         PathRecorcVoice = fileOrDirectory.getPath() + "/record_voice.mp3";
         File f = new File(PathRecorcVoice);
         if (f.exists())
             f.delete();
-        myAudioRecorder = new MediaRecorder();
-        myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        myAudioRecorder.setOutputFile(PathRecorcVoice);
-
-        try {
-            myAudioRecorder.prepare();
-            myAudioRecorder.start();
-        } catch (IllegalStateException ise) {
-            SetColorForStartRecordVoice();
-        } catch (IOException ioe) {
-            SetColorForStartRecordVoice();
-        }
-
-        SetColorForStartRecordVoice();
-        InProcess = true;
-        RecordeVoice = 1;
-        imgRecordVoice.setImageResource(R.drawable.ic_stop);
-        imgRecordVoice
-                .setColorFilter(
-                        ContextCompat.getColor(context, R.color.ML_PrimaryDark),
-                        android.graphics.PorterDuff.Mode.SRC_IN);
-
-        handlerRecorde = new Handler();
-        runnableRecord = new Runnable() {
+        Handler h = new Handler();
+        h.postDelayed(new Runnable() {
             @Override
             public void run() {
-                progressRecordVoice.setProgress(progressRecordVoice.getProgress() + 1);
-                if (progressRecordVoice.getProgress() < 61)
-                    handlerRecorde.postDelayed(this, 1000);
-                else
-                    StopRecordVoice();
-            }
-        };
+                if (myAudioRecorder == null) {
+                    myAudioRecorder = new MediaRecorder();
+                    myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                    myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                    myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+                    myAudioRecorder.setOutputFile(PathRecorcVoice);
+                }
 
-        handlerRecorde.postDelayed(runnableRecord, 1);
+                try {
+                    myAudioRecorder.prepare();
+                    myAudioRecorder.start();
+                } catch (IllegalStateException ise) {
+                    SetColorForStartRecordVoice();
+                } catch (IOException ioe) {
+                    SetColorForStartRecordVoice();
+                }
+
+                SetColorForStartRecordVoice();
+                InProcess = true;
+                RecordeVoice = 1;
+                imgRecordVoice.setImageResource(R.drawable.ic_stop);
+                imgRecordVoice
+                        .setColorFilter(
+                                ContextCompat.getColor(context, R.color.ML_PrimaryDark),
+                                android.graphics.PorterDuff.Mode.SRC_IN);
+
+                Animation bounce = AnimationUtils.loadAnimation(context, R.anim.heart_beat);
+                imgRecordVoice.setAnimation(bounce);
+
+                handlerRecorde = new Handler();
+                runnableRecord = new Runnable() {
+                    @Override
+                    public void run() {
+                        progressRecordVoice.setProgress(progressRecordVoice.getProgress() + 1);
+                        if (progressRecordVoice.getProgress() < 61)
+                            handlerRecorde.postDelayed(this, 1000);
+                        else
+                            StopRecordVoice();
+                    }
+                };
+
+                handlerRecorde.postDelayed(runnableRecord, 1);
+            }
+        }, 100);
+
 
     }//_____________________________________________________________________________________________ End StartRecordVoice
 
 
     private void SetColorForStopRecordVoice() {//___________________________________________________ Start SetColorForStopRecordVoice
-        imgRecordVoice.setImageResource(R.drawable.ic_record_voice);
-
+        Animation bounce = AnimationUtils.loadAnimation(context, R.anim.bounce);
+        imgRecordVoice.setAnimation(bounce);
+        imgRecordVoice.setImageResource(R.drawable.ic_record);
         imgRecordVoice
                 .setColorFilter(
                         ContextCompat.getColor(context, R.color.colorAccent),
@@ -739,12 +855,17 @@ public class NewRequestFragment extends Fragment {
                 android.graphics.PorterDuff.Mode.SRC_IN);
 
         imgRecordAdd.setColorFilter(
-                ContextCompat.getColor(context, R.color.colorAccent),
+                ContextCompat.getColor(context, R.color.ML_Confirm),
                 android.graphics.PorterDuff.Mode.SRC_IN);
 
         imgRecordDelete.setColorFilter(
-                ContextCompat.getColor(context, R.color.colorAccent),
+                ContextCompat.getColor(context, R.color.ML_PrimaryDark),
                 android.graphics.PorterDuff.Mode.SRC_IN);
+
+        layoutRecordAction.setVisibility(View.VISIBLE);
+        layoutRecordProgress.setVisibility(View.GONE);
+        imgPlayVoice.setVisibility(View.VISIBLE);
+        imgRecordDelete.setVisibility(View.VISIBLE);
 
         progressRecordVoice.setMax(60);
         progressRecordVoice.setProgress(0);
@@ -858,6 +979,7 @@ public class NewRequestFragment extends Fragment {
         boolean type = true;
         boolean description = true;
         boolean address = true;
+        boolean subject = true;
 
         if (EditAddress.getText().length() == 0) {
             EditAddress.setBackgroundResource(R.drawable.edit_empty_background);
@@ -872,6 +994,14 @@ public class NewRequestFragment extends Fragment {
             EditDescription.requestFocus();
             description = false;
         }
+
+        if (EditSubject.getText().length() == 0) {
+            EditSubject.setBackgroundResource(R.drawable.edit_empty_background);
+            EditSubject.setError(getResources().getString(R.string.EmptySubject));
+            EditSubject.requestFocus();
+            subject = false;
+        }
+
 
         if (TypeId == -1) {
             SpinnerText.setBackgroundResource(R.drawable.edit_empty_background);
@@ -913,12 +1043,12 @@ public class NewRequestFragment extends Fragment {
 
 
         if (Login) {
-            if (type && description && address)
+            if (type && description && address && subject)
                 return true;
             else
                 return false;
         } else {
-            if (mobile && family && name && type && description && address)
+            if (mobile && family && name && type && description && address && subject)
                 return true;
             else
                 return false;

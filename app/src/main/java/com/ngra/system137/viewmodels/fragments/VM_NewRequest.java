@@ -314,13 +314,16 @@ public class VM_NewRequest {
     }//_____________________________________________________________________________________________ End CheckFile
 
 
-    private boolean CheckRepetitiousFile(String file, int type, int maxCount) {//___________________ Start CheckRepetitiousFile
+    public boolean CheckRepetitiousFile(String file, int type, int maxCount) {//____________________ Start CheckRepetitiousFile
         boolean ret = false;
         int count = 0;
 
         for (ModelChooseFiles f : Files)
             if (file.equalsIgnoreCase(f.getFileName())) {
-                Observables.onNext("RepetitiousFile");
+                if (type != 4)
+                    Observables.onNext("RepetitiousFile");
+                else
+                    Observables.onNext("MaxFileChoose" + type);
                 ret = true;
             } else {
                 if (type == f.getType())
@@ -332,7 +335,6 @@ public class VM_NewRequest {
                     break;
                 }
             }
-        ;
 
         return ret;
 
@@ -642,5 +644,9 @@ public class VM_NewRequest {
         return VideoProgress;
     }//_____________________________________________________________________________________________ End getVideoProgress
 
+
+    public int FileCount() {//______________________________________________________________________ Start FileCount
+        return Files.size();
+    }//_____________________________________________________________________________________________ End FileCount
 
 }

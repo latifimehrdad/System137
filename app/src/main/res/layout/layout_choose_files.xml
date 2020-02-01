@@ -6,38 +6,38 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@drawable/back_recycler"
     android:padding="@dimen/_10sdp">
 
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/_70sdp"
+        android:layout_height="@dimen/_65sdp"
         android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/layoutChooseDoc"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
             android:orientation="vertical"
+            android:background="@drawable/back_circle_accent_bleft_bright"
             >
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:padding="@dimen/_3sdp"
                 android:src="@drawable/ic_insert_drive_file"
-                android:tint="@color/ML_PrimaryDark"
-                android:background="@drawable/home_back_circle_border_accent_tleft_right"
+                android:tint="@color/ML_White"
                 />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/back_circle_accent_bleft_bright"
+                android:layout_height="wrap_content"
                 android:text="@string/ChooseFile"
                 android:textColor="@color/ML_White"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_9sdp"
                 android:gravity="center"
                 fontPath="font/iransans_web_medium.ttf"
                 android:paddingBottom="@dimen/_10sdp"
@@ -48,29 +48,28 @@
 
         <LinearLayout
             android:id="@+id/layoutChooseImage"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
             android:orientation="vertical"
-            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:background="@drawable/back_circle_accent_bleft_bright"
             >
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:padding="@dimen/_3sdp"
                 android:src="@drawable/ic_image"
-                android:tint="@color/ML_PrimaryDark"
-                android:background="@drawable/home_back_circle_border_accent_tleft_right"
+                android:tint="@color/ML_White"
                 />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/back_circle_accent_bleft_bright"
+                android:layout_height="wrap_content"
                 android:text="@string/ChooseImage"
                 android:textColor="@color/ML_White"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_9sdp"
                 android:gravity="center"
                 fontPath="font/iransans_web_medium.ttf"
                 android:paddingBottom="@dimen/_10sdp"
@@ -87,37 +86,36 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_70sdp"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         >
 
         <RelativeLayout
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp">
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp">
 
             <LinearLayout
                 android:id="@+id/layoutChooseVideo"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="@dimen/_70sdp"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
                 android:orientation="vertical"
+                android:background="@drawable/back_circle_accent_bleft_bright"
                 >
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:padding="@dimen/_3sdp"
                     android:src="@drawable/ic_videocam"
-                    android:tint="@color/ML_PrimaryDark"
-                    android:background="@drawable/home_back_circle_border_accent_tleft_right"
+                    android:tint="@color/ML_White"
                     />
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/back_circle_accent_bleft_bright"
+                    android:layout_height="wrap_content"
                     android:text="@string/ChooseVideo"
                     android:textColor="@color/ML_White"
-                    android:textSize="@dimen/_10sdp"
+                    android:textSize="@dimen/_9sdp"
                     android:gravity="center"
                     fontPath="font/iransans_web_medium.ttf"
                     android:paddingBottom="@dimen/_10sdp"
@@ -128,16 +126,16 @@
 
             <LinearLayout
                 android:id="@+id/layoutProgressVideo"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="@dimen/_70sdp"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
                 android:orientation="vertical"
+                android:background="@drawable/home_back_border_black_bleft_right"
                 >
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_height="@dimen/_25sdp"
                     android:gravity="center"
-                    android:background="@drawable/home_back_border_black_tleft_right"
                     >
 
                     <com.cunoraz.gifview.library.GifView
@@ -154,10 +152,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:background="@drawable/home_back_border_black_bleft_right"
+
                     android:text="در حال انجام"
                     android:textColor="@color/ML_White"
-                    android:textSize="@dimen/_10sdp"
+                    android:textSize="@dimen/_9sdp"
                     android:gravity="center"
                     fontPath="font/iransans_web_medium.ttf"
                     android:paddingBottom="@dimen/_10sdp"
@@ -171,29 +169,28 @@
 
         <LinearLayout
             android:id="@+id/layoutRecordVoice"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
             android:orientation="vertical"
-            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:background="@drawable/back_circle_accent_bleft_bright"
             >
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:padding="@dimen/_3sdp"
                 android:src="@drawable/ic_mic"
-                android:tint="@color/ML_PrimaryDark"
-                android:background="@drawable/home_back_circle_border_accent_tleft_right"
+                android:tint="@color/ML_White"
                 />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/back_circle_accent_bleft_bright"
+                android:layout_height="wrap_content"
                 android:text="@string/RecordVoice"
                 android:textColor="@color/ML_White"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_9sdp"
                 android:gravity="center"
                 fontPath="font/iransans_web_medium.ttf"
                 android:paddingBottom="@dimen/_10sdp"
@@ -205,30 +202,68 @@
 
     </LinearLayout>
 
+
+
+
     <LinearLayout
         android:id="@+id/layoutRecord"
         android:layout_width="@dimen/_155sdp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:orientation="vertical"
         android:gravity="center"
         android:background="@drawable/back_recycler"
         >
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center"
-            >
+            android:gravity="center">
+
 
             <ImageView
                 android:id="@+id/imgRecordVoice"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:src="@drawable/ic_record_voice"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/_40sdp"
+                android:src="@drawable/ic_record"
                 android:tint="@color/colorAccent"
                 />
+
+
+            <ImageView
+                android:id="@+id/imgPlayVoice"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/_35sdp"
+                android:src="@drawable/ic_play_circle"
+                android:tint="@color/ML_Primary"
+                android:layout_marginLeft="@dimen/_10sdp"
+                />
+
+            <ImageView
+                android:id="@+id/imgRecordDelete"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:src="@drawable/ic_delete_forever"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutRecordProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
+            >
 
             <ProgressBar
                 android:id="@+id/progressRecordVoice"
@@ -242,39 +277,30 @@
                 android:layout_marginRight="@dimen/_3sdp"
                 android:layout_weight="1"/>
 
-            <ImageView
-                android:id="@+id/imgPlayVoice"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:src="@drawable/ic_play_circle"
-                android:tint="@color/ML_Primary"
-                />
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layoutRecordAction"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal"
             android:gravity="center">
 
 
+
+
             <ImageView
                 android:id="@+id/imgRecordAdd"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_assignment_turned_in"
                 android:tint="@color/colorAccent"
                 />
 
-            <ImageView
-                android:id="@+id/imgRecordDelete"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:src="@drawable/ic_delete_forever"
-                android:layout_marginLeft="@dimen/_20sdp"
-                />
+
 
 
         </LinearLayout>
@@ -286,12 +312,12 @@
         android:id="@+id/ButtonClose"
         android:layout_width="@dimen/_130sdp"
         android:layout_height="@dimen/_30sdp"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:background="@drawable/button_bg"
         android:paddingLeft="@dimen/_10sdp"
         android:paddingRight="@dimen/_10sdp"
         android:gravity="center"
-        android:text="@string/Ignore"
+        android:text="@string/Back"
         fontPath="font/iransans_web_medium.ttf"
         android:textColor="@color/ML_White"
         />

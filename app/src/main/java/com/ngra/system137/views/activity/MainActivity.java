@@ -1,18 +1,12 @@
 package com.ngra.system137.views.activity;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -38,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private NavController navController;
     private boolean doubleBackToExitPressedOnce = false;
     private int count = 1;
+    public static boolean Login;
 
     @BindView(R.id.mainMenu)
     ImageView mainMenu;
@@ -81,12 +76,28 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         layoutMenu.setVisibility(View.GONE);
         SetClick();
+        CheckLogin();
     }//_____________________________________________________________________________________________ End onCreate
+
+
+    private void CheckLogin() {//___________________________________________________________________ Start CheckLogin
+        Login = vm_mainActivity.CheckUserLogin();
+    }//_____________________________________________________________________________________________ End CheckLogin
 
 
     private void SetClick() {//_____________________________________________________________________ Start SetClick
 
-        layoutMenuBack.setOnClickListener(new View.OnClickListener() {
+
+        layoutMenuFallow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment);
+                navController.navigate(R.id.fallowRequestFragment);
+                CloseMenu();
+            }
+        });
+
+        layoutMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CloseMenu();
@@ -119,8 +130,13 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        count = 1;
-        Animation slide_in_top = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
+        if (Login) {
+            count = 3;
+            layoutMenuLogin.setVisibility(View.GONE);
+            layoutMenuSiguUp.setVisibility(View.GONE);
+        } else
+            count = 1;
+        Animation slide_in_top = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_right);
         layoutMenuBack.setAnimation(slide_in_top);
         layoutMenuBack.setVisibility(View.VISIBLE);
         layoutMenu.setVisibility(View.VISIBLE);
@@ -193,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void CloseMenu() {//____________________________________________________________________ Start CloseMenu
 
-        Animation slide_out_top = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_out_top);
+        Animation slide_out_top = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_out_right);
         layoutMenuBack.setAnimation(slide_out_top);
         layoutMenuBack.setVisibility(View.INVISIBLE);
         Handler handler2 = new Handler();

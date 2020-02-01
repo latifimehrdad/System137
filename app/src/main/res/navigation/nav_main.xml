@@ -96,6 +96,15 @@
             app:popExitAnim="@anim/slide_out_left"
             />
 
+        <action
+            android:id="@+id/action_homeFragment_to_fallowRequestFragment"
+            app:destination="@id/fallowRequestFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            />
+
     </fragment>
 
     <fragment
@@ -136,6 +145,8 @@
             />
 
     </fragment>
+
+
     <fragment
         android:id="@+id/newRequestFragment"
         android:name="com.ngra.system137.views.fragments.NewRequestFragment"
@@ -158,6 +169,14 @@
         android:name="com.ngra.system137.views.fragments.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" />
+
+
+    <fragment
+        android:id="@+id/fallowRequestFragment"
+        android:name="com.ngra.system137.views.fragments.FallowRequestFragment"
+        android:label="fragment_fallow_requst"
+        tools:layout="@layout/fragment_fallow_requst"
+        />
 
 
 </navigation>

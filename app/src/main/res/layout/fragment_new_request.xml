@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="0.2" />
+            android:layout_weight="0.15" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -194,6 +194,37 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/EditSubject"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/edit_back_tleft_bleft"
+                                    android:gravity="center"
+                                    android:hint="@string/Subject"
+                                    android:inputType="textPersonName"
+                                    android:maxLength="70"
+                                    android:minHeight="@dimen/_27sdp"
+                                    android:textColor="@color/ML_PrimaryDark"
+                                    android:textSize="@dimen/_11sdp" />
+
+                                <ImageView
+                                    android:layout_width="@dimen/_25sdp"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/icon_background"
+                                    android:src="@drawable/ic_featured"
+                                    android:padding="@dimen/_2sdp"
+                                    android:tint="@color/ML_White" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:gravity="center"
                                 android:orientation="horizontal">
@@ -207,7 +238,7 @@
                                     android:gravity="right|center_vertical"
                                     android:hint="@string/Description"
                                     android:maxLines="5"
-                                    android:minHeight="@dimen/_27sdp"
+                                    android:minHeight="@dimen/_50sdp"
                                     android:textColor="@color/ML_PrimaryDark"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -336,21 +367,49 @@
                                     android:id="@+id/RecyclerFiles"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/_7sdp"
+                                    android:layout_marginTop="@dimen/_12sdp"
                                     android:background="@drawable/back_recycler"
                                     android:minHeight="@dimen/_20sdp"
-                                    android:padding="@dimen/_5sdp" />
+                                    android:paddingBottom="@dimen/_5sdp"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingRight="@dimen/_5sdp"
+                                    android:paddingTop="@dimen/_10sdp"
+                                    />
 
-                                <TextView
+                                <LinearLayout
+                                    android:id="@+id/layoutShowFiles"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_marginRight="@dimen/_10sdp"
+                                    android:orientation="horizontal"
                                     android:background="@color/ML_WhiteGray"
-                                    android:paddingLeft="@dimen/_5sdp"
-                                    android:paddingRight="@dimen/_5sdp"
-                                    android:text="@string/FilesChoose"
-                                    android:textColor="@color/colorAccent" />
+                                    android:gravity="center"
+                                    >
+
+                                    <ImageView
+                                        android:id="@+id/imgCountFile"
+                                        android:layout_width="@dimen/_25sdp"
+                                        android:layout_height="@dimen/_25sdp"
+                                        android:src="@drawable/ic_keyboard_arrow_down"
+                                        android:tint="@color/colorAccent"
+                                        android:paddingLeft="@dimen/_2sdp"
+                                        />
+
+                                    <TextView
+                                        android:id="@+id/TextCountFile"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingRight="@dimen/_5sdp"
+                                        android:text="@string/FilesChoose"
+                                        android:textColor="@color/colorAccent" />
+
+                                </LinearLayout>
+
+
+
+
+
 
                             </RelativeLayout>
 
@@ -403,6 +462,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
+                            android:visibility="invisible"
                             />
 
 

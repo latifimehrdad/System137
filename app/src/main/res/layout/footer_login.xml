@@ -58,7 +58,17 @@
         android:layout_alignParentLeft="true"
         android:background="@drawable/back_circle_primery_top_right"
         android:gravity="center"
-        />
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ve:2"
+            android:textColor="@color/ML_White"
+            android:textSize="@dimen/_10sdp"
+            />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="@dimen/_130sdp"
