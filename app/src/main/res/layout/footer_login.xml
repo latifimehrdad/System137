@@ -63,7 +63,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ve:3"
+            android:text="Ve:5"
             android:textColor="@color/ML_White"
             android:textSize="@dimen/_10sdp"
             />

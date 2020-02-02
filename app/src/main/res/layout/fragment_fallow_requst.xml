@@ -81,7 +81,7 @@
                         android:layout_height="@dimen/_20sdp"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/ic_lock_open"
+                        android:src="@drawable/ic_search_black_24dp"
                         android:tint="@color/ML_White" />
 
 
@@ -114,7 +114,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/back_recycler"
                     android:minHeight="@dimen/_20sdp"
                     android:padding="@dimen/_5sdp" />
 

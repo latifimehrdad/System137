@@ -170,7 +170,7 @@
                 android:layout_marginRight="@dimen/_15sdp"
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
-                android:text="22"
+                android:text="21"
                 android:gravity="center"
                 android:background="@drawable/home_ring"
                 android:padding="@dimen/_3sdp"

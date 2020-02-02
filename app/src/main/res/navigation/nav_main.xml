@@ -102,8 +102,7 @@
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left"
-            />
+            app:popExitAnim="@anim/slide_out_left" />
 
     </fragment>
 
@@ -175,8 +174,7 @@
         android:id="@+id/fallowRequestFragment"
         android:name="com.ngra.system137.views.fragments.FallowRequestFragment"
         android:label="fragment_fallow_requst"
-        tools:layout="@layout/fragment_fallow_requst"
-        />
+        tools:layout="@layout/fragment_fallow_requst" />
 
     <fragment
         android:id="@+id/surveyFragment"

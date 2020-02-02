@@ -91,7 +91,15 @@ public class MainActivity extends AppCompatActivity {
         layoutMenuFallow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavController navController = Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment);
+
+                NavDestination navDestination = navController.getCurrentDestination();
+                String fragment = navDestination.getLabel().toString();
+                if (fragment.equalsIgnoreCase("fragment_fallow_requst")) {
+                    CloseMenu();
+                    return;
+                }
+
+                NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
                 navController.navigate(R.id.fallowRequestFragment);
                 CloseMenu();
             }
@@ -100,7 +108,14 @@ public class MainActivity extends AppCompatActivity {
         layoutMenuSurvey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavController navController = Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment);
+
+                NavDestination navDestination = navController.getCurrentDestination();
+                String fragment = navDestination.getLabel().toString();
+                if (fragment.equalsIgnoreCase("fragment_survey")) {
+                    CloseMenu();
+                    return;
+                }
+                NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
                 navController.navigate(R.id.surveyFragment);
                 CloseMenu();
             }
@@ -143,8 +158,11 @@ public class MainActivity extends AppCompatActivity {
             count = 3;
             layoutMenuLogin.setVisibility(View.GONE);
             layoutMenuSiguUp.setVisibility(View.GONE);
-        } else
+        } else {
             count = 1;
+            layoutMenuFallow.setVisibility(View.GONE);
+            layoutMenuSurvey.setVisibility(View.GONE);
+        }
         Animation slide_in_top = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_right);
         layoutMenuBack.setAnimation(slide_in_top);
         layoutMenuBack.setVisibility(View.VISIBLE);
@@ -169,10 +187,12 @@ public class MainActivity extends AppCompatActivity {
                         Animation slide_in_right2 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
                         layoutMenuSiguUp.setAnimation(slide_in_right2);
                         layoutMenuSiguUp.setVisibility(View.VISIBLE);
-                        count++;
+                        if (!Login)
+                            count = 5;
+                        else
+                            count++;
                         handler.postDelayed(this, 150);
                         break;
-
                     case 3:
                         Animation slide_in_right3 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
                         layoutMenuFallow.setAnimation(slide_in_right3);

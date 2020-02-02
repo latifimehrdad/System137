@@ -43,7 +43,7 @@ public class VM_FallowRequest {
 
                 Observables.onNext("GetRequest");
             }
-        }, 1000);
+        }, 100);
 
     }//_____________________________________________________________________________________________ End GetMyRequest
 

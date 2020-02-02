@@ -145,8 +145,8 @@
                 android:background="@drawable/menu_item_icon"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:padding="@dimen/_4sdp"
-                android:src="@drawable/ic_help_outline"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_speaker_notes"
                 android:tint="@color/ML_White"
                 />
 
@@ -219,7 +219,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/_5sdp"
-                android:src="@drawable/ic_phone"
+                android:src="@drawable/ic_help_outline"
                 android:tint="@color/ML_White"
                 />
 
