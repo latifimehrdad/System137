@@ -47,6 +47,7 @@
     <string name="ReTryRequest">پیگیری مجدد</string>
     <string name="ChooseType">انتخاب نوع</string>
     <string name="SearchTypes">جستجوی نوع درخواست</string>
+    <string name="RequestType">نوع درخواست</string>
     <string name="Description">توضیحات</string>
     <string name="Address">آدرس</string>
     <string name="ChooseAddressMap">انتخاب آدرس روی نقشه</string>
@@ -78,6 +79,9 @@
     <string name="Hidden">پنهان کردن</string>
     <string name="Back">بازگشت</string>
     <string name="Subject">موضوع</string>
+    <string name="Statue">وضعیت</string>
+    <string name="TakePartInTheSurvey">شرکت در نظر سنجی</string>
+    <string name="SetSurvey">ثبت نظر</string>
 
 
 </resources>

@@ -60,5 +60,49 @@ public class BindingAdabters {
     }//_____________________________________________________________________________________________ End setFileType
 
 
+    @BindingAdapter(value = {"RequestCode"})
+    public static void SetRequestCode(TextView textView, Integer code) {//__________________________ Start SetRequestCode
+        textView.setText(textView.getContext().getResources().getString(R.string.RequestCode) +
+                " : " + code);
+    }//_____________________________________________________________________________________________ End SetRequestCode
+
+
+    @BindingAdapter(value = {"RequestType"})
+    public static void SetRequestType(TextView textView, Integer type) {//__________________________ Start SetRequestType
+        String t = "";
+        switch (type){
+            case 1:
+                t = "نوع اول";
+                break;
+            case 2:
+                t = "نوع دوم";
+                break;
+        }
+        textView.setText(textView.getContext().getResources().getString(R.string.RequestType) +
+                " : " + t);
+    }//_____________________________________________________________________________________________ End SetRequestType
+
+
+    @BindingAdapter(value = {"RequestSubject"})
+    public static void SetRequestSubject(TextView textView, String subject) {//____________________ Start SetRequestSubject
+        textView.setText(textView.getContext().getResources().getString(R.string.Subject) +
+                " : " + subject);
+    }//_____________________________________________________________________________________________ End SetRequestSubject
+
+
+    @BindingAdapter(value = {"RequestStatue"})
+    public static void SetRequestStatue(TextView textView, int statue) {//__________________________ Start SetRequestStatue
+        String t = "";
+        switch (statue){
+            case 1:
+                t = "در حال پیگیری";
+                break;
+            case 2:
+                t = "پاسخ داده شده";
+                break;
+        }
+        textView.setText(textView.getContext().getResources().getString(R.string.Statue) +
+                " : " + t);
+    }//_____________________________________________________________________________________________ End SetRequestStatue
 
 }

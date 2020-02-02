@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="survey"
+            type="com.ngra.system137.models.ModelSurvey" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp"
+        android:background="@drawable/back_spinner"
+        android:layout_marginBottom="@dimen/_10sdp"
+        >
+
+        <TextView
+            app:RequestSubject="@{survey.subject}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_7sdp"
+            android:lines="1"
+            android:gravity="right|center_vertical"
+            android:text="@string/Subject"
+            fontPath="font/iransans_web_medium.ttf"
+            android:textColor="@color/colorAccent"/>
+
+
+        <TextView
+            android:text="@{survey.description}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_9sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:gravity="right|center_vertical"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="@color/ML_PrimaryDark"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_7sdp"
+            android:lines="1"
+            android:background="@drawable/button_bg"
+            fontPath="font/iransans_web_medium.ttf"
+            android:gravity="left|center_vertical"
+            android:text="@string/TakePartInTheSurvey"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textColor="@color/ML_White"/>
+
+    </LinearLayout>
+
+</layout>

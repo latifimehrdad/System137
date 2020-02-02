@@ -97,6 +97,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        layoutMenuSurvey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment);
+                navController.navigate(R.id.surveyFragment);
+                CloseMenu();
+            }
+        });
+
         layoutMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

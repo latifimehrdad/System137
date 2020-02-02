@@ -56,7 +56,9 @@ public class VM_NewRequest {
     public void GetType() {//_______________________________________________________________________ Start GetType
         types = new ArrayList<>();
         ModelSpinnerItem item = new ModelSpinnerItem(1, "نوع اول");
+        ModelSpinnerItem item2 = new ModelSpinnerItem(2, "نوع دوم");
         types.add(item);
+        types.add(item2);
         Observables.onNext("GetType");
     }//_____________________________________________________________________________________________ End GetType
 

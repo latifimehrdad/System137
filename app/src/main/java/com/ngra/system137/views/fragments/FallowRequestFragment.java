@@ -24,6 +24,7 @@ import com.ngra.system137.databinding.FragmentFallowRequstBinding;
 import com.ngra.system137.utility.StaticFunctions;
 import com.ngra.system137.viewmodels.fragments.VM_FallowRequest;
 import com.ngra.system137.views.adabters.FilesAdabter;
+import com.ngra.system137.views.adabters.RequestAdabter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +43,7 @@ public class FallowRequestFragment extends Fragment {
     private View view;
     private VM_FallowRequest vm_fallowRequest;
     private DisposableObserver<String> observer;
+    private RequestAdabter requestAdabter;
 
     @BindView(R.id.RequestCode)
     EditText RequestCode;
@@ -57,6 +59,9 @@ public class FallowRequestFragment extends Fragment {
 
     @BindView(R.id.ProgressGif)
     GifView ProgressGif;
+
+    @BindView(R.id.RecyclerRequest)
+    RecyclerView RecyclerRequest;
 
 
 
@@ -92,6 +97,7 @@ public class FallowRequestFragment extends Fragment {
             observer.dispose();
         observer = null;
         ObserverObservable();
+        GetMyRequest();
     }//_____________________________________________________________________________________________ End onStart
 
 
@@ -129,7 +135,7 @@ public class FallowRequestFragment extends Fragment {
 
     private void DismissLoading() {//_______________________________________________________________ Start DismissLoading
         StaticFunctions.isCancel = true;
-        BtnSearchText.setText(getResources().getString(R.string.Login));
+        BtnSearchText.setText(getResources().getString(R.string.Search));
         BtnSearch.setBackground(getResources().getDrawable(R.drawable.button_bg));
         ProgressGif.setVisibility(View.GONE);
         imgProgress.setVisibility(View.VISIBLE);
@@ -194,9 +200,9 @@ public class FallowRequestFragment extends Fragment {
 
     private void SetAdabterRequest() {//____________________________________________________________ Start SetAdabterRequest
 
-//        filesAdabter = new FilesAdabter(vm_newRequest.getFiles(), vm_newRequest);
-//        RecyclerFiles.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
-//        RecyclerFiles.setAdapter(filesAdabter);
+        requestAdabter = new RequestAdabter(vm_fallowRequest.getRequests(), FallowRequestFragment.this);
+        RecyclerRequest.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+        RecyclerRequest.setAdapter(requestAdabter);
 
     }//_____________________________________________________________________________________________ End SetAdabterRequest
 
@@ -205,7 +211,9 @@ public class FallowRequestFragment extends Fragment {
     @Override
     public void onDestroy() {//_____________________________________________________________________ Start onDestroy
         super.onDestroy();
-        observer.dispose();
+        if (observer != null)
+            observer.dispose();
+        observer = null;
     }//_____________________________________________________________________________________________ End onDestroy
 
 

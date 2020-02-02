@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="request"
+            type="com.ngra.system137.models.ModelFallowRequest" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp"
+        android:background="@drawable/back_recycler"
+        android:layout_marginBottom="@dimen/_10sdp"
+        >
+
+        <TextView
+            app:RequestCode="@{request.code}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_9sdp"
+            android:lines="1"
+            android:gravity="right|center_vertical"
+            android:textColor="@color/colorAccent"/>
+
+
+        <TextView
+            app:RequestStatue="@{request.statue}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_9sdp"
+            android:lines="1"
+            android:gravity="right|center_vertical"
+            fontPath="font/iransans_web_medium.ttf"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textColor="@color/ML_PrimaryDark"/>
+
+
+        <TextView
+            app:RequestType="@{request.type}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_9sdp"
+            android:lines="1"
+            android:gravity="right|center_vertical"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textColor="@color/colorAccent"/>
+
+        <TextView
+            app:RequestSubject="@{request.subject}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_9sdp"
+            android:lines="1"
+            android:gravity="right|center_vertical"
+            fontPath="font/iransans_web_medium.ttf"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textColor="@color/colorAccent"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_8sdp"
+            android:gravity="right|center_vertical"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textColor="@color/colorAccent"
+            android:lines="1"
+            android:ellipsize="end"
+            android:text="@{request.description}"
+            />
+
+    </LinearLayout>
+
+</layout>
