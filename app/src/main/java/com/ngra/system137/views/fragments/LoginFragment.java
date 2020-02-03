@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import android.widget.TextView;
 import com.cunoraz.gifview.library.GifView;
 import com.ngra.system137.R;
 import com.ngra.system137.databinding.FragmentLoginBinding;
+import com.ngra.system137.utility.MaterialShowCaseView.MaterialShowcaseSequence;
+import com.ngra.system137.utility.MaterialShowCaseView.ShowcaseConfig;
 import com.ngra.system137.utility.StaticFunctions;
 import com.ngra.system137.viewmodels.fragments.VM_LoginFragment;
 
@@ -118,7 +121,45 @@ public class LoginFragment extends Fragment {
         observer = null;
         ObserverObservable();
         CheckPermissions();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ShowCaseHelp();
+            }
+        },500);
+
     }//_____________________________________________________________________________________________ End onStart
+
+
+
+    private void ShowCaseHelp() {//_________________________________________________________________ Start ShowCaseHelp
+
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(50); // half second between each showcase view
+
+        String SHOWCASE_ID = "sequence login";
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), SHOWCASE_ID);
+
+        sequence.setConfig(config);
+
+        sequence.addSequenceItem(
+                layoutGuest,
+                getResources().getString(R.string.HelpGuest),
+                getResources().getString(R.string.Next),"Circle");
+
+        sequence.addSequenceItem(
+                BtnLogin,
+                getResources().getString(R.string.HelpLogin),
+                getResources().getString(R.string.Next),"Rectangle");
+
+        sequence.addSequenceItem(ButtonSignUp,
+                getResources().getString(R.string.HelpSignUp),
+                getResources().getString(R.string.Close),"Rectangle");
+
+        sequence.start();
+
+    }//_____________________________________________________________________________________________ End ShowCaseHelp
 
 
 

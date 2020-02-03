@@ -82,6 +82,26 @@
     <string name="Statue">وضعیت</string>
     <string name="TakePartInTheSurvey">شرکت در نظر سنجی</string>
     <string name="SetSurvey">ثبت نظر</string>
+    <string name="Next">بعدی</string>
+    <string name="Close">بستن</string>
+
+    <string name="HelpChooseAddress">شما میتوانید مکان خود را روی نقشه انتخاب نمایید، با انتخاب مکان، آدرس بصورت اتوماتیک در قسمت آدرس درج میشود</string>
+    <string name="HelpAttachFiles">شما میتوانید به همراه درخواست خود فایل نیز ارسال نمایید(انتخاب فایل اختیاری میباشد)</string>
+    <string name="HelpShowAttachFiles">با لمس مشاهده فایلها، میتوانید فایلهای انتخابی خود را ببینید و حذف نمایید</string>
+    <string name="HelpSendRequest">بعد از تکمیل موارد خواسته شده، برای ارسال درخواست، دکمه ارسال درخواست را لمس نمایید</string>
+    <string name="HelpGuest">با انتخاب این گزینه شما برای ارسال درخواستها مجبورید هربار نام و شماره همراه خود را وارد نمایید</string>
+    <string name="HelpLogin">بعد از وارد نمودن نام کاربری و رمز، جهت ورود این گزینه را لمس نمایید</string>
+    <string name="HelpSignUp">جهت ثبت نام و استفاده بهتر از امکانات نرم افزار این گزینه را لمس نمایید</string>
+    <string name="HelpNewRequest">جهت ارسال درخواست جدید از این گزینه استفاده نمایید</string>
+    <string name="HelpFallowRequest">جهت پیگیری نتیجه درخواستهای قبلی این گزینه را لمس نمایید</string>
+    <string name="HelpTotalRequest">نمایش همه درخواستهای قبلی بدون در نظر گرفتن نتیجه آنها</string>
+    <string name="HelpInProgress">جهت نمایش درخواستهای قبلی که در حال پیگیری میباشن از این گزینه استفاده نمایید</string>
+    <string name="HelpAnswered">برای دیدن درخواستهای قبلی که پاسخ داده شده، از این گزینه استفاده نمایید</string>
+    <string name="HelpFollowUp">برای مشاهده درخواستهایی که شما مایل بودید پیگیری مجدد شوند این گزینه را لمس نمایید</string>
+    <string name="HelpChooseDoc">شما میتوانید تعداد 2 عدد فایل را به درخواست خود اضافه نمایید</string>
+    <string name="HelpChooseImage">شما میتوانید تعداد 3 عدد تصویر را به درخواست خود اضافه نمایید</string>
+    <string name="HelpProgressVideo">شما میتوانید تعداد 1 عدد ویدیو را به درخواست خود اضافه نمایید</string>
+    <string name="HelpRecordVoice">شما میتوانید 1 بار صدای خود را به هر درخواستی اضافه کنید</string>
 
 
 </resources>

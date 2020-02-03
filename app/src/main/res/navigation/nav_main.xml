@@ -96,6 +96,9 @@
             app:popExitAnim="@anim/slide_out_left"
             />
 
+        <argument android:name="type"
+            android:defaultValue="FallowRequest"/>
+
         <action
             android:id="@+id/action_homeFragment_to_fallowRequestFragment"
             app:destination="@id/fallowRequestFragment"
@@ -181,6 +184,12 @@
         android:name="com.ngra.system137.views.fragments.SurveyFragment"
         android:label="fragment_survey"
         tools:layout="@layout/fragment_survey" />
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.ngra.system137.views.fragments.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
 
 
 </navigation>

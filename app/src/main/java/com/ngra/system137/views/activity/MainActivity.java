@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.ngra.system137.R;
 import com.ngra.system137.databinding.ActivityMainBinding;
+import com.ngra.system137.utility.MaterialShowCaseView.MaterialShowcaseSequence;
+import com.ngra.system137.utility.MaterialShowCaseView.ShowcaseConfig;
 import com.ngra.system137.viewmodels.activity.VM_MainActivity;
 import com.ngra.system137.views.fragments.NewRequestFragment;
 
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         layoutMenu.setVisibility(View.GONE);
         SetClick();
         CheckLogin();
+        //ShowCaseHelp();
     }//_____________________________________________________________________________________________ End onCreate
 
 
@@ -85,8 +88,82 @@ public class MainActivity extends AppCompatActivity {
     }//_____________________________________________________________________________________________ End CheckLogin
 
 
+
+    private void ShowCaseHelp() {//_________________________________________________________________ Start ShowCaseHelp
+
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(350); // half second between each showcase view
+
+        String SHOWCASE_ID = "sequence menu";
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_ID);
+
+
+        sequence.setConfig(config);
+
+        sequence.addSequenceItem(mainMenu,"نمایش منوی نرم افزار","بستن", "Circle");
+
+        sequence.start();
+
+    }//_____________________________________________________________________________________________ End ShowCaseHelp
+
+
+
     private void SetClick() {//_____________________________________________________________________ Start SetClick
 
+        layoutMenuExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.exit(1);
+            }
+        });
+
+        layoutMenuAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDestination navDestination = navController.getCurrentDestination();
+                String fragment = navDestination.getLabel().toString();
+                if (fragment.equalsIgnoreCase("fragment_about")) {
+                    CloseMenu();
+                    return;
+                }
+
+                NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
+                navController.navigate(R.id.aboutFragment);
+                CloseMenu();
+            }
+        });
+
+        layoutMenuLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDestination navDestination = navController.getCurrentDestination();
+                String fragment = navDestination.getLabel().toString();
+                if (fragment.equalsIgnoreCase("fragment_before_login")) {
+                    CloseMenu();
+                    return;
+                }
+
+                NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
+                navController.navigate(R.id.LoginFragment);
+                CloseMenu();
+            }
+        });
+
+        layoutMenuSiguUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDestination navDestination = navController.getCurrentDestination();
+                String fragment = navDestination.getLabel().toString();
+                if (fragment.equalsIgnoreCase("fragment_signup")) {
+                    CloseMenu();
+                    return;
+                }
+
+                NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
+                navController.navigate(R.id.signUpFragment);
+                CloseMenu();
+            }
+        });
 
         layoutMenuFallow.setOnClickListener(new View.OnClickListener() {
             @Override

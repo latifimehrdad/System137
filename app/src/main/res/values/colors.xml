@@ -8,7 +8,7 @@
     <color name="ML_PrimaryDark">#b32400</color>
     <color name="ML_Black">#000000</color>
     <color name="ML_Primarylight">#FDD4C9</color>
-
+    <color name="ML_PrimaryOverlight">#FFECE7</color>
     <color name="ML_White">#ffffff</color>
     <color name="ML_WhiteGray">#FAFAFA</color>
     <color name="ML_WhiteGrayDark">#CACACA</color>

@@ -9,18 +9,23 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.ngra.system137.R;
 import com.ngra.system137.databinding.FragmentHomeBinding;
+import com.ngra.system137.utility.MaterialShowCaseView.MaterialShowcaseSequence;
+import com.ngra.system137.utility.MaterialShowCaseView.ShowcaseConfig;
 import com.ngra.system137.viewmodels.fragments.VM_HomeFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 import static com.ngra.system137.views.activity.MainActivity.Login;
 
@@ -97,8 +102,63 @@ public class HomeFragment extends Fragment {
         navController = Navigation.findNavController(view);
         CheckLogin();
         SetClick();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ShowCaseHelp();
+            }
+        },500);
 
     }//_____________________________________________________________________________________________ End onStart
+
+
+    private void ShowCaseHelp() {//_________________________________________________________________ Start ShowCaseHelp
+
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(100); // half second between each showcase view
+
+        String SHOWCASE_ID = "sequence home";
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), SHOWCASE_ID);
+
+        sequence.setConfig(config);
+
+        sequence.addSequenceItem(
+                NewRequest,
+                getResources().getString(R.string.HelpNewRequest),
+                getResources().getString(R.string.Next),"Oval");
+
+        sequence.addSequenceItem(
+                FallowRequest,
+                getResources().getString(R.string.HelpFallowRequest),
+                getResources().getString(R.string.Next),"Oval");
+
+        sequence.addSequenceItem(
+                TotalRequest,
+                getResources().getString(R.string.HelpTotalRequest),
+                getResources().getString(R.string.Next),"Circle");
+
+        sequence.addSequenceItem(
+                InProgress,
+                getResources().getString(R.string.HelpInProgress),
+                getResources().getString(R.string.Next),"Circle");
+
+        sequence.addSequenceItem(
+                Answered,
+                getResources().getString(R.string.HelpAnswered),
+                getResources().getString(R.string.Next),"Circle");
+
+        sequence.addSequenceItem(
+                FollowUp,
+                getResources().getString(R.string.HelpFollowUp),
+                getResources().getString(R.string.Close),"Circle");
+
+        sequence.start();
+
+
+    }//_____________________________________________________________________________________________ End ShowCaseHelp
+
+
 
 
     private void CheckLogin() {//___________________________________________________________________ Start CheckLogin
@@ -146,35 +206,45 @@ public class HomeFragment extends Fragment {
         FallowRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navController.navigate(R.id.action_homeFragment_to_fallowRequestFragment);
+                Bundle bundle = new Bundle();
+                bundle.putString("type", "FallowRequest");
+                navController.navigate(R.id.action_homeFragment_to_fallowRequestFragment, bundle);
             }
         });
 
         TotalRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Bundle bundle = new Bundle();
+                bundle.putString("type", "TotalRequest");
+                navController.navigate(R.id.action_homeFragment_to_fallowRequestFragment, bundle);
             }
         });
 
         InProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Bundle bundle = new Bundle();
+                bundle.putString("type", "InProgress");
+                navController.navigate(R.id.action_homeFragment_to_fallowRequestFragment, bundle);
             }
         });
 
         Answered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Bundle bundle = new Bundle();
+                bundle.putString("type", "Answered");
+                navController.navigate(R.id.action_homeFragment_to_fallowRequestFragment, bundle);
             }
         });
 
         FollowUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Bundle bundle = new Bundle();
+                bundle.putString("type", "FollowUp");
+                navController.navigate(R.id.action_homeFragment_to_fallowRequestFragment, bundle);
             }
         });
 

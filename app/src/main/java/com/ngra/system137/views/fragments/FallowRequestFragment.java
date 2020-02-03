@@ -44,6 +44,7 @@ public class FallowRequestFragment extends Fragment {
     private VM_FallowRequest vm_fallowRequest;
     private DisposableObserver<String> observer;
     private RequestAdabter requestAdabter;
+    private String Type;
 
     @BindView(R.id.RequestCode)
     EditText RequestCode;
@@ -91,6 +92,7 @@ public class FallowRequestFragment extends Fragment {
     @Override
     public void onStart() {//_______________________________________________________________________ Start onStart
         super.onStart();
+        Type = getArguments().getString("type");
         SetClick();
         SetTextWatcher();
         if(observer != null)
@@ -123,7 +125,7 @@ public class FallowRequestFragment extends Fragment {
 
     private void GetMyRequest() {//_________________________________________________________________ Start GetMyRequest
         ShowLoading();
-        vm_fallowRequest.GetMyRequest();
+        vm_fallowRequest.GetMyRequest(Type);
     }//_____________________________________________________________________________________________ End GetMyRequest
 
 

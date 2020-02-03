@@ -48,6 +48,8 @@ import com.ngra.system137.R;
 import com.ngra.system137.databinding.FragmentNewRequestBinding;
 import com.ngra.system137.models.ModelNewRequest;
 import com.ngra.system137.models.ModelSpinnerItem;
+import com.ngra.system137.utility.MaterialShowCaseView.MaterialShowcaseSequence;
+import com.ngra.system137.utility.MaterialShowCaseView.ShowcaseConfig;
 import com.ngra.system137.utility.StaticFunctions;
 import com.ngra.system137.viewmodels.fragments.VM_MapFragment;
 import com.ngra.system137.viewmodels.fragments.VM_NewRequest;
@@ -253,8 +255,92 @@ public class NewRequestFragment extends Fragment {
         CheckLogin();
         SetTextWatcher();
         HideFiles();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ShowCaseHelp();
+            }
+        },500);
 
     }//_____________________________________________________________________________________________ End onStart
+
+
+    private void ShowCaseHelp() {//_________________________________________________________________ Start ShowCaseHelp
+
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(100); // half second between each showcase view
+
+        String SHOWCASE_ID = "sequence request";
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), SHOWCASE_ID);
+
+        sequence.setConfig(config);
+
+        sequence.addSequenceItem(
+                layoutChooseAddress,
+                getResources().getString(R.string.HelpChooseAddress),
+                getResources().getString(R.string.Next),"Rectangle");
+
+        sequence.addSequenceItem(
+                layoutAttach,
+                getResources().getString(R.string.HelpAttachFiles),
+                getResources().getString(R.string.Next),"Rectangle");
+
+        sequence.addSequenceItem(
+                layoutShowFiles,
+                getResources().getString(R.string.HelpShowAttachFiles),
+                getResources().getString(R.string.Next),"Rectangle");
+
+        sequence.addSequenceItem(
+                ButtonSend,
+                getResources().getString(R.string.HelpSendRequest),
+                getResources().getString(R.string.Close),"Rectangle");
+
+        sequence.start();
+
+
+    }//_____________________________________________________________________________________________ End ShowCaseHelp
+
+
+
+
+
+    private void ShowCaseHelpFiles() {//____________________________________________________________ Start ShowCaseHelpFiles
+
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(100); // half second between each showcase view
+
+        String SHOWCASE_ID = "sequence files";
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), SHOWCASE_ID);
+
+        sequence.setConfig(config);
+
+        sequence.addSequenceItem(
+                layoutChooseDoc,
+                getResources().getString(R.string.HelpChooseDoc),
+                getResources().getString(R.string.Next),"Rectangle");
+
+        sequence.addSequenceItem(
+                layoutChooseImage,
+                getResources().getString(R.string.HelpChooseImage),
+                getResources().getString(R.string.Next),"Rectangle");
+
+        sequence.addSequenceItem(
+                layoutProgressVideo,
+                getResources().getString(R.string.HelpProgressVideo),
+                getResources().getString(R.string.Next),"Rectangle");
+
+        sequence.addSequenceItem(
+                layoutChooseVideo,
+                getResources().getString(R.string.HelpRecordVoice),
+                getResources().getString(R.string.Close),"Rectangle");
+
+        sequence.start();
+
+
+    }//_____________________________________________________________________________________________ End ShowCaseHelpFiles
+
+
 
 
     private void SetAddress() {//___________________________________________________________________ Start SetAddress
@@ -691,6 +777,7 @@ public class NewRequestFragment extends Fragment {
         layoutAttach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (layoutDialog.getVisibility() == View.VISIBLE) {
                     layoutDialog.setVisibility(View.GONE);
                     layoutRequest.setVisibility(View.VISIBLE);
@@ -698,6 +785,7 @@ public class NewRequestFragment extends Fragment {
                     layoutDialog.setVisibility(View.VISIBLE);
                     layoutRequest.setVisibility(View.INVISIBLE);
                     layoutRecord.setVisibility(View.GONE);
+                    ShowCaseHelpFiles();
                 }
             }
         });

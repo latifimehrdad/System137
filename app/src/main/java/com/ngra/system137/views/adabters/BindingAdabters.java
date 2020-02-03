@@ -77,6 +77,9 @@ public class BindingAdabters {
             case 2:
                 t = "نوع دوم";
                 break;
+            case 3:
+                t = "نوع سوم";
+                break;
         }
         textView.setText(textView.getContext().getResources().getString(R.string.RequestType) +
                 " : " + t);
@@ -99,6 +102,9 @@ public class BindingAdabters {
                 break;
             case 2:
                 t = "پاسخ داده شده";
+                break;
+            case 3:
+                t = "پیگیری مجدد";
                 break;
         }
         textView.setText(textView.getContext().getResources().getString(R.string.Statue) +
