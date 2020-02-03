@@ -92,7 +92,12 @@ public class FallowRequestFragment extends Fragment {
     @Override
     public void onStart() {//_______________________________________________________________________ Start onStart
         super.onStart();
-        Type = getArguments().getString("type");
+        try {
+            Type = getArguments().getString("type");
+        } catch (Exception ex) {
+            Type = "FallowRequest";
+        }
+
         SetClick();
         SetTextWatcher();
         if(observer != null)

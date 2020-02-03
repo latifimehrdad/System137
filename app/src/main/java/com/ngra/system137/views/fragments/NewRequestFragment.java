@@ -326,12 +326,12 @@ public class NewRequestFragment extends Fragment {
                 getResources().getString(R.string.Next),"Rectangle");
 
         sequence.addSequenceItem(
-                layoutProgressVideo,
+                layoutChooseVideo,
                 getResources().getString(R.string.HelpProgressVideo),
                 getResources().getString(R.string.Next),"Rectangle");
 
         sequence.addSequenceItem(
-                layoutChooseVideo,
+                layoutRecordVoice,
                 getResources().getString(R.string.HelpRecordVoice),
                 getResources().getString(R.string.Close),"Rectangle");
 

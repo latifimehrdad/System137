@@ -101,7 +101,7 @@
     <string name="HelpChooseDoc">شما میتوانید تعداد 2 عدد فایل را به درخواست خود اضافه نمایید</string>
     <string name="HelpChooseImage">شما میتوانید تعداد 3 عدد تصویر را به درخواست خود اضافه نمایید</string>
     <string name="HelpProgressVideo">شما میتوانید تعداد 1 عدد ویدیو را به درخواست خود اضافه نمایید</string>
-    <string name="HelpRecordVoice">شما میتوانید 1 بار صدای خود را به هر درخواستی اضافه کنید</string>
+    <string name="HelpRecordVoice">شما میتوانید 1 بار صدای خود را به همراه هر درخواستی ارسال نمایید</string>
 
 
 </resources>
