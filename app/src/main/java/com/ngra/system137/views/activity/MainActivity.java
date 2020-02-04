@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -88,27 +89,203 @@ public class MainActivity extends AppCompatActivity {
     }//_____________________________________________________________________________________________ End CheckLogin
 
 
-
-    private void ShowCaseHelp() {//_________________________________________________________________ Start ShowCaseHelp
+    private void ShowCaseHelpLogin() {//____________________________________________________________ Start ShowCaseHelpLogin
 
         ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(350); // half second between each showcase view
+        config.setDelay(50); // half second between each showcase view
 
-        String SHOWCASE_ID = "sequence menu";
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_ID);
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, true);
+
+        LinearLayout layoutGuest = (LinearLayout) findViewById(R.id.layoutGuest);
+        RelativeLayout BtnLogin = (RelativeLayout) findViewById(R.id.BtnLogin);
+        Button ButtonSignUp = (Button) findViewById(R.id.ButtonSignUp);
+
+        sequence.setConfig(config);
+
+        sequence.addSequenceItem(
+                layoutGuest,
+                getResources().getString(R.string.HelpGuest),
+                getResources().getString(R.string.Next), "Rectangle");
+
+        sequence.addSequenceItem(
+                BtnLogin,
+                getResources().getString(R.string.HelpLogin),
+                getResources().getString(R.string.Next), "Rectangle");
+
+        sequence.addSequenceItem(
+                ButtonSignUp,
+                getResources().getString(R.string.HelpSignUp),
+                getResources().getString(R.string.Close), "Rectangle");
+
+        sequence.start();
+
+    }//_____________________________________________________________________________________________ End ShowCaseHelpLogin
+
+
+    private void ShowCaseHelpHome() {//_____________________________________________________________ Start ShowCaseHelpHome
+
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(100); // half second between each showcase view
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, true);
+
+        LinearLayout NewRequest = (LinearLayout) findViewById(R.id.NewRequest);
+        LinearLayout FallowRequest = (LinearLayout) findViewById(R.id.FallowRequest);
+        LinearLayout TotalRequest = (LinearLayout) findViewById(R.id.TotalRequest);
+        LinearLayout InProgress = (LinearLayout) findViewById(R.id.InProgress);
+        LinearLayout Answered = (LinearLayout) findViewById(R.id.Answered);
+        LinearLayout FollowUp = (LinearLayout) findViewById(R.id.FollowUp);
 
 
         sequence.setConfig(config);
 
-        sequence.addSequenceItem(mainMenu,"نمایش منوی نرم افزار","بستن", "Circle");
+        sequence.addSequenceItem(
+                NewRequest,
+                getResources().getString(R.string.HelpNewRequest),
+                getResources().getString(R.string.Next), "Rectangle");
+
+        sequence.addSequenceItem(
+                FallowRequest,
+                getResources().getString(R.string.HelpFallowRequest),
+                getResources().getString(R.string.Next), "Rectangle");
+
+        sequence.addSequenceItem(
+                TotalRequest,
+                getResources().getString(R.string.HelpTotalRequest),
+                getResources().getString(R.string.Next), "Rectangle");
+
+        sequence.addSequenceItem(
+                InProgress,
+                getResources().getString(R.string.HelpInProgress),
+                getResources().getString(R.string.Next), "Rectangle");
+
+        sequence.addSequenceItem(
+                Answered,
+                getResources().getString(R.string.HelpAnswered),
+                getResources().getString(R.string.Next), "Rectangle");
+
+        sequence.addSequenceItem(
+                FollowUp,
+                getResources().getString(R.string.HelpFollowUp),
+                getResources().getString(R.string.Close), "Rectangle");
 
         sequence.start();
 
-    }//_____________________________________________________________________________________________ End ShowCaseHelp
 
+    }//_____________________________________________________________________________________________ End ShowCaseHelpHome
+
+
+    private void ShowCaseHelpNewRequest() {//_______________________________________________________ Start ShowCaseHelpNewRequest
+
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(100); // half second between each showcase view
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, true);
+
+        LinearLayout layoutChooseAddress = (LinearLayout) findViewById(R.id.layoutChooseAddress);
+        LinearLayout layoutAttach = (LinearLayout) findViewById(R.id.layoutAttach);
+        LinearLayout layoutShowFiles = (LinearLayout) findViewById(R.id.layoutShowFiles);
+        RelativeLayout ButtonSend = (RelativeLayout) findViewById(R.id.ButtonSend);
+
+        sequence.setConfig(config);
+
+        sequence.addSequenceItem(
+                layoutChooseAddress,
+                getResources().getString(R.string.HelpChooseAddress),
+                getResources().getString(R.string.Next), "Rectangle");
+
+        sequence.addSequenceItem(
+                layoutAttach,
+                getResources().getString(R.string.HelpAttachFiles),
+                getResources().getString(R.string.Next), "Rectangle");
+
+        sequence.addSequenceItem(
+                layoutShowFiles,
+                getResources().getString(R.string.HelpShowAttachFiles),
+                getResources().getString(R.string.Next), "Rectangle");
+
+        sequence.addSequenceItem(
+                ButtonSend,
+                getResources().getString(R.string.HelpSendRequest),
+                getResources().getString(R.string.Close), "Rectangle");
+
+        sequence.start();
+
+
+    }//_____________________________________________________________________________________________ End ShowCaseHelpNewRequest
+
+
+    private void ShowCaseHelpFiles() {//____________________________________________________________ Start ShowCaseHelpFiles
+
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(100); // half second between each showcase view
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, true);
+
+        LinearLayout layoutChooseDoc = (LinearLayout) findViewById(R.id.layoutChooseDoc);
+        LinearLayout layoutChooseImage = (LinearLayout) findViewById(R.id.layoutChooseImage);
+        LinearLayout layoutChooseVideo = (LinearLayout) findViewById(R.id.layoutChooseVideo);
+        LinearLayout layoutRecordVoice = (LinearLayout) findViewById(R.id.layoutRecordVoice);
+
+
+        sequence.setConfig(config);
+
+        sequence.addSequenceItem(
+                layoutChooseDoc,
+                getResources().getString(R.string.HelpChooseDoc),
+                getResources().getString(R.string.Next), "Rectangle");
+
+        sequence.addSequenceItem(
+                layoutChooseImage,
+                getResources().getString(R.string.HelpChooseImage),
+                getResources().getString(R.string.Next), "Rectangle");
+
+        sequence.addSequenceItem(
+                layoutChooseVideo,
+                getResources().getString(R.string.HelpProgressVideo),
+                getResources().getString(R.string.Next), "Rectangle");
+
+        sequence.addSequenceItem(
+                layoutRecordVoice,
+                getResources().getString(R.string.HelpRecordVoice),
+                getResources().getString(R.string.Close), "Rectangle");
+
+        sequence.start();
+
+
+    }//_____________________________________________________________________________________________ End ShowCaseHelpFiles
 
 
     private void SetClick() {//_____________________________________________________________________ Start SetClick
+
+
+        layoutMenuHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDestination navDestination = navController.getCurrentDestination();
+                String fragment = navDestination.getLabel().toString();
+                switch (fragment) {
+                    case "fragment_before_login":
+                        ShowCaseHelpLogin();
+                        CloseMenu();
+                        break;
+                    case "fragment_home":
+                        ShowCaseHelpHome();
+                        CloseMenu();
+                        break;
+                    case "fragment_new_request":
+                        if (!NewRequestFragment.ShowLayoutAttachfile)
+                            ShowCaseHelpNewRequest();
+                        else
+                            ShowCaseHelpFiles();
+                        CloseMenu();
+                        break;
+
+                }
+
+
+            }
+        });
 
         layoutMenuExit.setOnClickListener(new View.OnClickListener() {
             @Override

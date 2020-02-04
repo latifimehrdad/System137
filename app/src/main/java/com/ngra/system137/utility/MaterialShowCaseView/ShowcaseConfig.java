@@ -7,7 +7,7 @@ import com.ngra.system137.utility.MaterialShowCaseView.shape.Shape;
 
 public class ShowcaseConfig {
 
-    public static final String DEFAULT_MASK_COLOUR = "#EB335075";
+    public static final String DEFAULT_MASK_COLOUR = "#BF464646";
 
     private long mDelay = -1;
     private int mMaskColour;

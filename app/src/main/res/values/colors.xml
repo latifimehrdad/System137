@@ -20,4 +20,6 @@
 
     <color name="ML_DialogTransparent">#D9000000</color>
 
+    <color name="test">#BF464646</color>
+
 </resources>

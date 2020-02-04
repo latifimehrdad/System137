@@ -3,6 +3,7 @@ package com.ngra.system137.utility.MaterialShowCaseView.shape;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 import com.ngra.system137.utility.MaterialShowCaseView.target.Target;
 
@@ -51,13 +52,19 @@ public class RectangleShape implements Shape {
     @Override
     public void draw(Canvas canvas, Paint paint, int x, int y) {
         if (!rect.isEmpty()) {
-            canvas.drawRect(
-                    rect.left + x - padding,
+
+            canvas.drawRoundRect(new RectF(rect.left + x - padding,
                     rect.top + y - padding,
                     rect.right + x + padding,
-                    rect.bottom + y + padding,
-                    paint
-            );
+                    rect.bottom + y + padding), 6, 6, paint);
+
+//            canvas.drawRect(
+//                    rect.left + x - padding,
+//                    rect.top + y - padding,
+//                    rect.right + x + padding,
+//                    rect.bottom + y + padding,
+//                    paint
+//            );
         }
     }
 

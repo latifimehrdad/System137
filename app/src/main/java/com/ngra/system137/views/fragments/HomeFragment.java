@@ -92,6 +92,13 @@ public class HomeFragment extends Fragment {
         binding.setHome(vm_homeFragment);
         view = binding.getRoot();
         ButterKnife.bind(this, view);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ShowCaseHelp();
+            }
+        },500);
         return view;
     }//_____________________________________________________________________________________________ End HomeFragment
 
@@ -102,13 +109,6 @@ public class HomeFragment extends Fragment {
         navController = Navigation.findNavController(view);
         CheckLogin();
         SetClick();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ShowCaseHelp();
-            }
-        },500);
 
     }//_____________________________________________________________________________________________ End onStart
 
@@ -126,32 +126,32 @@ public class HomeFragment extends Fragment {
         sequence.addSequenceItem(
                 NewRequest,
                 getResources().getString(R.string.HelpNewRequest),
-                getResources().getString(R.string.Next),"Oval");
+                getResources().getString(R.string.Next),"Rectangle");
 
         sequence.addSequenceItem(
                 FallowRequest,
                 getResources().getString(R.string.HelpFallowRequest),
-                getResources().getString(R.string.Next),"Oval");
+                getResources().getString(R.string.Next),"Rectangle");
 
         sequence.addSequenceItem(
                 TotalRequest,
                 getResources().getString(R.string.HelpTotalRequest),
-                getResources().getString(R.string.Next),"Circle");
+                getResources().getString(R.string.Next),"Rectangle");
 
         sequence.addSequenceItem(
                 InProgress,
                 getResources().getString(R.string.HelpInProgress),
-                getResources().getString(R.string.Next),"Circle");
+                getResources().getString(R.string.Next),"Rectangle");
 
         sequence.addSequenceItem(
                 Answered,
                 getResources().getString(R.string.HelpAnswered),
-                getResources().getString(R.string.Next),"Circle");
+                getResources().getString(R.string.Next),"Rectangle");
 
         sequence.addSequenceItem(
                 FollowUp,
                 getResources().getString(R.string.HelpFollowUp),
-                getResources().getString(R.string.Close),"Circle");
+                getResources().getString(R.string.Close),"Rectangle");
 
         sequence.start();
 

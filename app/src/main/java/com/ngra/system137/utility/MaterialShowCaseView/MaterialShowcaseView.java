@@ -37,17 +37,17 @@ import com.ngra.system137.utility.MaterialShowCaseView.target.IShowcaseListener;
 import com.ngra.system137.utility.MaterialShowCaseView.target.Target;
 import com.ngra.system137.utility.MaterialShowCaseView.target.ViewTarget;
 import com.ngra.system137.utility.PrefsManager;
-import com.ngra.system137.views.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MaterialShowcaseView extends FrameLayout implements View.OnTouchListener, View.OnClickListener {
 
-    public static final int DEFAULT_SHAPE_PADDING = 10;
-    public static final int DEFAULT_TOOLTIP_MARGIN = 10;
+    public static final int DEFAULT_SHAPE_PADDING = 1;
+    public static final int DEFAULT_TOOLTIP_MARGIN = 1;
     long DEFAULT_DELAY = 0;
     long DEFAULT_FADE_TIME = 300;
+    private Context context;
 
     private int mOldHeight;
     private int mOldWidth;
@@ -119,7 +119,7 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
     private void init(Context context) {
         setWillNotDraw(false);
-
+        this.context = context;
         mListeners = new ArrayList<>();
 
         // make sure we add a global layout listener so we can adapt to changes
@@ -345,11 +345,11 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
                 if (yPos > midPoint) {
                     // target is in lower half of screen, we'll sit above it
                     mContentTopMargin = 0;
-                    mContentBottomMargin = (height - yPos) + radius + mShapePadding;
+                    mContentBottomMargin = (height - yPos) + radius + mShapePadding + 10;
                     mGravity = Gravity.BOTTOM;
                 } else {
                     // target is in upper half of screen, we'll sit below it
-                    mContentTopMargin = yPos + radius + mShapePadding;
+                    mContentTopMargin = yPos + radius + mShapePadding + 10;
                     mContentBottomMargin = 0;
                     mGravity = Gravity.TOP;
                 }

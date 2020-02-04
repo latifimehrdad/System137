@@ -100,6 +100,7 @@ public class NewRequestFragment extends Fragment {
     private MediaRecorder myAudioRecorder;
     private String PathRecorcVoice;
     private MediaPlayer mediaPlayer;
+    public static boolean ShowLayoutAttachfile = false;
 
     @BindView(R.id.layoutGuest)
     LinearLayout layoutGuest;
@@ -236,6 +237,14 @@ public class NewRequestFragment extends Fragment {
         layoutProgressVideo.setVisibility(View.GONE);
         layoutRecord.setVisibility(View.GONE);
         InProcess = false;
+        ShowLayoutAttachfile = false;
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ShowCaseHelp();
+            }
+        },500);
         return view;
     }//_____________________________________________________________________________________________ End onCreateView
 
@@ -255,13 +264,7 @@ public class NewRequestFragment extends Fragment {
         CheckLogin();
         SetTextWatcher();
         HideFiles();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ShowCaseHelp();
-            }
-        },500);
+;
 
     }//_____________________________________________________________________________________________ End onStart
 
@@ -781,10 +784,12 @@ public class NewRequestFragment extends Fragment {
                 if (layoutDialog.getVisibility() == View.VISIBLE) {
                     layoutDialog.setVisibility(View.GONE);
                     layoutRequest.setVisibility(View.VISIBLE);
+                    ShowLayoutAttachfile = false;
                 } else {
                     layoutDialog.setVisibility(View.VISIBLE);
                     layoutRequest.setVisibility(View.INVISIBLE);
                     layoutRecord.setVisibility(View.GONE);
+                    ShowLayoutAttachfile = true;
                     ShowCaseHelpFiles();
                 }
             }

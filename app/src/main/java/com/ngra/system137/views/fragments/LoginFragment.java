@@ -105,6 +105,13 @@ public class LoginFragment extends Fragment {
         binding.setBeforeLogin(vm_LoginFragment);
         view = binding.getRoot();
         ButterKnife.bind(this, view);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ShowCaseHelp();
+            }
+        },500);
         return view;
     }//_____________________________________________________________________________________________ End onCreateView
 
@@ -121,14 +128,6 @@ public class LoginFragment extends Fragment {
         observer = null;
         ObserverObservable();
         CheckPermissions();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ShowCaseHelp();
-            }
-        },500);
-
     }//_____________________________________________________________________________________________ End onStart
 
 
@@ -146,7 +145,7 @@ public class LoginFragment extends Fragment {
         sequence.addSequenceItem(
                 layoutGuest,
                 getResources().getString(R.string.HelpGuest),
-                getResources().getString(R.string.Next),"Circle");
+                getResources().getString(R.string.Next),"Rectangle");
 
         sequence.addSequenceItem(
                 BtnLogin,

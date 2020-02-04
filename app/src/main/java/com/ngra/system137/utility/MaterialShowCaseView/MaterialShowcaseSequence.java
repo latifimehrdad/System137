@@ -30,6 +30,11 @@ public class MaterialShowcaseSequence implements IDetachedListener {
         this.singleUse(sequenceID);
     }
 
+
+    public MaterialShowcaseSequence(Activity activity,boolean ShowAlways) {
+        this(activity);
+    }
+
     public MaterialShowcaseSequence addSequenceItem(View targetView, String content, String dismissText, String shape) {
         addSequenceItem(targetView, "", content, dismissText, shape);
         return this;
@@ -38,7 +43,6 @@ public class MaterialShowcaseSequence implements IDetachedListener {
     public MaterialShowcaseSequence addSequenceItem(View targetView, String title, String content, String dismissText, String shape) {
 
         MaterialShowcaseView sequenceItem = null;
-
         switch (shape){
             case "Rectangle":
                 sequenceItem = new MaterialShowcaseView.Builder(mActivity)
