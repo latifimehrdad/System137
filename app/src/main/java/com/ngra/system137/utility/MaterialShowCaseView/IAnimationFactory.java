@@ -1,8 +1,6 @@
 package com.ngra.system137.utility.MaterialShowCaseView;
 
-import android.annotation.TargetApi;
 import android.graphics.Point;
-import android.os.Build;
 import android.view.View;
 
 public interface IAnimationFactory {

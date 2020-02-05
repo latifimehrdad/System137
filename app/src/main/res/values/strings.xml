@@ -103,5 +103,8 @@
     <string name="HelpProgressVideo">شما میتوانید تعداد 1 عدد ویدیو را به درخواست خود اضافه نمایید</string>
     <string name="HelpRecordVoice">شما میتوانید 1 بار صدای خود را به همراه هر درخواستی ارسال نمایید</string>
 
+    <string name="showcase_button">HIDE</string>
+    <string name="showcase_description">Showcase Description</string>
+
 
 </resources>

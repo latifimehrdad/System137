@@ -14,6 +14,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.os.Handler;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,7 +129,7 @@ public class LoginFragment extends Fragment {
             observer.dispose();
         observer = null;
         ObserverObservable();
-        CheckPermissions();
+        //CheckPermissions();
     }//_____________________________________________________________________________________________ End onStart
 
 
@@ -138,6 +140,7 @@ public class LoginFragment extends Fragment {
         config.setDelay(50); // half second between each showcase view
 
         String SHOWCASE_ID = "sequence login";
+
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), SHOWCASE_ID);
 
         sequence.setConfig(config);

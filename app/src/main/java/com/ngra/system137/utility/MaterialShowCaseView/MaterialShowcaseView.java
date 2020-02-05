@@ -37,6 +37,7 @@ import com.ngra.system137.utility.MaterialShowCaseView.target.IShowcaseListener;
 import com.ngra.system137.utility.MaterialShowCaseView.target.Target;
 import com.ngra.system137.utility.MaterialShowCaseView.target.ViewTarget;
 import com.ngra.system137.utility.PrefsManager;
+import com.ngra.system137.views.custom.ML_SinusView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,7 +159,6 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         // don't bother drawing if we're not ready
         if (!mShouldRender) return;
 
@@ -200,8 +200,8 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
         // draw (erase) shape
         mShape.draw(mCanvas, mEraser, mXPosition, mYPosition);
 
-        // Draw the bitmap on our views  canvas.
         canvas.drawBitmap(mBitmap, 0, 0, null);
+
     }
 
     @Override
@@ -314,9 +314,7 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
              */
             if (!mRenderOverNav && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-
-                mBottomMargin = getSoftButtonsBarSizePort();
-
+                //mBottomMargin = getSoftButtonsBarSizePort();
 
                 FrameLayout.LayoutParams contentLP = (LayoutParams) getLayoutParams();
 
@@ -665,6 +663,7 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
             this.activity = activity;
 
             showcaseView = new MaterialShowcaseView(activity);
+            //showcaseView = (MaterialShowcaseView) activity.findViewById(R.id.test);
         }
 
         /**

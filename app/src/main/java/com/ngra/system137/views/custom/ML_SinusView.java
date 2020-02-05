@@ -25,6 +25,7 @@ public class ML_SinusView extends View {
         super(context);
         color = context.getResources().getColor(R.color.colorPrimary);
         init();
+
     }
 
     public ML_SinusView(Context context, AttributeSet attrs) {

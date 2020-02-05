@@ -50,7 +50,7 @@
         android:paddingLeft="@dimen/_3sdp"
         android:paddingRight="@dimen/_2sdp"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_11sdp"
         android:visibility="gone" />
 
     <TextView

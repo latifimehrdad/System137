@@ -45,6 +45,7 @@ public class MaterialShowcaseSequence implements IDetachedListener {
         MaterialShowcaseView sequenceItem = null;
         switch (shape){
             case "Rectangle":
+
                 sequenceItem = new MaterialShowcaseView.Builder(mActivity)
                         .withRectangleShape()
                         .setTarget(targetView)

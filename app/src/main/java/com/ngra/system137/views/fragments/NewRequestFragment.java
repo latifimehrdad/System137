@@ -53,7 +53,6 @@ import com.ngra.system137.utility.MaterialShowCaseView.ShowcaseConfig;
 import com.ngra.system137.utility.StaticFunctions;
 import com.ngra.system137.viewmodels.fragments.VM_MapFragment;
 import com.ngra.system137.viewmodels.fragments.VM_NewRequest;
-import com.ngra.system137.views.activity.MainActivity;
 import com.ngra.system137.views.adabters.FilesAdabter;
 import com.ngra.system137.views.dialogs.DialogMessage;
 import com.ngra.system137.views.dialogs.DialogProgress;
@@ -238,13 +237,15 @@ public class NewRequestFragment extends Fragment {
         layoutRecord.setVisibility(View.GONE);
         InProcess = false;
         ShowLayoutAttachfile = false;
+        CheckLogin();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                ShowCaseHelp();
+                if (Login)
+                    ShowCaseHelp();
             }
-        },500);
+        }, 500);
         return view;
     }//_____________________________________________________________________________________________ End onCreateView
 
@@ -261,10 +262,9 @@ public class NewRequestFragment extends Fragment {
         ObserverObservables();
         SetClick();
         DismissLoading();
-        CheckLogin();
+
         SetTextWatcher();
         HideFiles();
-;
 
     }//_____________________________________________________________________________________________ End onStart
 
@@ -282,30 +282,27 @@ public class NewRequestFragment extends Fragment {
         sequence.addSequenceItem(
                 layoutChooseAddress,
                 getResources().getString(R.string.HelpChooseAddress),
-                getResources().getString(R.string.Next),"Rectangle");
+                getResources().getString(R.string.Next), "Rectangle");
 
         sequence.addSequenceItem(
                 layoutAttach,
                 getResources().getString(R.string.HelpAttachFiles),
-                getResources().getString(R.string.Next),"Rectangle");
+                getResources().getString(R.string.Next), "Rectangle");
 
         sequence.addSequenceItem(
                 layoutShowFiles,
                 getResources().getString(R.string.HelpShowAttachFiles),
-                getResources().getString(R.string.Next),"Rectangle");
+                getResources().getString(R.string.Next), "Rectangle");
 
         sequence.addSequenceItem(
                 ButtonSend,
                 getResources().getString(R.string.HelpSendRequest),
-                getResources().getString(R.string.Close),"Rectangle");
+                getResources().getString(R.string.Close), "Rectangle");
 
         sequence.start();
 
 
     }//_____________________________________________________________________________________________ End ShowCaseHelp
-
-
-
 
 
     private void ShowCaseHelpFiles() {//____________________________________________________________ Start ShowCaseHelpFiles
@@ -321,29 +318,27 @@ public class NewRequestFragment extends Fragment {
         sequence.addSequenceItem(
                 layoutChooseDoc,
                 getResources().getString(R.string.HelpChooseDoc),
-                getResources().getString(R.string.Next),"Rectangle");
+                getResources().getString(R.string.Next), "Rectangle");
 
         sequence.addSequenceItem(
                 layoutChooseImage,
                 getResources().getString(R.string.HelpChooseImage),
-                getResources().getString(R.string.Next),"Rectangle");
+                getResources().getString(R.string.Next), "Rectangle");
 
         sequence.addSequenceItem(
                 layoutChooseVideo,
                 getResources().getString(R.string.HelpProgressVideo),
-                getResources().getString(R.string.Next),"Rectangle");
+                getResources().getString(R.string.Next), "Rectangle");
 
         sequence.addSequenceItem(
                 layoutRecordVoice,
                 getResources().getString(R.string.HelpRecordVoice),
-                getResources().getString(R.string.Close),"Rectangle");
+                getResources().getString(R.string.Close), "Rectangle");
 
         sequence.start();
 
 
     }//_____________________________________________________________________________________________ End ShowCaseHelpFiles
-
-
 
 
     private void SetAddress() {//___________________________________________________________________ Start SetAddress
@@ -598,7 +593,7 @@ public class NewRequestFragment extends Fragment {
                         context.getResources().getString(R.string.FolderName));
                 PathRecorcVoice = fileOrDirectory.getPath() + "/record_voice.mp3";
 
-                if(!vm_newRequest.CheckRepetitiousFile(PathRecorcVoice,4,1)) {
+                if (!vm_newRequest.CheckRepetitiousFile(PathRecorcVoice, 4, 1)) {
                     SetColorForStartRecordVoice();
                     layoutRecord.setVisibility(View.VISIBLE);
                     layoutRecordProgress.setVisibility(View.GONE);
@@ -630,7 +625,7 @@ public class NewRequestFragment extends Fragment {
                 if (RecordeVoice == 2 &&
                         PathRecorcVoice != null &&
                         !PathRecorcVoice.equalsIgnoreCase("null")) {
-                    if(mediaPlayer != null && mediaPlayer.isPlaying())
+                    if (mediaPlayer != null && mediaPlayer.isPlaying())
                         mediaPlayer.stop();
                     File f = new File(PathRecorcVoice);
                     if (f.exists())

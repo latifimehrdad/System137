@@ -80,13 +80,15 @@ public class MainActivity extends AppCompatActivity {
         layoutMenu.setVisibility(View.GONE);
         SetClick();
         CheckLogin();
-        //ShowCaseHelp();
     }//_____________________________________________________________________________________________ End onCreate
 
 
     private void CheckLogin() {//___________________________________________________________________ Start CheckLogin
         Login = vm_mainActivity.CheckUserLogin();
     }//_____________________________________________________________________________________________ End CheckLogin
+
+
+
 
 
     private void ShowCaseHelpLogin() {//____________________________________________________________ Start ShowCaseHelpLogin
