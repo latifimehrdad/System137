@@ -13,11 +13,16 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.ngra.system137.R;
 import com.ngra.system137.databinding.FragmentSpalshBinding;
 import com.ngra.system137.viewmodels.fragments.VM_SpalshFragment;
+import com.ngra.system137.views.activity.MainActivity;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -34,6 +39,9 @@ public class SpalshFragment extends Fragment {
     private View view;
     private DisposableObserver<String> observer;
     private NavController navController;
+
+    @BindView(R.id.imgLoading)
+    ImageView imgLoading;
 
     public SpalshFragment() {//_____________________________________________________________________ Start SpalshFragment
 
@@ -64,6 +72,9 @@ public class SpalshFragment extends Fragment {
         if(observer != null)
             observer.dispose();
         observer = null;
+        Animation fade = AnimationUtils.loadAnimation(context, R.anim.fade_in_repeat);
+        imgLoading.setAnimation(fade);
+
         ObserverObservable();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -71,7 +82,7 @@ public class SpalshFragment extends Fragment {
             public void run() {
                 vm_spalshFragment.CheckLogin();
             }
-        }, 2000);
+        }, 5000);
     }//_____________________________________________________________________________________________ End onStart
 
 

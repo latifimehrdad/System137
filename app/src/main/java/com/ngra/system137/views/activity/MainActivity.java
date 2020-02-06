@@ -7,6 +7,8 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -68,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.layoutMenuExit)
     RelativeLayout layoutMenuExit;
+
+    @BindView(R.id.layoutNGRA)
+    RelativeLayout layoutNGRA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {//__________________________________________ Start onCreate
@@ -377,6 +382,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        layoutNGRA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("http://www.ngra.ir"));
+                startActivity(intent);
+                CloseMenu();
+            }
+        });
+
         layoutMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -433,8 +451,8 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (count) {
                     case 1:
-                        Animation slide_in_right1 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
-                        layoutMenuLogin.setAnimation(slide_in_right1);
+                        Animation slide_in_right = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
+                        layoutMenuLogin.setAnimation(slide_in_right);
                         layoutMenuLogin.setVisibility(View.VISIBLE);
                         count++;
                         handler.postDelayed(this, 140);
@@ -479,7 +497,14 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 7:
                         Animation slide_in_right7 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
-                        layoutMenuExit.setAnimation(slide_in_right7);
+                        layoutNGRA.setAnimation(slide_in_right7);
+                        layoutNGRA.setVisibility(View.VISIBLE);
+                        count++;
+                        handler.postDelayed(this, 200);
+                        break;
+                    case 8:
+                        Animation slide_in_right8 = AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_in_top);
+                        layoutMenuExit.setAnimation(slide_in_right8);
                         layoutMenuExit.setVisibility(View.VISIBLE);
                         break;
                 }
@@ -509,6 +534,7 @@ public class MainActivity extends AppCompatActivity {
                 layoutMenuSurvey.setVisibility(View.GONE);
                 layoutMenuAbout.setVisibility(View.GONE);
                 layoutMenuHelp.setVisibility(View.GONE);
+                layoutNGRA.setVisibility(View.GONE);
                 layoutMenuExit.setVisibility(View.GONE);
 
             }

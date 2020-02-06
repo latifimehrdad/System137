@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="splash"
@@ -13,13 +12,13 @@
         android:layout_height="match_parent"
         >
 
-        <com.cunoraz.gifview.library.GifView
-            android:layout_width="@dimen/_250sdp"
-            android:layout_height="@dimen/_150sdp"
-            android:layout_centerVertical="true"
+        <ImageView
+            android:id="@+id/imgLoading"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_200sdp"
+            android:src="@drawable/loading_hashtgerd"
             android:layout_centerHorizontal="true"
-            custom:gif="@drawable/system1371"
-            />
+            android:layout_centerVertical="true"/>
 
     </RelativeLayout>
 

@@ -211,6 +211,7 @@
                             android:textSize="@dimen/_10sdp"
                             android:drawableLeft="@drawable/ic_person_add"
                             android:drawablePadding="@dimen/_3sdp"
+                            android:paddingRight="@dimen/_20sdp"
                             android:drawableTint="@color/ML_White"
                             />
 

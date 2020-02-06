@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">System137</string>
+    <string name="app_name">سامانه 137</string>
     <string name="FolderName">System137</string>
     <string name="ZipFolder">SystemZip</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBqrZETxkzvK6hXKpN_LBQwD83ODMQlnLo</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="NGRA">درباره تولید کننده</string>
     <string name="UserName">نام کاربری</string>
     <string name="UserPass">رمز ورود</string>
     <string name="Login">ورود</string>
