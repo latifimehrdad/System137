@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="creator"
+            type="com.ngra.system137.viewmodels.fragments.VM_CreatorFragment" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:id="@+id/imgNgraLogo"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:src="@drawable/ngralogo" />
+
+
+        <com.codesgood.views.JustifiedTextView
+            android:id="@+id/tv_justified_paragraph"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="گروه نگین گستر رابط البرز با برند تجاری نگرا فعالیت خود را از سال 1386 با هدف ارتقای فرهنگ IT و ارائه خدمات در حوزه های نرم افزار و سخت افزار آغاز نموده است و در این زمینه توانسته با دارا بودن كادر مدیریتی و فنی مجرب، در رده یكی از شركت های موفق قرار بگیرد و در ادامه بتواند با توجه به توانمندی و دانش موجود در بدنه خود اهم فعالیت های خود را در زمینه فروش سخت افزار و تولید و پشتیبانی محصولات نرم افزاری متمركز و به اجرا درآورد."
+            android:textColor="@color/ML_Black"
+            android:textSize="@dimen/_10sdp" />
+
+
+        <TextView
+            android:id="@+id/NgraSite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_10sdp"
+            android:text="@string/NgraSite"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/Links"
+            fontPath="font/iransans_web_medium.ttf"
+            />
+
+
+    </LinearLayout>
+
+
+</layout>
+

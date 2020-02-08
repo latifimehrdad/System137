@@ -22,7 +22,6 @@ import butterknife.ButterKnife;
 public class AboutFragment extends Fragment {
 
     private Context context;
-    private View view;
     private VM_AboutFragment vm_aboutFragment;
 
     public AboutFragment() {//______________________________________________________________________ Start AboutFragment
@@ -41,7 +40,7 @@ public class AboutFragment extends Fragment {
                 inflater,R.layout.fragment_about,container,false
         );
         binding.setAbout(vm_aboutFragment);
-        view = binding.getRoot();
+        View view = binding.getRoot();
         ButterKnife.bind(this, view);
         return view;
     }//_____________________________________________________________________________________________ End onCreateView

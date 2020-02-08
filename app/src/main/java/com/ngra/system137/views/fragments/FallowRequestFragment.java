@@ -40,7 +40,6 @@ import static com.ngra.system137.utility.StaticFunctions.TextChangeForChangeBack
 public class FallowRequestFragment extends Fragment {
 
     private Context context;
-    private View view;
     private VM_FallowRequest vm_fallowRequest;
     private DisposableObserver<String> observer;
     private RequestAdabter requestAdabter;
@@ -82,7 +81,7 @@ public class FallowRequestFragment extends Fragment {
                 inflater,R.layout.fragment_fallow_requst,container,false
         );
         binding.setFallowRequest(vm_fallowRequest);
-        view = binding.getRoot();
+        View view = binding.getRoot();
         ButterKnife.bind(this, view);
         return view;
     }//_____________________________________________________________________________________________ End onCreateView

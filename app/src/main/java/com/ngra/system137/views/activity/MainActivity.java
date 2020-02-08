@@ -386,12 +386,17 @@ public class MainActivity extends AppCompatActivity {
         layoutNGRA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                intent.setData(Uri.parse("http://www.ngra.ir"));
-                startActivity(intent);
+
+                NavDestination navDestination = navController.getCurrentDestination();
+                String fragment = navDestination.getLabel().toString();
+                if (fragment.equalsIgnoreCase("fragment_creator")) {
+                    CloseMenu();
+                    return;
+                }
+                NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
+                navController.navigate(R.id.creatorFragment);
                 CloseMenu();
+
             }
         });
 
